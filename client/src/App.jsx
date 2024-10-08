@@ -11,6 +11,7 @@ const App = () => {
     <>
       <Helmet>
         <title>Book Cafe</title>
+        <meta name="description" content="Find your favorite books at Book Cafe." />
         <link rel="icon" href="/assets/favicon.ico" />
       </Helmet>
       <Nav />
