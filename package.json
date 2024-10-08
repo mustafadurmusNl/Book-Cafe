@@ -50,6 +50,7 @@
     "husky": "^7.0.0"
   },
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "react-helmet-async": "^2.0.5"
   }
 }

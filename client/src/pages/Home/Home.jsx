@@ -1,5 +1,4 @@
 import React from "react";
-
 import TEST_ID from "./Home.testid";
 
 const Home = () => {
