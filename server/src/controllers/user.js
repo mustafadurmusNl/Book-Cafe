@@ -1,49 +1,83 @@
-import User, { validateUser } from "../models/User.js";
+import User from "../models/User.js";
 import { logError } from "../util/logging.js";
-import validationErrorMessage from "../util/validationErrorMessage.js";
+import { hashPassword, comparePassword } from "../helpers/auth.js";
+import jwt from "jsonwebtoken";
 
-export const getUsers = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json({ success: true, result: users });
+    const { name, email, password } = req.body;
+
+    if (!name) {
+      return res.json({
+        error: "Name is required",
+      });
+    }
+
+    if (!password || password.length < 6) {
+      return res.json({
+        error: "Password is required and should be at least 6 characters long",
+      });
+    }
+
+    // Check if email is already taken
+    const exist = await User.findOne({ email });
+    if (exist) {
+      return res.json({
+        error: "Email is taken already",
+      });
+    }
+
+    const hashedPassword = await hashPassword(password);
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return res.json(user);
   } catch (error) {
-    logError(error);
-    res
-      .status(500)
-      .json({ success: false, msg: "Unable to get users, try again later" });
+    logError("Error in registerUser:", error);
+    res.status(500).json({ error: "Server error. Please try again later." });
   }
 };
 
-export const createUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
-    const { user } = req.body;
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-    if (typeof user !== "object") {
-      res.status(400).json({
-        success: false,
-        msg: `You need to provide a 'user' object. Received: ${JSON.stringify(
-          user,
-        )}`,
+    if (!user) {
+      return res.json({
+        error: "No user found",
       });
-
-      return;
     }
 
-    const errorList = validateUser(user);
-
-    if (errorList.length > 0) {
-      res
-        .status(400)
-        .json({ success: false, msg: validationErrorMessage(errorList) });
+    const match = await comparePassword(password, user.password);
+    if (match) {
+      jwt.sign(
+        { email: user.email, id: user._id, name: user.name },
+        process.env.JWT_SECRET,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json(user.name);
+        },
+      );
     } else {
-      const newUser = await User.create(user);
-
-      res.status(201).json({ success: true, user: newUser });
+      return res.json({ error: "Incorrect password" });
     }
   } catch (error) {
-    logError(error);
-    res
-      .status(500)
-      .json({ success: false, msg: "Unable to create user, try again later" });
+    logError("Error in loginUser:", error);
+    res.status(500).json({ error: "Server error. Please try again later." });
+  }
+};
+
+export const getall = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    logError("Error in getall:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
