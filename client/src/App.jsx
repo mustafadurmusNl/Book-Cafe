@@ -4,8 +4,8 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home/Home";
 import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
-import { Helmet } from "react-helmet-async";\
-import favicon from "../public/assets/favicon.ico"
+import { Helmet } from "react-helmet-async";
+import favicon from "../public/assets/favicon.ico";
 
 const App = () => {
   return (
