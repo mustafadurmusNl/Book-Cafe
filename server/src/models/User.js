@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   // eslint-disable-next-line prettier/prettier
   password: { type: String },
+  Image: { type: String },
+  preferences: { type: String },
 });
 
 // eslint-disable-next-line prettier/prettier
