@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import User from "./models/User.js"; // Removed validateUser import
 
 import { logError } from "./util/logging.js";
-import validationErrorMessage from "./util/validationErrorMessage.js";
 
 const testRouter = express.Router();
 
