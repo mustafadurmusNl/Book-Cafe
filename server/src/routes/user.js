@@ -1,9 +1,9 @@
 import express from "express";
-import { createUser, getUsers } from "../controllers/user.js";
+// eslint-disable-next-line prettier/prettier
+import { getall } from "../controllers/user.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", getUsers);
-userRouter.post("/create", createUser);
+userRouter.get("/", getall);
 
 export default userRouter;

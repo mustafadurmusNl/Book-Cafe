@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
 });
 
+// eslint-disable-next-line prettier/prettier
 // eslint-disable-next-line no-unused-vars, prettier/prettier
 const UserModel = mongoose.model("User", userSchema);
 

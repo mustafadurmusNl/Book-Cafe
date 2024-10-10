@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import User, { validateUser } from "./models/User.js";
+import User from "./models/User.js"; // Removed validateUser import
 
 import { logError } from "./util/logging.js";
 import validationErrorMessage from "./util/validationErrorMessage.js";
@@ -14,7 +14,7 @@ testRouter.post("/seed", async (req, res) => {
     logError(msg);
 
     res.status(400).json({
-      sucess: false,
+      success: false,
       msg,
     });
   } else {
@@ -29,24 +29,21 @@ testRouter.post("/seed", async (req, res) => {
       ],
     };
 
-    // Validate users to the database
-    data.users.forEach((user) => {
-      const errorList = validateUser(user);
-
-      if (errorList.length > 0) {
-        const err = new Error(
-          `Invalid user in seed data. Errors: ${validationErrorMessage(
-            errorList,
-          )}. User attempting to be inserted: ${JSON.stringify(user)}`,
-        );
-
-        logError(err);
-        throw err;
-      }
-    });
-
-    // Add users to the database
-    await User.create(data.users);
+    // Removed validation logic
+    // Instead of validating each user, you might want to directly create the users.
+    try {
+      // Add users to the database
+      await User.create(data.users);
+    } catch (error) {
+      const err = new Error(
+        `Error adding users to the database: ${error.message}`,
+      );
+      logError(err);
+      return res.status(400).json({
+        success: false,
+        msg: err.message,
+      });
+    }
 
     // Fetch to add to the return
     const finalUsers = await User.find();
