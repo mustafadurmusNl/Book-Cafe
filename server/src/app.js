@@ -1,21 +1,31 @@
 import express from "express";
+import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import connectDB from "./db/connectDB.js";
+import userRoutes from "./routes/user.js";
 
-import userRouter from "./routes/user.js";
+dotenv.config();
 
-// Create an express server
+// Initialize the Express application
 const app = express();
 
-// Tell express to use the json middleware
+// Middleware
+app.use(
+  cors({
+    origin: "http://localhost:8080", // Replace with your frontend URL
+    credentials: true,
+  }),
+);
 app.use(express.json());
-// Allow everyone to access our API. In a real application, we would need to restrict this!
-app.use(cors());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
-/****** Attach routes ******/
-/**
- * We use /api/ at the start of every route!
- * As we also host our client code on heroku we want to separate the API endpoints.
- */
-app.use("/api/user", userRouter);
+// Routes
+app.use("/", userRoutes);
 
+// MongoDB connection
+connectDB();
+
+// Export the app for use in other modules
 export default app;
