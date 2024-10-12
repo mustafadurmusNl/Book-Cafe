@@ -74,8 +74,7 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Incorrect password" });
     }
   } catch (error) {
-    logError("Error in loginUser:", error);
-    res.status(500).json({ error: "Server error. Please try again later." });
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
 
