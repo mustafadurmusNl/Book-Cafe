@@ -60,6 +60,8 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
+    "concurrently": "^8.2.2",
+    "react-helmet-async": "^2.0.5",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
