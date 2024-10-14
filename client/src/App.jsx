@@ -9,6 +9,7 @@ const App = () => {
   const location = useLocation();
   return (
     <>
+      <Nav />
       {location.pathname === "/" && <Navbar />}
       {location.pathname === "/nav" && <Nav />}
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
