@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-
+import CategoryModal from "../../components/CategoryModal";
 import Input from "../../components/Input";
 import useFetch from "../../hooks/useFetch";
 import TEST_ID from "./CreateUser.testid";
+import { useNavigate } from "react-router-dom";
+import { useCategory } from "../../context/CategoryContext";
+import "../../Styles/CategoryModal.css";
 
 const CreateUser = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [showCategoryModal, setShowCategoryModal] = useState(true);
+  const { selectedCategories } = useCategory();
 
   const onSuccess = () => {
     setName("");
     setEmail("");
+    navigate("/reference");
   };
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
     "/user/create",
@@ -28,7 +35,9 @@ const CreateUser = () => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ user: { name, email } }),
+      body: JSON.stringify({
+        user: { name, email, genres: selectedCategories },
+      }),
     });
   };
 
@@ -46,8 +55,8 @@ const CreateUser = () => {
   }
 
   return (
-    <div data-testid={TEST_ID.container}>
-      <h1>What should the user be?</h1>
+    <div className="create-user-form" data-testid={TEST_ID.container}>
+      <h1>Create New User</h1>
       <form onSubmit={handleSubmit}>
         <Input
           name="name"
@@ -65,6 +74,16 @@ const CreateUser = () => {
           Submit
         </button>
       </form>
+      {isLoading && <div>Creating user....</div>}
+      {error && (
+        <div>Error while trying to create user: {error.toString()}</div>
+      )}
+      {showCategoryModal && (
+        <CategoryModal
+          open={showCategoryModal}
+          handleClose={() => setShowCategoryModal(false)}
+        />
+      )}
       {statusComponent}
     </div>
   );
