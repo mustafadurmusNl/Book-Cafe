@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import PropTypes from "prop-types";
 
 const CategoryContext = createContext();
 
@@ -15,7 +16,9 @@ export const CategoryProvider = ({ children }) => {
     </CategoryContext.Provider>
   );
 };
-
+CategoryProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 export const useCategory = () => {
   return useContext(CategoryContext);
 };

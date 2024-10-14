@@ -3,7 +3,7 @@ import { useCategory } from "../context/CategoryContext";
 import "../Styles/CategoryModal.css";
 
 const CategoryModal = () => {
-  const { selectedCategories } = useCategory();
+  useCategory();
   const genres = ["Romance", "Science", "Fiction", "Horror", "Fantasy"];
 
   return (
