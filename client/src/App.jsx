@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+
 import Home from "./pages/Home/Home";
 import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
@@ -12,6 +13,7 @@ const App = () => {
   return (
     <>
       {location.pathname === "/" && <Navbar />}
+
       <CategoryProvider>
         <Routes>
           <Route path="/" element={<Home />} />
