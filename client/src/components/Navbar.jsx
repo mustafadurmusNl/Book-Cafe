@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
