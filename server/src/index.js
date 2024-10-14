@@ -8,7 +8,7 @@ import express from "express";
 dotenv.config();
 
 // The environment should set the port
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 if (port == null) {
   logError(new Error("Cannot find a PORT number, did you create a .env file?"));
