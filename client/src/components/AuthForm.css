@@ -1,0 +1,147 @@
+/* AuthForm.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  height: 650px;
+  width: 70%;
+  display: grid;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin: auto;
+  padding: 30px;
+  margin: 30px auto;
+  grid-template-columns: 400px 1fr;
+  margin-left: 20%;
+}
+
+.all {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px 12px 12px 0px;
+  box-shadow: 0 22px 50px rgb(219 129 28 / 107%);
+  padding: 30px;
+  width: 400px;
+  text-align: center;
+  height: 550px;
+}
+.right {
+  width: 200px;
+  position: fixed;
+  left: 0;
+  height: 200px;
+  border-radius: 50%;
+}
+.left {
+  width: 200px;
+  position: fixed;
+  right: 20px;
+  height: 200px;
+  border-radius: 50%;
+  bottom: 50px;
+}
+
+h2 {
+  margin: 0 0 20px;
+  color: #653a2a;
+  font-size: 29px;
+  font-family: revert-layer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #bc6c25;
+  font-family: fangsong;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.regist:hover {
+  background-color: #ede0d4;
+  padding: 5px;
+}
+.log:hover {
+  background-color: #ede0d4;
+  padding: 5px;
+}
+
+.ground {
+  width: 400px;
+  height: 550px;
+  border-radius: 12px 0px 0px 12px;
+  box-shadow: 0 22px 50px rgb(219 129 28 / 107%);
+}
+
+form {
+  color: #cd8742;
+  font-family: cursive;
+}
+.google-button img {
+  width: 35px;
+  position: absolute;
+  left: 4px;
+  top: 6px;
+}
+.container .log,
+.regist {
+  width: 200px;
+  padding: 6px;
+  background-color: #ddb892;
+  color: #653a2a;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+  font-family: system-ui;
+  transition: 0.2s step-end;
+}
+
+.google-button {
+  position: relative;
+  background: linear-gradient(
+    45deg,
+    #95b7ed,
+    #e4aea9,
+    #e4cf95,
+    #99e2bf,
+    #96b2e0
+  );
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 13px 20px;
+  width: 200px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  overflow: hidden;
+  transition:
+    color 0.4s ease,
+    box-shadow 0.4s ease;
+  box-shadow:
+    0 4px 20px rgba(66, 133, 244, 0.6),
+    0 8px 30px rgba(219, 68, 55, 0.4);
+}
+
+.google-button:hover {
+  color: white;
+}

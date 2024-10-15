@@ -1,33 +1,14 @@
 import mongoose from "mongoose";
 
-import validateAllowedFields from "../util/validateAllowedFields.js";
-
 const userSchema = new mongoose.Schema({
+  googleId: { type: String, unique: true, sparse: true },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  password: { type: String },
+  Image: { type: String },
+  preferences: { type: String },
+  firstLogin: { type: Boolean, default: true },
 });
+const UserModel = mongoose.model("User", userSchema);
 
-const User = mongoose.model("users", userSchema);
-
-export const validateUser = (userObject) => {
-  const errorList = [];
-  const allowedKeys = ["name", "email"];
-
-  const validatedKeysMessage = validateAllowedFields(userObject, allowedKeys);
-
-  if (validatedKeysMessage.length > 0) {
-    errorList.push(validatedKeysMessage);
-  }
-
-  if (userObject.name == null) {
-    errorList.push("name is a required field");
-  }
-
-  if (userObject.email == null) {
-    errorList.push("email is a required field");
-  }
-
-  return errorList;
-};
-
-export default User;
+export default UserModel;

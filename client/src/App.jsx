@@ -1,18 +1,20 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Nav from "./components/Nav";
-import Home from "./pages/Home/Home";
-import CreateUser from "./pages/User/CreateUser";
-import UserList from "./pages/User/UserList";
+import AuthForm from "./components/AuthForm";
+import Navbar from "./components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
+  const location = useLocation();
   return (
     <>
       <Nav />
+      {location.pathname === "/" && <Navbar />}
+      {location.pathname === "/nav" && <Nav />}
+      <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/user" element={<UserList />} />
-        <Route path="/user/create" element={<CreateUser />} />
+        <Route path="/" element={<AuthForm />} />
       </Routes>
     </>
   );
