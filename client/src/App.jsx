@@ -12,7 +12,6 @@ const App = () => {
   const location = useLocation();
   return (
     <>
-      <Nav />
       {location.pathname === "/" && <Navbar />}
 
       <CategoryProvider>
