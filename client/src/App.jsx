@@ -18,8 +18,6 @@ const App = () => {
         <Route path="/" element={<AuthForm />} />
         <Route path="/category" element={<CategorySelection />} />
         <Route path="/recommendations" element={<BookRecommendation />} />
-
-
       </Routes>
     </>
   );

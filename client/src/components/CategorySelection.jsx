@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Assuming you're using react-router for navigation
 import axios from "axios"; // For making API calls
 import "../Styles/CategorySelection.css"; // Import the CSS file for styling
-import { logError } from "../../../server/src/util/logging";
-
+import { logError, logInfo } from "../../../server/src/util/logging";
+import Cookies from "js-cookie";
 import background from "../../public/images/9.jpg";
+
 const CategorySelection = () => {
   const categories = [
     "Fiction",
@@ -33,11 +34,22 @@ const CategorySelection = () => {
 
   // Function to handle form submission
   const handleSubmit = async () => {
+    const token = Cookies.get("token");
+    logInfo("tokenn", token);
+    if (!token) {
+      logError("Token not found! User may not be authenticated.");
+      return;
+    }
     try {
       const response = await axios.post(
         "http://localhost:3000/api/categories",
         { categories: selectedCategories },
-        { withCredentials: true } 
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token in the header
+          },
+        },
       ); // Adjust the API URL
 
       if (response.status === 200) {

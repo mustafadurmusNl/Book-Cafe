@@ -1,6 +1,6 @@
 /* eslint-disable no-dupe-keys */
 import User from "../models/User.js";
-import { logError } from "../util/logging.js";
+import { logError, logInfo } from "../util/logging.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import jwt from "jsonwebtoken";
 
@@ -58,14 +58,18 @@ export const loginUser = async (req, res) => {
       jwt.sign(
         { email: user.email, id: user._id, name: user.name },
         process.env.JWT_SECRET,
-        {},
+        { expiresIn: "1h" },
         (err, token) => {
           if (err) {
             logError("JWT sign error:", err);
             return res.status(500).json({ error: "Failed to generate token" });
           }
+          logInfo("created token is ", token);
           res
-            .cookie("token", token)
+            .cookie("token", token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+            })
             .json({ message: "Login successful", name: user.name });
           return res.redirect("/category");
         },

@@ -9,7 +9,7 @@ import right from "../../public/images/11.gif";
 import logo from "../../public/images/logo.png";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie";
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -18,15 +18,25 @@ const AuthForm = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const checkLoggedInUser = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/api/users/me", {
-          withCredentials: true,
-        });
-        if (response.data) {
-          navigate("/category");
+      // Check if the token exists in the cookies
+      const token = Cookies.get("token");
+
+      if (token) {
+        try {
+          const response = await axios.get(
+            "http://localhost:3000/api/users/me",
+            {
+              withCredentials: true, // Ensure cookies are sent
+            },
+          );
+          if (response.data) {
+            navigate("/category");
+          }
+        } catch (error) {
+          console.error("Error checking logged-in user:", error);
         }
-      } catch (error) {
-        console.error("Error checking logged-in user:", error);
+      } else {
+        console.log("No token found, user is not logged in.");
       }
     };
     checkLoggedInUser();
