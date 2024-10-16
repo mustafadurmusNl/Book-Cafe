@@ -87,3 +87,11 @@ export const getall = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+//create a function to get the current user.
+export const getCurrentUser = (req, res) => {
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    res.status(401).json({ message: "Not authenticated" });
+  }
+};

@@ -8,13 +8,9 @@ import connectDB from "./db/connectDB.js";
 import userRoutes from "./routes/user.js";
 import router from "./routes/auth.js";
 import "./controllers/passport.js";
-
-
-import userRouter from "./routes/user.js";
-import bookRouter from "./routes/books.js";
+import categoryRouter from "./routes/categories.js";
 
 dotenv.config();
-
 
 const app = express();
 
@@ -26,18 +22,6 @@ app.use(
   }),
 );
 app.use(express.json());
-
-// Allow everyone to access our API. In a real application, we would need to restrict this!
-app.use(cors());
-
-/****** Attach routes ******/
-/**
- * We use /api/ at the start of every route!
- * As we also host our client code on heroku we want to separate the API endpoints.
- */
-app.use("/api/user", userRouter);
-app.use("/api/books", bookRouter);
-
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
@@ -56,9 +40,9 @@ app.use(passport.session());
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
+app.use("/api/categories", categoryRouter);
 
 // MongoDB connection
 connectDB();
-
 
 export default app;

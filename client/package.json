@@ -52,9 +52,11 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.5",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.0.2",
     "react-toastify": "^10.0.5"
