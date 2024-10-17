@@ -9,12 +9,10 @@ import userRoutes from "./routes/user.js";
 import router from "./routes/auth.js";
 import "./controllers/passport.js";
 
-
 import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
 
 dotenv.config();
-
 
 const app = express();
 
@@ -59,6 +57,5 @@ app.use("/api/auth", router);
 
 // MongoDB connection
 connectDB();
-
 
 export default app;
