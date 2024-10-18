@@ -36,7 +36,7 @@ const AuthForm = () => {
         toast.error(response.data.error);
       } else {
         toast.success(`Welcome back, ${response.data.name}!`);
-        navigate("/categories");
+        navigate("/recommendations");
       }
     } catch (error) {
       toast.error("Error: " + error.message);
@@ -54,11 +54,16 @@ const AuthForm = () => {
           password,
         },
       );
+
       if (data.error) {
         toast.error(data.error);
       } else {
+        // Assuming the server returns a token and user ID after registration
+        localStorage.setItem("token", data.token); // Store the token
+        localStorage.setItem("user", JSON.stringify(data.id)); // Store the user ID
+
         toast.success(data.message);
-        navigate("/categories");
+        navigate("/categories"); // Redirect to category selection
       }
     } catch (error) {
       toast.error("Error: " + error.message);
@@ -67,11 +72,10 @@ const AuthForm = () => {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:3000/api/auth/google/callback", "_self");
-    navigate("/categories");
   };
 
   return (
-    <div className="container">
+    <div className="container" id="Form">
       <img className="left" src={left} alt="" />
       <img className="right" src={right} alt="" />
       <img className="ground" src={backgroundImage} alt="" />

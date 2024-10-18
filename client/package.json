@@ -64,6 +64,7 @@
     "client": "file:",
     "log-ninja": "^2.0.4",
     "passport": "^0.7.0",
+
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "events": "^3.3.0",
