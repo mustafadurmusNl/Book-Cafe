@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Assuming you're using react-router for navigation
-import axios from "axios"; // For making API calls
-import "../Styles/CategorySelection.css"; // Import the CSS file for styling
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../Styles/CategorySelection.css";
 import { logError, logInfo } from "../../../server/src/util/logging";
 import Cookies from "js-cookie";
 import background from "../../public/images/9.jpg";
 
-const CategorySelection = () => {
+const CategoryAndPreferences = () => {
   const categories = [
     "Fiction",
     "Non-Fiction",
@@ -19,48 +20,50 @@ const CategorySelection = () => {
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
 
-  // Function to handle category selection
   const handleCategoryClick = (category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories(
         selectedCategories.filter((cat) => cat !== category),
-      ); // Unselect if already selected
+      );
     } else {
-      setSelectedCategories([...selectedCategories, category]); // Select new category
+      setSelectedCategories([...selectedCategories, category]);
     }
   };
 
-  // Function to handle form submission
-  const handleSubmit = async () => {
-    const token = Cookies.get("token");
-    logInfo("tokenn", token);
-    if (!token) {
-      logError("Token not found! User may not be authenticated.");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user || !token) {
+      setError("User not authenticated. Please log in.");
       return;
     }
+
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/categories",
-        { categories: selectedCategories },
+      const preferencesResponse = await axios.put(
+        `http://localhost:3000/api/users/${user}`,
+        { preferences: selectedCategories },
         {
-          withCredentials: true,
           headers: {
-            Authorization: `Bearer ${token}`, // Send token in the header
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         },
-      ); // Adjust the API URL
-
-      if (response.status === 200) {
-        navigate("/recommendations"); // Redirect to book recommendation page
-      }
-    } catch (error) {
-      // Handle error appropriately
-      logError("Error saving categories:", error);
-      setError(
-        "An error occurred while saving your categories. Please try again.",
       );
+      setMessage(preferencesResponse.data.message);
+      setError(null);
+      navigate("/recommendations");
+    } catch (err) {
+      // Handle error
+      logError("Error:", err);
+      const errorMessage =
+        err.response?.data?.error || "An error occurred. Please try again.";
+      setError(errorMessage);
+      setMessage("");
     }
   };
 
@@ -78,8 +81,7 @@ const CategorySelection = () => {
     >
       <h1>Select Categories</h1>
       <p>Select the categories you are interested in:</p>
-      {error && <div className="error-message">{error}</div>}{" "}
-      {/* Display error message */}
+      {error && <div className="error-message">{error}</div>}
       <div className="category-list">
         {categories.map((category) => (
           <button
@@ -92,10 +94,11 @@ const CategorySelection = () => {
         ))}
       </div>
       <button onClick={handleSubmit} disabled={selectedCategories.length === 0}>
-        Confirm Selection
+        Confirm Selection and Update Preferences
       </button>
+      {message && <p style={{ color: "green" }}>{message}</p>}
     </div>
   );
 };
 
-export default CategorySelection;
+export default CategoryAndPreferences;

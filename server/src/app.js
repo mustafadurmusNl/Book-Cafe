@@ -8,7 +8,9 @@ import connectDB from "./db/connectDB.js";
 import userRoutes from "./routes/user.js";
 import router from "./routes/auth.js";
 import "./controllers/passport.js";
-import categoryRouter from "./routes/categories.js";
+
+import userRouter from "./routes/user.js";
+import bookRouter from "./routes/books.js";
 
 dotenv.config();
 
@@ -22,6 +24,9 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use("/api/user", userRouter);
+app.use("/api/books", bookRouter);
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
@@ -40,7 +45,6 @@ app.use(passport.session());
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
-app.use("/api/categories", categoryRouter);
 
 // MongoDB connection
 connectDB();

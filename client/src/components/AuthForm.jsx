@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,39 +9,14 @@ import left from "../../public/images/13.gif";
 import right from "../../public/images/11.gif";
 import logo from "../../public/images/logo.png";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { json, useNavigate } from "react-router-dom";
+
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const navigate = useNavigate();
-  useEffect(() => {
-    const checkLoggedInUser = async () => {
-      // Check if the token exists in the cookies
-      const token = Cookies.get("token");
-
-      if (token) {
-        try {
-          const response = await axios.get(
-            "http://localhost:3000/api/users/me",
-            {
-              withCredentials: true, // Ensure cookies are sent
-            },
-          );
-          if (response.data) {
-            navigate("/category");
-          }
-        } catch (error) {
-          console.error("Error checking logged-in user:", error);
-        }
-      } else {
-        console.log("No token found, user is not logged in.");
-      }
-    };
-    checkLoggedInUser();
-  }, [navigate]);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -51,11 +27,16 @@ const AuthForm = () => {
           password,
         },
       );
+      if (response.data) {
+        // Store token if returned by the server
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.id));
+      }
       if (response.data.error) {
         toast.error(response.data.error);
       } else {
         toast.success(`Welcome back, ${response.data.name}!`);
-        navigate("/category");
+        navigate("/categories");
       }
     } catch (error) {
       toast.error("Error: " + error.message);
@@ -77,7 +58,7 @@ const AuthForm = () => {
         toast.error(data.error);
       } else {
         toast.success(data.message);
-        navigate("/prefrence");
+        navigate("/categories");
       }
     } catch (error) {
       toast.error("Error: " + error.message);
@@ -86,7 +67,7 @@ const AuthForm = () => {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:3000/api/auth/google/callback", "_self");
-    navigate("/category");
+    navigate("/categories");
   };
 
   return (
