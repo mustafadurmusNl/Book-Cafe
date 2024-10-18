@@ -67,7 +67,6 @@ const AuthForm = () => {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:3000/api/auth/google/callback", "_self");
- 
   };
 
   return (
