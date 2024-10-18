@@ -1,12 +1,15 @@
+/* eslint-disable react/jsx-no-undef */
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Nav from "./components/Nav";
+import Home from "./pages/Home/Home";
+import CreateUser from "./pages/User/CreateUser";
+import UserList from "./pages/User/UserList";
 import AuthForm from "./components/AuthForm";
 import Navbar from "./components/Navbar";
+import ReferencePage from "./pages/ReferencePage";
 import { Toaster } from "react-hot-toast";
 import BookRecommendation from "./components/BookRecommendation";
 import CategoryAndPreferences from "./components/CategorySelection";
-
 import BookRecommendationPage from "./pages/BookRecommandationPage";
 import Landing from "./components/Landing";
 import Footer from "./components/Footer";
@@ -25,7 +28,12 @@ const App = () => {
     <>
       <Nav />
       {location.pathname === "/" && <Navbar />}
-      {location.pathname === "/nav" && <Nav />}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/user" element={<UserList />} />
+          <Route path="/user/create" element={<CreateUser />} />
+          <Route path="/reference" element={<ReferencePage />} />
+        </Routes>
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
       <Routes>
         <Route path="/" element={<AuthForm />} />
