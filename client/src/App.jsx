@@ -8,7 +8,6 @@ import BookRecommendation from "./components/BookRecommendation";
 import CategoryAndPreferences from "./components/CategorySelection";
 
 import BookRecommendationPage from "./pages/BookRecommandationPage";
-import CategoryAndPreferences from "./components/CategorySelection";
 import Landing from "./components/Landing";
 import Footer from "./components/Footer";
 
