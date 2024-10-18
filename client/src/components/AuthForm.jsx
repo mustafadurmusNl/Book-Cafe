@@ -70,7 +70,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" id="Form">
       <img className="left" src={left} alt="" />
       <img className="right" src={right} alt="" />
       <img className="ground" src={backgroundImage} alt="" />
