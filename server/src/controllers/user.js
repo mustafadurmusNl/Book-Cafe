@@ -1,4 +1,3 @@
-/* eslint-disable no-dupe-keys */
 import User from "../models/User.js";
 import { logError } from "../util/logging.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
@@ -6,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, preferences } = req.body;
 
     if (!name) {
       return res.json({
@@ -33,14 +32,13 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      preferences,
     });
 
     return res.json({ message: "welcome", name: user.name });
   } catch (error) {
     logError("Error in registerUser:", error);
-    res
-      .status(500)
-      .json({ error: "Server error. Please try again later.", error });
+    res.status(500).json({ error: "Server error. Please try again later." });
   }
 };
 
@@ -55,25 +53,25 @@ export const loginUser = async (req, res) => {
 
     const match = await comparePassword(password, user.password);
     if (match) {
-      jwt.sign(
+      // Create the token
+      const token = jwt.sign(
         { email: user.email, id: user._id, name: user.name },
         process.env.JWT_SECRET,
-        {},
-        (err, token) => {
-          if (err) {
-            logError("JWT sign error:", err);
-            return res.status(500).json({ error: "Failed to generate token" });
-          }
-          res
-            .cookie("token", token)
-            .json({ message: "Login successful", name: user.name });
-          return res.redirect("/category");
-        },
+        { expiresIn: "1h" }, // Set token expiration if needed
       );
+
+      // Instead of setting it as a cookie, return it in the response
+      res.json({
+        message: "Login successful",
+        name: user.name,
+        token: token,
+        id: user._id, // Send the token back to the client
+      });
     } else {
       return res.status(401).json({ error: "Incorrect password" });
     }
   } catch (error) {
+    logError("Error in loginUser:", error); // Log the error for debugging
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
@@ -84,6 +82,29 @@ export const getall = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     logError("Error in getall:", error);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+export const updateUserPreferences = async (req, res) => {
+  try {
+    const userId = req.params.id; // Change to req.params.id
+    const { preferences } = req.body; // New preferences from the request body
+
+    // Validate input
+    if (!preferences) {
+      return res.status(400).json({ error: "Preferences are required" });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.preferences = preferences;
+    await user.save();
+    res.status(200).json({
+      message: "Preferences updated successfully",
+      preferences: user.preferences,
+    });
+  } catch (error) {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
