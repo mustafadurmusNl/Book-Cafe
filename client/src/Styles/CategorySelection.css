@@ -1,0 +1,106 @@
+body {
+  background-size: cover;
+  background-position: center;
+  font-family: "Arial", sans-serif;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+
+.category-selection-container {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 100px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #282146;
+}
+
+/* Description paragraph */
+p {
+  border-radius: 10px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  color: #2e1138;
+}
+
+/* Styling for category buttons */
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.category-item {
+  background-color: #f1f1f1;
+  color: #2c3e50;
+  padding: 12px 18px;
+  margin: 8px;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  font-size: 1.1rem;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.category-item:hover {
+  background-color: #2980b9;
+  color: white;
+  transform: translateY(-4px); /* Subtle hover lift effect */
+}
+
+.category-item.selected {
+  background-color: #3498db;
+  color: #fff;
+  border-color: #2980b9;
+}
+
+/* Submit button styling */
+button {
+  display: block;
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.2s ease-in-out;
+  margin: 20px auto 0; /* Center the button */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background-color: #27ae60;
+  transform: translateY(-4px); /* Lift on hover */
+}
+
+/* Error message styling */
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}

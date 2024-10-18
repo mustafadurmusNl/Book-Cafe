@@ -64,6 +64,7 @@
     "client": "file:",
     "log-ninja": "^2.0.4",
     "passport": "^0.7.0",
+    "js-cookie": "^3.0.5",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

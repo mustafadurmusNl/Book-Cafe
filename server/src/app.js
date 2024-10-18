@@ -9,6 +9,9 @@ import userRoutes from "./routes/user.js";
 import router from "./routes/auth.js";
 import "./controllers/passport.js";
 
+import userRouter from "./routes/user.js";
+import bookRouter from "./routes/books.js";
+
 dotenv.config();
 
 const app = express();
@@ -21,6 +24,9 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use("/api/user", userRouter);
+app.use("/api/books", bookRouter);
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
