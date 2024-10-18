@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../Styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,16 +18,23 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
+  const location = useLocation();
 
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedInStatus);
+  }, []);
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
   };
 
   const handleLogin = () => {
+    localStorage.setItem("isLoggedIn", true);
     setIsLoggedIn(true);
   };
 
@@ -62,6 +69,9 @@ const Navbar = () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, []);
+  if (location.pathname === "/login" || location.pathname === "/register") {
+    return null;
+  }
 
   return (
     <nav className="navbar">
