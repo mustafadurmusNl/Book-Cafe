@@ -21,12 +21,10 @@ const App = () => {
   const location = useLocation();
   return (
     <>
-
       {location.pathname === "/" && <Navbar />}
-  
+
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
       <Routes>
-       
         <Route path="/categories" element={<CategoryAndPreferences />} />
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoryAndPreferences />} />
