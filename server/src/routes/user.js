@@ -5,6 +5,7 @@ import {
   loginUser,
   getall,
   updateUserPreferences,
+  UserPreferences,
 } from "../controllers/user.js";
 import authenticateJWT from "./auth.js"; // Change to import for consistency
 
@@ -15,6 +16,7 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/getall", getall);
 userRouter.put("/:id", updateUserPreferences);
+userRouter.get("/:id/preferences", UserPreferences);
 
 // POST /api/categories - This route will save user preferences
 userRouter.post("/categories", authenticateJWT, (req, res) => {

@@ -108,3 +108,23 @@ export const updateUserPreferences = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
+export const UserPreferences = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Return user preferences
+    res.json({ preferences: user.preferences });
+  } catch (err) {
+    // Handle server error
+    res.status(500).json({ error: "Server error" });
+  }
+};

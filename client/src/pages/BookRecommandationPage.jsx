@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -9,36 +10,80 @@ const BookRecommendationPage = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userPreferences, setUserPreferences] = useState([]);
 
-  const fetchBooks = async () => {
+  const fetchUserPreferences = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+      setError("User not authenticated. Please log in.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=10&startIndex=${(page - 1) * 10}`,
+        `http://localhost:3000/api/users/${user}/preferences`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
-      setBooks((prevBooks) => [...prevBooks, ...response.data.items]);
+
+      if (response.data && Array.isArray(response.data.preferences)) {
+        setUserPreferences(response.data.preferences);
+      } else {
+        setError("User preferences not found or invalid.");
+        setUserPreferences([]);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching preferences:", err);
+      setError("Failed to fetch user preferences.");
+      setLoading(false);
+    }
+  };
+
+  const fetchBooks = async () => {
+    if (!Array.isArray(userPreferences) || userPreferences.length === 0) return;
+
+    try {
+      const query = userPreferences.join("+");
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=subject:${query}&maxResults=16&startIndex=${(page - 1) * 10}`,
+      );
+
+      if (response.data.items) {
+        setBooks((prevBooks) => [...prevBooks, ...response.data.items]);
+      }
       setLoading(false);
     } catch (error) {
+      setLoading(false);
       setError(error.message);
     }
   };
 
   useEffect(() => {
-    fetchBooks();
-  }, [page]);
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight
-    ) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
-
+    fetchUserPreferences();
+  }, []);
   useEffect(() => {
+    fetchBooks();
+  }, [userPreferences, page]);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight
+      ) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [books]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

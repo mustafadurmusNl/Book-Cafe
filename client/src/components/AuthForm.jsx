@@ -36,7 +36,7 @@ const AuthForm = () => {
         toast.error(response.data.error);
       } else {
         toast.success(`Welcome back, ${response.data.name}!`);
-        navigate("/categories");
+        navigate("/recommendations");
       }
     } catch (error) {
       toast.error("Error: " + error.message);
@@ -67,7 +67,6 @@ const AuthForm = () => {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:3000/api/auth/google/callback", "_self");
-    navigate("/categories");
   };
 
   return (

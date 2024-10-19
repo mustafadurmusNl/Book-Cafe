@@ -16,6 +16,7 @@ const CategoryAndPreferences = () => {
     "Romance",
     "Sci-Fi",
     "Thriller",
+    "food",
   ];
 
   const [selectedCategories, setSelectedCategories] = useState([]);
