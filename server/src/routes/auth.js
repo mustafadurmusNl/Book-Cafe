@@ -16,7 +16,7 @@ router.get(
     if (user.firstLogin) {
       user.firstLogin = false;
       await user.save();
-      res.redirect(`${BASE_URL}/preferences`);
+      res.redirect(`${BASE_URL}/recommendations`);
     } else {
       res.redirect(`${BASE_URL}/categories`);
     }

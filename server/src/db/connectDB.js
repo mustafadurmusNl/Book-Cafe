@@ -5,10 +5,7 @@ import { logInfo } from "../util/logging.js";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URL);
     logInfo("MongoDB connected successfully"); // Use logInfo instead of console.log
   } catch (error) {
     logError(new Error("Failed to connect to MongoDB: " + error.message));
