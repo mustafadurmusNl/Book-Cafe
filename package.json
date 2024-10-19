@@ -43,6 +43,12 @@
   "bugs": {
     "url": "https://github.com/HackYourFuture/final-project-template/issues"
   },
+"engines": {
+  "node": "20.x", 
+  "npm": "10.x"   
+},
+
+
   "homepage": "https://github.com/HackYourFuture/final-project-template#readme",
   "devDependencies": {
     "@babel/core": "^7.25.8",
