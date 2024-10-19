@@ -668,7 +668,6 @@
     display: flex;
     justify-content: center;
   }
-
 }
 
 @media (max-width: 325px) {
@@ -752,5 +751,4 @@
     display: flex;
     justify-content: center;
   }
-
 }
