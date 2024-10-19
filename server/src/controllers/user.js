@@ -6,27 +6,18 @@ import jwt from "jsonwebtoken";
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, preferences } = req.body;
-
     if (!name) {
-      return res.json({
-        error: "Name is required",
-      });
+      return res.json({ error: "Name is required" });
     }
-
     if (!password || password.length < 6) {
       return res.json({
         error: "Password is required and should be at least 6 characters long",
       });
     }
-
-    // Check if email is already taken
     const exist = await User.findOne({ email });
     if (exist) {
-      return res.json({
-        error: "Email is taken already",
-      });
+      return res.json({ error: "Email is already taken" });
     }
-
     const hashedPassword = await hashPassword(password);
     const user = await User.create({
       name,
@@ -35,10 +26,22 @@ export const registerUser = async (req, res) => {
       preferences,
     });
 
-    return res.json({ message: "welcome", name: user.name });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h", // Token expiration time (adjust as needed)
+    });
+
+    // Return user information and token
+    return res.status(201).json({
+      message: "Registration successful. Welcome!",
+      name: user.name,
+      id: user._id, // Return the user ID
+      token, // Return the JWT token
+    });
   } catch (error) {
     logError("Error in registerUser:", error);
-    res.status(500).json({ error: "Server error. Please try again later." });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
 

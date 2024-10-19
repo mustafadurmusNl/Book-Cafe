@@ -54,11 +54,16 @@ const AuthForm = () => {
           password,
         },
       );
+
       if (data.error) {
         toast.error(data.error);
       } else {
+        // Assuming the server returns a token and user ID after registration
+        localStorage.setItem("token", data.token); // Store the token
+        localStorage.setItem("user", JSON.stringify(data.id)); // Store the user ID
+
         toast.success(data.message);
-        navigate("/categories");
+        navigate("/categories"); // Redirect to category selection
       }
     } catch (error) {
       toast.error("Error: " + error.message);

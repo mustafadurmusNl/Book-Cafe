@@ -28,11 +28,6 @@ userRouter.post("/categories", authenticateJWT, (req, res) => {
     return res.status(400).send({ message: "Preferences must be an array." });
   }
 
-  // Dummy in-memory store for user preferences (replace with database in production)
-  // Assuming you want to save preferences to a database instead of in-memory.
-  // For now, this example will just respond with success.
-  // userPreferences[userId] = preferences; // Uncomment this if you implement userPreferences
-
   res.status(200).send({ message: "Categories saved successfully!" });
 });
 
