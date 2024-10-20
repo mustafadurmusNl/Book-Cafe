@@ -25,7 +25,6 @@ const App = () => {
 
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
       <Routes>
-        <Route path="/categories" element={<CategoryAndPreferences />} />
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoryAndPreferences />} />
         <Route path="/recommendations" element={<BookRecommendationPage />} />
