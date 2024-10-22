@@ -11,7 +11,7 @@ import "./controllers/passport.js";
 
 import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
-
+import recommendationRouter from "./routes/recommendation.js";
 // Load environment variables
 dotenv.config();
 
@@ -45,7 +45,8 @@ app.use("/api/user", userRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
-
+// Set up the routes for book recommendations
+app.use("/api/recommendedBooks", recommendationRouter);
 // MongoDB connection
 connectDB();
 
