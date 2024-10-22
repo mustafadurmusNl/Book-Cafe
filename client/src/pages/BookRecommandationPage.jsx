@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
+const apiKey = process.env.API_KEY;
 
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
@@ -11,6 +11,7 @@ const BookRecommendationPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   // Fetch user preferences from API
   const fetchUserPreferences = async () => {
@@ -41,7 +42,6 @@ const BookRecommendationPage = () => {
       }
       setLoading(false);
     } catch (err) {
-      console.error("Error fetching preferences:", err);
       setError("Failed to fetch user preferences.");
       setLoading(false);
     }
@@ -56,9 +56,12 @@ const BookRecommendationPage = () => {
     try {
       // For each user preference, make a separate API call
       const fetchPromises = userPreferences.map((preference) => {
+        const currentBooks = booksByPreference[preference] || [];
+        const startIndex = currentBooks.length; // Start after the last fetched book
+
         return axios
           .get(
-            `https://www.googleapis.com/books/v1/volumes?q=subject:${preference}&maxResults=32&startIndex=${(page - 1) * 10}`,
+            `https://www.googleapis.com/books/v1/volumes?q=${preference}&key=${apiKey}&maxResults=16&startIndex=${startIndex}`,
           )
           .then((response) => ({
             preference,
@@ -72,18 +75,16 @@ const BookRecommendationPage = () => {
       // Organize books by preference
       const newBooksByPreference = results.reduce(
         (acc, { preference, books }) => {
-          acc[preference] = books;
+          if (books.length === 0) {
+            setHasMore(false); // No more books available
+          }
+          acc[preference] = [...(acc[preference] || []), ...books]; // Append new books
           return acc;
         },
-        {},
-      );
+        { ...booksByPreference },
+      ); // Spread existing state
 
-      // Merge new books into the existing state
-      setBooksByPreference((prevBooksByPreference) => ({
-        ...prevBooksByPreference,
-        ...newBooksByPreference,
-      }));
-
+      setBooksByPreference(newBooksByPreference);
       setLoading(false);
     } catch (error) {
       setError("Error fetching books.");
@@ -99,47 +100,53 @@ const BookRecommendationPage = () => {
   // Fetch books whenever preferences or page changes
   useEffect(() => {
     if (userPreferences.length > 0) {
-      fetchBooksForPreferences();
+      fetchBooksForPreferences(page);
     }
   }, [userPreferences, page]);
 
-  // Scroll event to trigger pagination
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight
-      ) {
+  // Infinite scroll event handler
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 300 // Trigger loading when 300px from bottom
+    ) {
+      if (!loading && hasMore) {
         setPage((prevPage) => prevPage + 1);
       }
-    };
+    }
+  };
 
+  // Attach scroll event listener on component mount
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [booksByPreference]);
+    return () => window.removeEventListener("scroll", handleScroll); // Cleanup on unmount
+  }, [loading, hasMore]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading && page === 1) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="book-page">
       <Navbar />
-      <h1 className="book-title-header">Book Recommendations</h1>
-
-      {/* Display books grouped by preference */}
       {Object.keys(booksByPreference).map((preference) => (
         <div key={preference} className="book-category">
-          <h2>{preference}</h2>{" "}
-          {/* Show the preference as the category header */}
+          <h2>Best {preference} Books</h2>
           <div className="book-grid">
             {booksByPreference[preference].length > 0 ? (
               booksByPreference[preference].map((book) => (
                 <div key={book.id} className="book-item">
-                  <img
-                    src={book.volumeInfo.imageLinks?.thumbnail}
-                    alt={book.volumeInfo.title}
-                    className="book-thumbnail"
-                  />
+                  {book.volumeInfo.imageLinks?.thumbnail ? (
+                    <img
+                      src={book.volumeInfo.imageLinks.thumbnail}
+                      alt={book.volumeInfo.title}
+                      className="book-thumbnail"
+                    />
+                  ) : (
+                    <div className="placeholder-cover">
+                      <p className="book-title">{book.volumeInfo.title}</p>
+                      <p className="book-author">{book.volumeInfo.authors}</p>
+                    </div>
+                  )}
                   <Link to={`/book/${book.id}`} className="book-title">
                     {book.volumeInfo.title}
                   </Link>
@@ -156,6 +163,7 @@ const BookRecommendationPage = () => {
           </div>
         </div>
       ))}
+      {loading && <p>Loading more books...</p>}
     </div>
   );
 };

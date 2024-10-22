@@ -40,6 +40,7 @@
   transition:
     transform 0.5s ease,
     box-shadow 0.5s ease;
+  height: 250px;
 }
 .book-item .book-preview {
   display: none;
@@ -118,7 +119,31 @@
 .book-title:hover {
   color: rgb(150, 110, 65);
 }
+.book-category h2 {
+  padding: 17px;
+  margin: 20px auto;
+  font-size: 40px;
+  font-family: "Pacifico", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* shadow for the text */
+  text-align: center;
 
+  color: #653a2a;
+  border-radius: 10px; /* Optional: Smooth edges */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* shadow for the h2 box */
+}
+.placeholder-cover .book-title {
+  font-size: initial;
+  background: antiquewhite;
+  border-radius: unset;
+}
+.book-author {
+  font-size: initial;
+  background: antiquewhite;
+  border-radius: unset;
+}
+.welcome {
+  font-family: "Playwrite GB S";
+}
 @media (max-width: 2133px) {
   .book-grid {
     grid-template-columns: repeat(8, 1fr);

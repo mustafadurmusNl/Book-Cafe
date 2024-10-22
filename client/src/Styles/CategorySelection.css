@@ -16,15 +16,6 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-h1 {
-  border-radius: 10px;
-  background-color: #fff;
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #282146;
-}
-
 /* Description paragraph */
 p {
   border-radius: 10px;
@@ -37,15 +28,16 @@ p {
 
 /* Styling for category buttons */
 .category-list {
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
   justify-content: center;
+  grid-template-columns: repeat(4, 200px);
   gap: 10px;
 }
 
 .category-item {
   background-color: #f1f1f1;
-  color: #2c3e50;
+  color: #38040e;
   padding: 12px 18px;
   margin: 8px;
   cursor: pointer;
@@ -53,8 +45,9 @@ p {
   border-radius: 8px;
   transition: all 0.3s ease-in-out;
   font-size: 1.1rem;
-  min-width: 120px;
+  width: 200px;
   text-align: center;
+  font-family: "Playwrite GB S";
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -93,7 +86,7 @@ button:disabled {
 }
 
 button:hover:enabled {
-  background-color: #27ae60;
+  background-color: #653a2a;
   transform: translateY(-4px); /* Lift on hover */
 }
 
@@ -103,4 +96,38 @@ button:hover:enabled {
   font-weight: bold;
   text-align: center;
   margin-bottom: 20px;
+}
+.catergory-title {
+  padding: 17px;
+  margin: 20px auto;
+  font-size: 40px;
+  font-family: "Pacifico", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* shadow for the text */
+  text-align: center;
+
+  color: #653a2a;
+  border-radius: 10px; /* Optional: Smooth edges */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* shadow for the h2 box */
+}
+.category-container {
+  width: 700px;
+  height: 700px;
+  margin: 20px auto;
+  text-align: center;
+}
+.category-container .background {
+  width: 200px;
+  position: absolute;
+  left: 30px;
+  bottom: 172px;
+  border-radius: 30px;
+}
+
+.category-container .background2 {
+  width: 200px;
+  position: absolute;
+  right: 30px;
+  bottom: 172px;
+  border-radius: 30px;
+  height: 350px;
 }

@@ -5,7 +5,9 @@ import axios from "axios";
 import "../Styles/CategorySelection.css";
 import { logError, logInfo } from "../../../server/src/util/logging";
 import Cookies from "js-cookie";
-import background from "../../public/images/9.jpg";
+import background from "../../public/images/15.jpg";
+import background2 from "../../public/images/99.gif";
+import Navbar from "./Navbar";
 
 const CategoryAndPreferences = () => {
   const categories = [
@@ -16,7 +18,19 @@ const CategoryAndPreferences = () => {
     "Romance",
     "Sci-Fi",
     "Thriller",
-    "food",
+    "Food & Cooking",
+    "Biography",
+    "Self-Help",
+    "Historical Fiction",
+    "Young Adult",
+    "Horror",
+    "Graphic Novels",
+    "Poetry",
+    "Business",
+    "Travel",
+    "Health & Fitness",
+    "Children's Books",
+    "True Crime",
   ];
 
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -25,6 +39,8 @@ const CategoryAndPreferences = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
+
+  const profileImage = localStorage.getItem("profileImage");
 
   const handleCategoryClick = (category) => {
     if (selectedCategories.includes(category)) {
@@ -47,7 +63,9 @@ const CategoryAndPreferences = () => {
     try {
       const preferencesResponse = await axios.put(
         `http://localhost:3000/api/users/${user}`,
-        { preferences: selectedCategories },
+        {
+          preferences: selectedCategories,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -69,36 +87,34 @@ const CategoryAndPreferences = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${background})`,
-        backgroundSize: "cover",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <h1>Select Categories</h1>
-      <p>Select the categories you are interested in:</p>
-      {error && <div className="error-message">{error}</div>}
-      <div className="category-list">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`category-item ${selectedCategories.includes(category) ? "selected" : ""}`}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {category}
-          </button>
-        ))}
+    <>
+      <Navbar />
+      <div className="category-container">
+        <img className="background" src={background} alt="" />
+        <img className="background2" src={background2} alt="" />
+        <h1 className="catergory-title">Discover Your Interests</h1>
+
+        {error && <div className="error-message">{error}</div>}
+        <div className="category-list">
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`category-item ${selectedCategories.includes(category) ? "selected" : ""}`}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={handleSubmit}
+          disabled={selectedCategories.length === 0}
+        >
+          Confirm
+        </button>
+        {message && <p style={{ color: "green" }}>{message}</p>}
       </div>
-      <button onClick={handleSubmit} disabled={selectedCategories.length === 0}>
-        Confirm Selection and Update Preferences
-      </button>
-      {message && <p style={{ color: "green" }}>{message}</p>}
-    </div>
+    </>
   );
 };
 
