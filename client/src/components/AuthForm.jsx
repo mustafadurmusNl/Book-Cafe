@@ -31,6 +31,7 @@ const AuthForm = () => {
         // Store token if returned by the server
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.id));
+        localStorage.setItem("username", JSON.stringify(response.data.name));
       }
       if (response.data.error) {
         toast.error(response.data.error);
@@ -60,7 +61,8 @@ const AuthForm = () => {
       } else {
         // Assuming the server returns a token and user ID after registration
         localStorage.setItem("token", data.token); // Store the token
-        localStorage.setItem("user", JSON.stringify(data.id)); // Store the user ID
+        localStorage.setItem("user", JSON.stringify(data.id));
+        localStorage.setItem("username", JSON.stringify(data.name)); // Store the user ID
 
         toast.success(data.message);
         navigate("/categories"); // Redirect to category selection
