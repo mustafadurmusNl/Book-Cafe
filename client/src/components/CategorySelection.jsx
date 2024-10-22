@@ -6,6 +6,7 @@ import "../Styles/CategorySelection.css";
 import { logError, logInfo } from "../../../server/src/util/logging";
 import Cookies from "js-cookie";
 import background from "../../public/images/15.jpg";
+import background2 from "../../public/images/99.gif";
 import Navbar from "./Navbar";
 
 const CategoryAndPreferences = () => {
@@ -64,8 +65,6 @@ const CategoryAndPreferences = () => {
         `http://localhost:3000/api/users/${user}`,
         {
           preferences: selectedCategories,
-
-          Image: profileImage,
         },
         {
           headers: {
@@ -91,7 +90,8 @@ const CategoryAndPreferences = () => {
     <>
       <Navbar />
       <div className="category-container">
-        <img src={background} alt="" />
+        <img className="background" src={background} alt="" />
+        <img className="background2" src={background2} alt="" />
         <h1 className="catergory-title">Discover Your Interests</h1>
 
         {error && <div className="error-message">{error}</div>}

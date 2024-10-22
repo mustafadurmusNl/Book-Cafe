@@ -141,6 +141,9 @@
   background: antiquewhite;
   border-radius: unset;
 }
+.welcome {
+  font-family: "Playwrite GB S";
+}
 @media (max-width: 2133px) {
   .book-grid {
     grid-template-columns: repeat(8, 1fr);

@@ -115,10 +115,19 @@ button:hover:enabled {
   margin: 20px auto;
   text-align: center;
 }
-.category-container img {
+.category-container .background {
   width: 200px;
   position: absolute;
   left: 30px;
   bottom: 172px;
   border-radius: 30px;
+}
+
+.category-container .background2 {
+  width: 200px;
+  position: absolute;
+  right: 30px;
+  bottom: 172px;
+  border-radius: 30px;
+  height: 350px;
 }

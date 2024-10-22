@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate here
 import "../Styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,18 +19,25 @@ const Navbar = () => {
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate(); // Moved useNavigate here
+  const [name, Setname] = useState("");
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    const getname = JSON.parse(localStorage.getItem("username"));
+    Setname(getname);
     setIsLoggedIn(loggedInStatus);
   }, []);
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
+    localStorage.removeItem("token"); // Corrected "toke" to "token"
+    localStorage.removeItem("user");
+    localStorage.removeItem("username");
+    navigate("/"); // Use navigate here
   };
 
   const handleLogin = () => {
@@ -69,6 +76,7 @@ const Navbar = () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, []);
+
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
@@ -109,6 +117,7 @@ const Navbar = () => {
                   <FontAwesomeIcon icon={faStar} /> <span>Favorites</span>
                 </Link>
               </li>
+              <li className="welcome">📚 hello, {name} 😍 📚</li>
             </ul>
           </div>
 
