@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
-const apiKey = process.env.API_KEY;
 
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
@@ -48,24 +47,29 @@ const BookRecommendationPage = () => {
   };
 
   // Fetch books for each preference query
+  // Modify the API call to your backend
   const fetchBooksForPreferences = async () => {
     if (!Array.isArray(userPreferences) || userPreferences.length === 0) return;
 
     setLoading(true);
 
     try {
-      // For each user preference, make a separate API call
+      // For each user preference, make a separate API call to your backend
       const fetchPromises = userPreferences.map((preference) => {
         const currentBooks = booksByPreference[preference] || [];
         const startIndex = currentBooks.length; // Start after the last fetched book
 
+        // Call your backend instead of Google Books API
         return axios
-          .get(
-            `https://www.googleapis.com/books/v1/volumes?q=${preference}&key=${apiKey}&maxResults=16&startIndex=${startIndex}`,
-          )
+          .get("http://localhost:3000/api/recommendedBooks", {
+            params: {
+              preference,
+              startIndex,
+            },
+          })
           .then((response) => ({
             preference,
-            books: response.data.items || [],
+            books: response.data || [], // Return books from backend response
           }));
       });
 
