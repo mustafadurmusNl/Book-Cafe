@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 
-
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
   const [page, setPage] = useState(1);
@@ -49,54 +48,53 @@ const BookRecommendationPage = () => {
 
   // Fetch books for each preference query
   // Modify the API call to your backend
-const fetchBooksForPreferences = async () => {
-  if (!Array.isArray(userPreferences) || userPreferences.length === 0) return;
+  const fetchBooksForPreferences = async () => {
+    if (!Array.isArray(userPreferences) || userPreferences.length === 0) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    // For each user preference, make a separate API call to your backend
-    const fetchPromises = userPreferences.map((preference) => {
-      const currentBooks = booksByPreference[preference] || [];
-      const startIndex = currentBooks.length; // Start after the last fetched book
+    try {
+      // For each user preference, make a separate API call to your backend
+      const fetchPromises = userPreferences.map((preference) => {
+        const currentBooks = booksByPreference[preference] || [];
+        const startIndex = currentBooks.length; // Start after the last fetched book
 
-      // Call your backend instead of Google Books API
-      return axios
-        .get("http://localhost:3000/api/recommendedBooks", {
-          params: {
+        // Call your backend instead of Google Books API
+        return axios
+          .get("http://localhost:3000/api/recommendedBooks", {
+            params: {
+              preference,
+              startIndex,
+            },
+          })
+          .then((response) => ({
             preference,
-            startIndex,
-          },
-        })
-        .then((response) => ({
-          preference,
-          books: response.data || [], // Return books from backend response
-        }));
-    });
+            books: response.data || [], // Return books from backend response
+          }));
+      });
 
-    // Wait for all promises to resolve
-    const results = await Promise.all(fetchPromises);
+      // Wait for all promises to resolve
+      const results = await Promise.all(fetchPromises);
 
-    // Organize books by preference
-    const newBooksByPreference = results.reduce(
-      (acc, { preference, books }) => {
-        if (books.length === 0) {
-          setHasMore(false); // No more books available
-        }
-        acc[preference] = [...(acc[preference] || []), ...books]; // Append new books
-        return acc;
-      },
-      { ...booksByPreference },
-    ); // Spread existing state
+      // Organize books by preference
+      const newBooksByPreference = results.reduce(
+        (acc, { preference, books }) => {
+          if (books.length === 0) {
+            setHasMore(false); // No more books available
+          }
+          acc[preference] = [...(acc[preference] || []), ...books]; // Append new books
+          return acc;
+        },
+        { ...booksByPreference },
+      ); // Spread existing state
 
-    setBooksByPreference(newBooksByPreference);
-    setLoading(false);
-  } catch (error) {
-    setError("Error fetching books.");
-    setLoading(false);
-  }
-};
-
+      setBooksByPreference(newBooksByPreference);
+      setLoading(false);
+    } catch (error) {
+      setError("Error fetching books.");
+      setLoading(false);
+    }
+  };
 
   // Fetch user preferences once on component mount
   useEffect(() => {
