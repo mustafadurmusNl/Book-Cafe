@@ -8,10 +8,10 @@ import connectDB from "./db/connectDB.js";
 import userRoutes from "./routes/user.js";
 import router from "./routes/auth.js";
 import "./controllers/passport.js";
-
 import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
 import recommendationRouter from "./routes/recommendation.js";
+import bookDetailRouter from "./routes/bookDetail.js";
 // Load environment variables
 dotenv.config();
 
@@ -47,6 +47,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
 // Set up the routes for book recommendations
 app.use("/api/recommendedBooks", recommendationRouter);
+app.use("/api/bookDetail", bookDetailRouter);
 // MongoDB connection
 connectDB();
 
