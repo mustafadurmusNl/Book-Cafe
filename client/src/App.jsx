@@ -12,15 +12,11 @@ import BookDetailComponent from "./components/BookDetailCompo";
 import FavoritesPage from "./pages/FavoritesPage";
 import { FavoriteProvider } from "./context/FavoriteContext";
 
-
-
-
 const App = () => {
   const location = useLocation();
 
   return (
     <>
-
       {location.pathname === "/" && <Navbar />}
 
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
@@ -43,7 +39,6 @@ const App = () => {
         </Routes>
         <Footer />
       </FavoriteProvider>
-
     </>
   );
 };
