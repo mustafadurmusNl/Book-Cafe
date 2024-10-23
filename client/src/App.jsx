@@ -5,26 +5,14 @@ import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import CategoryAndPreferences from "./components/CategorySelection";
 import BookRecommendationPage from "./pages/BookRecommandationPage";
-
 import Footer from "./components/Footer";
 import NotFoundPage from "./pages/NotFoundPage";
 import Home from "./pages/Home/Home";
-
-
 import BookDetailComponent from "./components/BookDetailCompo";
 import FavoritesPage from "./pages/FavoritesPage";
-import Landing from "./components/Landing";
-import Footer from "./components/Footer";
 import { FavoriteProvider } from "./context/FavoriteContext";
 
-const Home = () => {
-  return (
-    <>
-      <Landing />
-      <AuthForm />
-    </>
-  );
-};
+
 
 
 const App = () => {
