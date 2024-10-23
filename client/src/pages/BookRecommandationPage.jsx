@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
+import { FavoriteContext } from "../context/FavoriteContext";
 
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
@@ -11,6 +12,8 @@ const BookRecommendationPage = () => {
   const [error, setError] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const { favorites, toggleFavorite } = useContext(FavoriteContext);
+  const navigate = useNavigate();
 
   // Fetch user preferences from API
   const fetchUserPreferences = async () => {
@@ -132,35 +135,52 @@ const BookRecommendationPage = () => {
   return (
     <div className="book-page">
       <Navbar />
+      {/* <h1 className="book-title-header">Book Recommendations</h1> */}
       {Object.keys(booksByPreference).map((preference) => (
         <div key={preference} className="book-category">
           <h2>Best {preference} Books</h2>
           <div className="book-grid">
             {booksByPreference[preference].length > 0 ? (
-              booksByPreference[preference].map((book) => (
-                <div key={book.id} className="book-item">
-                  {book.volumeInfo.imageLinks?.thumbnail ? (
+              booksByPreference[preference].map((book) => {
+                const isFavorite = favorites.some(
+                  (favBook) => favBook.id === book.id,
+                );
+                return (
+                  <div key={book.id} className="book-item">
+                    <button
+                      className="heart-icon"
+                      onClick={() =>
+                        toggleFavorite({
+                          id: book.id,
+                          title: book.volumeInfo.title,
+                          imageLinks: book.volumeInfo.imageLinks,
+                          description: book.volumeInfo.description,
+                        })
+                      }
+                      style={{ color: isFavorite ? "red" : "white" }}
+                    >
+                      ♥
+                    </button>
                     <img
-                      src={book.volumeInfo.imageLinks.thumbnail}
-                      alt={book.volumeInfo.title}
+                      src={
+                        book.volumeInfo.imageLinks?.thumbnail ||
+                        "/default-image.jpg"
+                      }
+                      alt={book.volumeInfo.title || "No Title"}
                       className="book-thumbnail"
+                      onClick={() => navigate(`/book/${book.id}`)}
                     />
-                  ) : (
-                    <div className="placeholder-cover">
-                      <p className="book-title">{book.volumeInfo.title}</p>
-                      <p className="book-author">{book.volumeInfo.authors}</p>
+                    <Link to={`/book/${book.id}`} className="book-title">
+                      {book.volumeInfo.title}
+                    </Link>
+                    <div className="book-info">
+                      {book.volumeInfo.description
+                        ? book.volumeInfo.description.slice(0, 100) + "..."
+                        : "No description available."}
                     </div>
-                  )}
-                  <Link to={`/book/${book.id}`} className="book-title">
-                    {book.volumeInfo.title}
-                  </Link>
-                  <div className="book-info">
-                    {book.volumeInfo.description
-                      ? book.volumeInfo.description.slice(0, 100) + "..."
-                      : "No description available."}
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p>No books available for {preference}.</p>
             )}
