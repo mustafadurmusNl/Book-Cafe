@@ -1,22 +1,16 @@
 /* eslint-disable react/jsx-no-undef */
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import AuthForm from "./components/AuthForm";
+
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import CategoryAndPreferences from "./components/CategorySelection";
 import BookRecommendationPage from "./pages/BookRecommandationPage";
-import Landing from "./components/Landing";
-import Footer from "./components/Footer";
 
-const Home = () => {
-  return (
-    <>
-      <Landing />
-      <AuthForm />
-    </>
-  );
-};
+import Footer from "./components/Footer";
+import NotFoundPage from "./pages/NotFoundPage";
+import Home from "./pages/Home/Home";
+
 const App = () => {
   const location = useLocation();
   return (
@@ -28,6 +22,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoryAndPreferences />} />
         <Route path="/recommendations" element={<BookRecommendationPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </>
