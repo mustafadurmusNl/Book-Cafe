@@ -35,7 +35,9 @@ const Navbar = () => {
     localStorage.removeItem("token"); // Corrected "toke" to "token"
     localStorage.removeItem("user");
     localStorage.removeItem("username");
-    navigate("/"); // Use navigate here
+    localStorage.setItem("isLoggedIn", false); // Optional: if you are storing login state in localStorage
+    setIsLoggedIn(false); // Update state
+    navigate("/"); // Redirect to home page
   };
   const handleLogin = () => {
     localStorage.setItem("isLoggedIn", true);
