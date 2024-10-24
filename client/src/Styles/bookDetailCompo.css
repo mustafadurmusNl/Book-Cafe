@@ -89,12 +89,7 @@
   width: 40%;
   text-align: center;
 }
-.pdfButton-custom,
-.buyButton-custom.disabled {
-  background-color: #d3d3d3; /* رنگ روشن‌تر برای دکمه غیرفعال */
-  color: #808080; /* رنگ متن برای دکمه غیرفعال */
-  cursor: not-allowed; /* نشانگر موس تغییر می‌کند */
-}
+
 .heart-icon-bdc {
   position: absolute;
   top: 17%;

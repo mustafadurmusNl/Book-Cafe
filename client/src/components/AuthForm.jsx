@@ -32,7 +32,6 @@ const AuthForm = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.id));
         localStorage.setItem("username", JSON.stringify(response.data.name));
-        localStorage.setItem("email", response.data.user.email);
       }
       if (response.data.error) {
         toast.error(response.data.error);

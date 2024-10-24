@@ -25,6 +25,8 @@ const BookDetailComponent = () => {
         setBook(data.volumeInfo);
       } catch (error) {
         setError(true);
+        // eslint-disable-next-line no-console
+        console.error("Fetch error:", error);
       }
     };
     fetchBook();
@@ -37,7 +39,7 @@ const BookDetailComponent = () => {
 
   return (
     <div>
-      <Navbar isLoggedIn={true} />
+      <Navbar />
       <div className="bookDetailContainer-custom">
         <button className="backButton-custom" onClick={() => navigate(-1)}>
           <FaArrowLeft />

@@ -3,7 +3,6 @@ import TEST_ID from "./Home.testid";
 import Landing from "../../components/Landing";
 import AuthForm from "../../components/AuthForm";
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // Check if the user is logged in from localStorage
@@ -25,7 +24,6 @@ const Home = () => {
   }, []);
   return (
     <div data-testid={TEST_ID.container}>
-      <Navbar isLoggedIn={false} />
       <Landing />
       {isLoggedIn && <AuthForm />}
     </div>

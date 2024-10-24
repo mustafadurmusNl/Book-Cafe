@@ -13,33 +13,31 @@ export const FavoriteProvider = ({ children }) => {
     }
   }, []);
 
+  // Save favorites to localStorage whenever favorites change
+  // useEffect(() => {
+  //   if (favorites.length > 0) {
+  //     localStorage.setItem("favorites", JSON.stringify(favorites));
+  //   }
+  // }, [favorites]);  useEffect(() => {
   useEffect(() => {
-    if (favorites.length > 0) {
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-    }
+    localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
   const toggleFavorite = (book) => {
-    let updatedFavorites = [...favorites];
-    const isFavorite = updatedFavorites.some(
-      (favBook) => favBook.id === book.id,
-    );
-
-    if (isFavorite) {
-      updatedFavorites = updatedFavorites.filter(
-        (favBook) => favBook.id !== book.id,
+    setFavorites((prevFavorites) => {
+      const isFavorite = prevFavorites.some(
+        (favBook) => favBook.id === book.id,
       );
-    } else {
-      updatedFavorites.push(book);
-    }
-
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      if (isFavorite) {
+        return prevFavorites.filter((favBook) => favBook.id !== book.id);
+      } else {
+        return [...prevFavorites, book];
+      }
+    });
   };
-
   const clearFavoritesOnLogout = () => {
     setFavorites([]);
-    localStorage.removeItem("favorites");
+    localStorage.removeItem("favorites"); // Clear localStorage on logout
   };
 
   return (
@@ -49,10 +47,6 @@ export const FavoriteProvider = ({ children }) => {
       {children}
     </FavoriteContext.Provider>
   );
-};
-
-FavoriteProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 FavoriteProvider.propTypes = {
