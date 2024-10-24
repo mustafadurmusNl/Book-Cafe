@@ -1,20 +1,22 @@
-/* eslint-disable no-console */
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
-
+import { FavoriteContext } from "../context/FavoriteContext";
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
   const [booksByFavoriteAuthors, setBooksByFavoriteAuthors] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
+  const { favorites, toggleFavorite } = useContext(FavoriteContext);
+  const navigate = useNavigate();
 
   // Fetch user preferences from API
   const fetchUserPreferences = async () => {
@@ -23,7 +25,6 @@ const BookRecommendationPage = () => {
       setLoading(false);
       return;
     }
-
     try {
       const response = await axios.get(
         `http://localhost:3000/api/users/${user}/preferences`,
@@ -211,43 +212,27 @@ const BookRecommendationPage = () => {
               </div>
             ))}
           </div>
-        </div>
-      )}
-
-      {/* Section for User Preferences' Books */}
-      {Object.keys(booksByPreference).map((preference) => (
-        <div key={preference} className="book-category">
-          <h2>Best {preference} Books</h2>
-          <div className="book-grid">
-            {booksByPreference[preference].length > 0 ? (
-              booksByPreference[preference].map((book) => (
-                <div
-                  key={book.id}
-                  className="book-item"
-                  onClick={() => handleSaveAuthor(book.volumeInfo.authors[0])}
-                >
-                  {book.volumeInfo.imageLinks?.thumbnail ? (
-                    <img
-                      src={book.volumeInfo.imageLinks.thumbnail}
-                      alt={book.volumeInfo.title}
-                      className="book-thumbnail"
+        </div> 
+                          imageLinks: book.volumeInfo.imageLinks,
+                          description: book.volumeInfo.description,
+                        })
+                      }
+                      style={{ color: isFavorite ? "red" : "white" }}
+                    >
+      className="book-thumbnail"
+                      onClick={() => navigate(`/book/${book.id}`)}
                     />
-                  ) : (
-                    <div className="placeholder-cover">
-                      <p className="book-title">{book.volumeInfo.title}</p>
-                      <p className="book-author">{book.volumeInfo.authors}</p>
+                    <Link to={`/book/${book.id}`} className="book-title">
+                      {book.volumeInfo.title}
+                    </Link>
+                    <div className="book-info">
+                      {book.volumeInfo.description
+                        ? book.volumeInfo.description.slice(0, 100) + "..."
+                        : "No description available."}
                     </div>
-                  )}
-                  <Link to={`/book/${book.id}`} className="book-title">
-                    {book.volumeInfo.title}
-                  </Link>
-                  <div className="book-info">
-                    {book.volumeInfo.description
-                      ? book.volumeInfo.description.slice(0, 100) + "..."
-                      : "No description available."}
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p>No books available for {preference}.</p>
             )}

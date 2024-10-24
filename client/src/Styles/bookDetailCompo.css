@@ -1,0 +1,126 @@
+.bookDetailContainer-custom {
+  display: flex;
+  max-width: 70%;
+  margin: 20px auto;
+  background: rgb(252, 240, 226);
+  padding: 20px;
+  box-shadow: 0 0 10px rgb(233, 175, 113);
+  border-radius: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.bookImage-custom {
+  width: 40%;
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bookImage-custom img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  padding-right: 15px;
+}
+
+.bookInfo-custom {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookH-custom {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: rgb(169, 123, 73);
+}
+
+.bookMeta-custom {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  color: rgb(169, 123, 73);
+}
+.bookMeta-custom span {
+  padding: 5px;
+}
+
+.bookDescription-custom {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid rgb(217, 189, 157);
+  padding: 15px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  color: rgb(169, 123, 73);
+  font-size: 15px;
+  text-align: justify;
+  margin-top: 50px;
+}
+
+.bookDescription-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.bookDescription-custom::-webkit-scrollbar-thumb {
+  background-color: rgb(169, 123, 73);
+  border-radius: 10px;
+}
+
+.bookButtons-custom {
+  display: flex;
+  gap: 10px;
+}
+
+.pdfButton-custom,
+.buyButton-custom {
+  background-color: rgb(234, 133, 27);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  width: 40%;
+  text-align: center;
+}
+
+.heart-icon-bdc {
+  position: absolute;
+  top: 17%;
+  left: 81%;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  background: none;
+  border-radius: 50%;
+  border: 2px solid rgba(150, 110, 65, 0.8);
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: color 0.3s ease;
+  box-shadow: none !important;
+}
+
+.heart-icon.red {
+  color: red;
+}
+
+.backButton-custom {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 20px;
+}

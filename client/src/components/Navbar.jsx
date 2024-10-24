@@ -28,23 +28,21 @@ const Navbar = () => {
     Setname(getname);
     setIsLoggedIn(loggedInStatus);
   }, []);
-
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
   const handleLogout = () => {
     localStorage.removeItem("token"); // Corrected "toke" to "token"
     localStorage.removeItem("user");
     localStorage.removeItem("username");
-    navigate("/"); // Use navigate here
+    localStorage.setItem("isLoggedIn", false); // Optional: if you are storing login state in localStorage
+    setIsLoggedIn(false); // Update state
+    navigate("/"); // Redirect to home page
   };
-
   const handleLogin = () => {
     localStorage.setItem("isLoggedIn", true);
     setIsLoggedIn(true);
   };
-
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -55,42 +53,37 @@ const Navbar = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const triggerFileSelectPopup = () => {
     fileInputRef.current.click();
   };
-
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
-
   const closeDropdown = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
     }
   };
-
   useEffect(() => {
     document.addEventListener("mousedown", closeDropdown);
     return () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, []);
-
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
-
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <img src="/image/image.png" alt="Book Cafe" />
-        <h1>Book Cafe</h1>
+    <nav className="bc-navbar">
+      <div className="bc-navbar-logo">
+        <Link to="/">
+          <img src="/image/image.png" alt="Book Cafe" />
+          <h1>Book Cafe</h1>
+        </Link>
       </div>
-
       {isLoggedIn ? (
         <>
-          <div className="navbar-search">
+          <div className="bc-navbar-search">
             <input
               type="text"
               placeholder="Search..."
@@ -99,29 +92,30 @@ const Navbar = () => {
             />
             <FontAwesomeIcon icon={faSearch} className="search-icon" />
           </div>
-
-          <div className="navbar-left">
-            <ul className="navbar-links">
+          <div className="bc-navbar-left">
+            <ul className="bc-navbar-links">
               <li>
                 <Link to="/">
-                  <FontAwesomeIcon icon={faHome} /> <span>Home</span>
+                  <FontAwesomeIcon icon={faHome} />
+                  <span>Home</span>
                 </Link>
               </li>
               <li>
                 <Link to="/categories">
-                  <FontAwesomeIcon icon={faList} /> <span>Categories</span>
+                  <FontAwesomeIcon icon={faList} />
+                  <span>Categories</span>
                 </Link>
               </li>
               <li>
                 <Link to="/favorites">
-                  <FontAwesomeIcon icon={faStar} /> <span>Favorites</span>
+                  <FontAwesomeIcon icon={faStar} />
+                  <span>Favorites</span>
                 </Link>
               </li>
               <li className="welcome">📚 hello, {name} 😍 📚</li>
             </ul>
           </div>
-
-          <div className="navbar-right">
+          <div className="bc-navbar-right">
             <div className="profile-image-container" onClick={toggleDropdown}>
               <img
                 src={profileImage}
@@ -130,21 +124,21 @@ const Navbar = () => {
               />
               <span className="profile-tooltip">Profile</span>
             </div>
-
             {showDropdown && (
               <div className="dropdown-menu" ref={dropdownRef}>
                 <ul>
                   <li onClick={triggerFileSelectPopup}>
-                    <FontAwesomeIcon icon={faPlus} /> Photo
+                    <FontAwesomeIcon icon={faPlus} />
+                    <span>Photo</span>
                   </li>
                   <li>{"user@example.com"}</li>
                   <li onClick={handleLogout}>
-                    <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                    <span>Logout</span>
                   </li>
                 </ul>
               </div>
             )}
-
             <input
               ref={fileInputRef}
               type="file"
@@ -154,7 +148,7 @@ const Navbar = () => {
           </div>
         </>
       ) : (
-        <div className="navbar-right">
+        <div className="bc-navbar-right">
           <button className="fancy-button" onClick={handleLogin}>
             Register
           </button>

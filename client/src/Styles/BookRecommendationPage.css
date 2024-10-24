@@ -30,17 +30,16 @@
 }
 .book-item {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 25px;
   box-shadow: 0 4px 8px rgba(214, 59, 59, 0.11);
   overflow: hidden;
   transition:
     transform 0.5s ease,
     box-shadow 0.5s ease;
   height: 250px;
+  height: 430px;
+  justify-content: flex-start;
 }
 .book-item .book-preview {
   display: none;
@@ -73,6 +72,7 @@
   object-fit: cover;
   border-radius: 5px;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 .book-item:hover {
   transform: translateY(-10px);
@@ -105,17 +105,19 @@
 }
 .book-title {
   color: rgb(168, 123, 73);
-  font-weight: bold;
+  font-weight: 500;
   font-size: 16px;
   margin-bottom: 10px;
   text-decoration: none;
   text-align: center;
   width: 100%;
   display: flex;
+
   justify-content: center;
   align-items: center;
   min-height: 40px;
 }
+
 .book-title:hover {
   color: rgb(150, 110, 65);
 }
@@ -144,9 +146,38 @@
 .welcome {
   font-family: "Playwrite GB S";
 }
+
+.heart-icon {
+  position: absolute;
+  top: -4.5%;
+  right: 1%;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition:
+    color 0.3s ease,
+    background 0.3s ease;
+}
+
+.heart-icon.red {
+  color: red;
+}
+
+.heart-icon:hover {
+  color: rgba(255, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8);
+}
 @media (max-width: 2133px) {
   .book-grid {
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 
@@ -167,6 +198,12 @@
     grid-template-columns: repeat(4, 1fr);
     font-size: 5vw;
   }
+  .heart-icon {
+    width: 45px;
+    height: 45px;
+    top: -4.5%;
+    right: -1%;
+  }
 }
 
 @media (max-width: 744px) {
@@ -174,17 +211,35 @@
     grid-template-columns: repeat(3, 1fr);
     font-size: 6vw;
   }
+  .heart-icon {
+    width: 40px;
+    height: 40px;
+    top: -4%;
+    right: 1%;
+  }
 }
 
 @media (max-width: 664px) {
   .book-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .heart-icon {
+    width: 30px;
+    height: 35px;
+    top: -4%;
+    right: 1%;
+  }
 }
 
 @media (max-width: 526px) {
   .book-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .heart-icon {
+    width: 30px;
+    height: 35px;
+    top: -4%;
+    right: 1%;
   }
 }
 
@@ -193,11 +248,23 @@
     grid-template-columns: repeat(1, 1fr);
     font-size: 7vw;
   }
+  .heart-icon {
+    width: 30px;
+    height: 35px;
+    top: -4%;
+    right: 1%;
+  }
 }
 
 @media (max-width: 325px) {
   .book-grid {
     grid-template-columns: repeat(1, 1fr);
     font-size: 8vw;
+  }
+  .heart-icon {
+    width: 30px;
+    height: 35px;
+    top: -4%;
+    right: 1%;
   }
 }
