@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   Image: { type: [String], default: [] },
   preferences: { type: [String], default: [] },
   firstLogin: { type: Boolean, default: true },
+  favoriteAuthors: { type: [String], default: [] },
 });
 const UserModel = mongoose.model("User", userSchema);
 

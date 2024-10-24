@@ -1,20 +1,19 @@
 import jwt from "jsonwebtoken";
 
 export const authenticateJWT = (req, res, next) => {
-  const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(" ")[1]; // Extract token from Bearer
 
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized. No token provided." });
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403); // Invalid token
+      }
+
+      req.user = user; // Attach user info to request
+      next();
+    });
+  } else {
+    res.sendStatus(401); // No token
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: "Forbidden. Invalid token." });
-    }
-
-    req.user = user;
-    next();
-  });
 };
