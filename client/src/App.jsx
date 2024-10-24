@@ -17,10 +17,10 @@ const App = () => {
 
   return (
     <FavoriteProvider>
-     <div className="app-container">
-      {location.pathname === "/" && <Navbar />}
+      <div className="app-container">
+        {location.pathname === "/" && <Navbar />}
 
-      <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
+        <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<CategoryAndPreferences />} />
@@ -30,9 +30,8 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
-        </div>
-      </FavoriteProvider>
-    
+      </div>
+    </FavoriteProvider>
   );
 };
 
