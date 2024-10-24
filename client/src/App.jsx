@@ -1,7 +1,6 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import AuthForm from "./components/AuthForm";
-import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import CategoryAndPreferences from "./components/CategorySelection";
 import BookRecommendationPage from "./pages/BookRecommandationPage";
@@ -14,18 +13,9 @@ import { FavoriteProvider } from "./context/FavoriteContext";
 import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
-  const location = useLocation();
-  const shouldShowAuthForm = ![
-    "/recommendations",
-    "/favorites",
-    "/book/:id",
-  ].includes(location.pathname);
-
   return (
     <AuthProvider>
       <FavoriteProvider>
-        {location.pathname === "/" && <Navbar />}
-
         <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,12 +23,14 @@ const App = () => {
           <Route path="/recommendations" element={<BookRecommendationPage />} />
           <Route path="/book/:id" element={<BookDetailComponent />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/login" element={<AuthForm />} />
+          <Route path="/register" element={<AuthForm />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        {shouldShowAuthForm && <AuthForm />}
         <Footer />
       </FavoriteProvider>
     </AuthProvider>
   );
 };
+
 export default App;

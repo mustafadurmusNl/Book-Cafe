@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,19 +10,17 @@ import {
   faPlus,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../context/AuthContext";
+import PropTypes from "prop-types";
 
-const Navbar = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+const Navbar = ({ isLoggedIn }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const location = useLocation();
-  const navigate = useNavigate(); // Moved useNavigate here
-  const [name, Setname] = useState("");
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const navigateToLogin = () => {
@@ -32,29 +30,27 @@ const Navbar = () => {
   const navigateToRegister = () => {
     navigate("/register");
   };
+
   useEffect(() => {
-    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-    const getname = JSON.parse(localStorage.getItem("username"));
-    const getEmail = JSON.parse(localStorage.getItem("email"));
-    Setname(getname);
-    setEmail(getEmail || "user@example.com");
-    setIsLoggedIn(loggedInStatus);
-  }, [Location]);
+    const getName = localStorage.getItem("username");
+    const getEmail = localStorage.getItem("email");
+    setName(getName);
+    setEmail(getEmail);
+  }, []);
+
+  const isHomePage = location.pathname === "/";
+  const shouldShowLoggedInNavbar = !isHomePage && isLoggedIn;
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Corrected "toke" to "token"
     localStorage.removeItem("user");
     localStorage.removeItem("username");
-    localStorage.clear();
-    setIsLoggedIn(false);
-    navigate("/", { replace: true }); // Use navigate here
+    localStorage.removeItem("email");
+    navigate("/", { replace: true });
   };
-  // const handleLogin = () => {
-  //   localStorage.setItem("isLoggedIn", true);
-  //   setIsLoggedIn(true);
-  // };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -62,65 +58,44 @@ const Navbar = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
-        localStorage.setItem("profileImage", reader.result); // ذخیره تصویر در localStorage
+        localStorage.setItem("profileImage", reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
-  const triggerFileSelectPopup = () => {
-    fileInputRef.current.click();
-  };
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
-  const closeDropdown = (e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setShowDropdown(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", closeDropdown);
-    return () => {
-      document.removeEventListener("mousedown", closeDropdown);
-    };
-  }, []);
+
   useEffect(() => {
     const savedImage = localStorage.getItem("profileImage");
     if (savedImage) {
       setProfileImage(savedImage);
     }
   }, []);
-  useEffect(() => {
-    const userEmail = localStorage.getItem("email");
-    const userName = localStorage.getItem("username");
-    if (userEmail && userName) {
-      setEmail(userEmail);
-      Setname(userName);
+
+  const triggerFileSelectPopup = () => {
+    fileInputRef.current.click();
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const closeDropdown = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setShowDropdown(false);
     }
-  }, []);
+  };
+
   useEffect(() => {
-    const handleStorageChange = () => {
-      const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-      setIsLoggedIn(loggedInStatus);
-      if (!loggedInStatus) {
-        navigate("/", { replace: true });
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
+    document.addEventListener("mousedown", closeDropdown);
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
+      document.removeEventListener("mousedown", closeDropdown);
     };
-  }, [navigate]);
-  useEffect(() => {
-    const checkLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(checkLoggedIn);
-  }, []); // این useEffect تنها زمان بارگذاری کامپوننت اجرا می‌شود، ممکن است نیاز باشد که وابستگی‌های دیگری به آن اضافه کنید.
+  }, []);
 
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
+
   return (
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
@@ -129,7 +104,7 @@ const Navbar = () => {
           <h1>Book Cafe</h1>
         </Link>
       </div>
-      {isLoggedIn ? (
+      {shouldShowLoggedInNavbar ? (
         <>
           <div className="bc-navbar-search">
             <input
@@ -179,7 +154,7 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={faPlus} />
                     <span>Photo</span>
                   </li>
-                  <li>{email || "user@example.com"}</li>
+                  <li>{email}</li>
                   <li onClick={handleLogout}>
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     <span>Logout</span>
@@ -207,6 +182,10 @@ const Navbar = () => {
       )}
     </nav>
   );
+};
+
+Navbar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export default Navbar;
