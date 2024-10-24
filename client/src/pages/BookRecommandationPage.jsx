@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -6,17 +7,17 @@ import Navbar from "../components/Navbar";
 
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
+  const [booksByFavoriteAuthors, setBooksByFavoriteAuthors] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
 
   // Fetch user preferences from API
   const fetchUserPreferences = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
-
     if (!user || !token) {
       setError("User not authenticated. Please log in.");
       setLoading(false);
@@ -47,19 +48,16 @@ const BookRecommendationPage = () => {
   };
 
   // Fetch books for each preference query
-  // Modify the API call to your backend
   const fetchBooksForPreferences = async () => {
     if (!Array.isArray(userPreferences) || userPreferences.length === 0) return;
 
     setLoading(true);
 
     try {
-      // For each user preference, make a separate API call to your backend
       const fetchPromises = userPreferences.map((preference) => {
         const currentBooks = booksByPreference[preference] || [];
-        const startIndex = currentBooks.length; // Start after the last fetched book
+        const startIndex = currentBooks.length;
 
-        // Call your backend instead of Google Books API
         return axios
           .get("http://localhost:3000/api/recommendedBooks", {
             params: {
@@ -69,24 +67,22 @@ const BookRecommendationPage = () => {
           })
           .then((response) => ({
             preference,
-            books: response.data || [], // Return books from backend response
+            books: response.data || [],
           }));
       });
 
-      // Wait for all promises to resolve
       const results = await Promise.all(fetchPromises);
 
-      // Organize books by preference
       const newBooksByPreference = results.reduce(
         (acc, { preference, books }) => {
           if (books.length === 0) {
-            setHasMore(false); // No more books available
+            setHasMore(false);
           }
-          acc[preference] = [...(acc[preference] || []), ...books]; // Append new books
+          acc[preference] = [...(acc[preference] || []), ...books];
           return acc;
         },
         { ...booksByPreference },
-      ); // Spread existing state
+      );
 
       setBooksByPreference(newBooksByPreference);
       setLoading(false);
@@ -95,10 +91,28 @@ const BookRecommendationPage = () => {
       setLoading(false);
     }
   };
+  const fetchBooksByFavoriteAuthors = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/users/${user}/favoriteAuthors`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setBooksByFavoriteAuthors(response.data || []);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch books by favorite authors.");
+      setLoading(false);
+    }
+  };
 
   // Fetch user preferences once on component mount
   useEffect(() => {
     fetchUserPreferences();
+    fetchBooksByFavoriteAuthors();
   }, []);
 
   // Fetch books whenever preferences or page changes
@@ -112,7 +126,7 @@ const BookRecommendationPage = () => {
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 300 // Trigger loading when 300px from bottom
+      document.documentElement.offsetHeight - 300
     ) {
       if (!loading && hasMore) {
         setPage((prevPage) => prevPage + 1);
@@ -123,8 +137,38 @@ const BookRecommendationPage = () => {
   // Attach scroll event listener on component mount
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup on unmount
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, hasMore]);
+
+  // Function to save the favorite author
+  const handleSaveAuthor = async (author) => {
+    if (!user || !token) {
+      setError("User not authenticated. Please log in.");
+      return;
+    }
+
+    console.log("Authorization Token:", token); // Log token
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/users/${user}/favoriteAuthors`,
+        { author },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log("Save Author Response:", response.data);
+    } catch (error) {
+      console.error(
+        "Failed to save author:",
+        error.response ? error.response.data : error.message,
+      );
+      setError("Failed to save author.");
+    }
+  };
 
   if (loading && page === 1) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -132,13 +176,56 @@ const BookRecommendationPage = () => {
   return (
     <div className="book-page">
       <Navbar />
+
+      {/* Section for Favorite Authors' Books */}
+      {booksByFavoriteAuthors.length > 0 && (
+        <div className="book-category">
+          <h2>Books by Your Favorite Authors</h2>
+          <div className="book-grid">
+            {booksByFavoriteAuthors.map((book) => (
+              <div
+                key={book.id}
+                className="book-item"
+                onClick={() => handleSaveAuthor(book.volumeInfo.authors[0])}
+              >
+                {book.volumeInfo.imageLinks?.thumbnail ? (
+                  <img
+                    src={book.volumeInfo.imageLinks.thumbnail}
+                    alt={book.volumeInfo.title}
+                    className="book-thumbnail"
+                  />
+                ) : (
+                  <div className="placeholder-cover">
+                    <p className="book-title">{book.volumeInfo.title}</p>
+                    <p className="book-author">{book.volumeInfo.authors}</p>
+                  </div>
+                )}
+                <Link to={`/book/${book.id}`} className="book-title">
+                  {book.volumeInfo.title}
+                </Link>
+                <div className="book-info">
+                  {book.volumeInfo.description
+                    ? book.volumeInfo.description.slice(0, 100) + "..."
+                    : "No description available."}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Section for User Preferences' Books */}
       {Object.keys(booksByPreference).map((preference) => (
         <div key={preference} className="book-category">
           <h2>Best {preference} Books</h2>
           <div className="book-grid">
             {booksByPreference[preference].length > 0 ? (
               booksByPreference[preference].map((book) => (
-                <div key={book.id} className="book-item">
+                <div
+                  key={book.id}
+                  className="book-item"
+                  onClick={() => handleSaveAuthor(book.volumeInfo.authors[0])}
+                >
                   {book.volumeInfo.imageLinks?.thumbnail ? (
                     <img
                       src={book.volumeInfo.imageLinks.thumbnail}
@@ -167,6 +254,7 @@ const BookRecommendationPage = () => {
           </div>
         </div>
       ))}
+
       {loading && <p>Loading more books...</p>}
     </div>
   );
