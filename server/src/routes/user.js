@@ -8,6 +8,8 @@ import {
   UserPreferences,
 } from "../controllers/user.js";
 import authenticateJWT from "./auth.js"; // Change to import for consistency
+import { saveUserFavoriteAuthor } from "../controllers/author.js";
+import { getBooksByFavoriteAuthors } from "../controllers/authorbook.js";
 
 const userRouter = express.Router();
 
@@ -17,7 +19,12 @@ userRouter.post("/login", loginUser);
 userRouter.get("/getall", getall);
 userRouter.put("/:id", updateUserPreferences);
 userRouter.get("/:id/preferences", UserPreferences);
-
+userRouter.put("/:id/favoriteAuthors", authenticateJWT, saveUserFavoriteAuthor);
+userRouter.get(
+  "/:id/favoriteAuthors",
+  authenticateJWT,
+  getBooksByFavoriteAuthors,
+);
 // POST /api/categories - This route will save user preferences
 userRouter.post("/categories", authenticateJWT, (req, res) => {
   const userId = req.user.id; // Get user ID from the verified token

@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+
 import AuthForm from "./components/AuthForm";
+
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import CategoryAndPreferences from "./components/CategorySelection";
@@ -11,6 +13,7 @@ import Home from "./pages/Home/Home";
 import BookDetailComponent from "./components/BookDetailCompo";
 import FavoritesPage from "./pages/FavoritesPage";
 import { FavoriteProvider } from "./context/FavoriteContext";
+
 import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
@@ -23,8 +26,11 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <FavoriteProvider>
+    <FavoriteProvider>
+      <div className="app-container">
+
         {location.pathname === "/" && <Navbar />}
+
         <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -36,8 +42,12 @@ const App = () => {
         </Routes>
         {shouldShowAuthForm && <AuthForm />}
         <Footer />
+  </div>
       </FavoriteProvider>
     </AuthProvider>
+
+    
+
   );
 };
 
