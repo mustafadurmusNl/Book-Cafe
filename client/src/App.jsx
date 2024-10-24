@@ -16,30 +16,23 @@ const App = () => {
   const location = useLocation();
 
   return (
-    <>
+    <FavoriteProvider>
+     <div className="app-container">
       {location.pathname === "/" && <Navbar />}
 
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/categories" element={<CategoryAndPreferences />} />
-        <Route path="/recommendations" element={<BookRecommendationPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      <Footer />
-      <FavoriteProvider>
-        {location.pathname === "/" && <Navbar />}
-        <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<CategoryAndPreferences />} />
           <Route path="/recommendations" element={<BookRecommendationPage />} />
           <Route path="/book/:id" element={<BookDetailComponent />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
+        </div>
       </FavoriteProvider>
-    </>
+    
   );
 };
 
