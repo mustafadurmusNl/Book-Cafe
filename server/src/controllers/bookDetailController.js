@@ -9,7 +9,6 @@ export const getBookDetail = async (req, res) => {
     );
     res.json(response.data);
   } catch (error) {
-    console.error("Error fetching book details:", error);
     res.status(500).json({ error: "Failed to fetch book details" });
   }
 };
