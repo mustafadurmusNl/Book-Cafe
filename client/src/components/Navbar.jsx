@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate here
 import "../Styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,92 +10,69 @@ import {
   faPlus,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import PropTypes from "prop-types";
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const location = useLocation();
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
-  const navigateToLogin = () => {
-    navigate("/login");
-  };
-
-  const navigateToRegister = () => {
-    navigate("/register");
-  };
+  const navigate = useNavigate(); // Moved useNavigate here
+  const [name, Setname] = useState("");
 
   useEffect(() => {
-    const getName = localStorage.getItem("username");
-    const getEmail = localStorage.getItem("email");
-    setName(getName);
-    setEmail(getEmail);
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    const getname = JSON.parse(localStorage.getItem("username"));
+    Setname(getname);
+    setIsLoggedIn(loggedInStatus);
   }, []);
-
-  const isHomePage = location.pathname === "/";
-  const shouldShowLoggedInNavbar = !isHomePage && isLoggedIn;
-
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
   const handleLogout = () => {
+    localStorage.removeItem("token"); // Corrected "toke" to "token"
     localStorage.removeItem("user");
     localStorage.removeItem("username");
-    localStorage.removeItem("email");
-    navigate("/", { replace: true });
+    localStorage.setItem("isLoggedIn", false); // Optional: if you are storing login state in localStorage
+    setIsLoggedIn(false); // Update state
+    navigate("/"); // Redirect to home page
   };
-
+  const handleLogin = () => {
+    localStorage.setItem("isLoggedIn", true);
+    setIsLoggedIn(true);
+  };
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
-        localStorage.setItem("profileImage", reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
-
-  useEffect(() => {
-    const savedImage = localStorage.getItem("profileImage");
-    if (savedImage) {
-      setProfileImage(savedImage);
-    }
-  }, []);
-
   const triggerFileSelectPopup = () => {
     fileInputRef.current.click();
   };
-
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
-
   const closeDropdown = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
     }
   };
-
   useEffect(() => {
     document.addEventListener("mousedown", closeDropdown);
     return () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, []);
-
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
-
   return (
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
@@ -104,7 +81,7 @@ const Navbar = ({ isLoggedIn }) => {
           <h1>Book Cafe</h1>
         </Link>
       </div>
-      {shouldShowLoggedInNavbar ? (
+      {isLoggedIn ? (
         <>
           <div className="bc-navbar-search">
             <input
@@ -154,7 +131,7 @@ const Navbar = ({ isLoggedIn }) => {
                     <FontAwesomeIcon icon={faPlus} />
                     <span>Photo</span>
                   </li>
-                  <li>{email}</li>
+                  <li>{"user@example.com"}</li>
                   <li onClick={handleLogout}>
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     <span>Logout</span>
@@ -172,20 +149,16 @@ const Navbar = ({ isLoggedIn }) => {
         </>
       ) : (
         <div className="bc-navbar-right">
-          <button className="fancy-button" onClick={navigateToRegister}>
+          <button className="fancy-button" onClick={handleLogin}>
             Register
           </button>
-          <button className="fancy-button" onClick={navigateToLogin}>
+          <button className="fancy-button" onClick={handleLogin}>
             Login
           </button>
         </div>
       )}
     </nav>
   );
-};
-
-Navbar.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export default Navbar;

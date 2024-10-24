@@ -1,13 +1,12 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 import { FavoriteContext } from "../context/FavoriteContext";
-import { AuthContext } from "../context/AuthContext"; // اضافه کردن AuthContext
 
 const BookRecommendationPage = () => {
-  const { isLoggedIn } = useContext(AuthContext); // استفاده از وضعیت ورود
   const [booksByPreference, setBooksByPreference] = useState({});
   const [booksByFavoriteAuthors, setBooksByFavoriteAuthors] = useState([]);
   const [page, setPage] = useState(1);
@@ -17,23 +16,6 @@ const BookRecommendationPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const { favorites, toggleFavorite } = useContext(FavoriteContext);
   const navigate = useNavigate();
-
-  const handleBookClick = (bookId) => {
-    if (isLoggedIn) {
-      navigate(`/book/${bookId}`); // هدایت به صفحه جزئیات کتاب
-    } else {
-      navigate("/login"); // هدایت به صفحه لاگین اگر کاربر وارد نشده باشد
-    }
-  };
-  useEffect(() => {
-    // در اینجا بررسی وضعیت ورود کاربر در صورت نیاز
-    if (!isLoggedIn) {
-      navigate("/recommendations"); // هدایت به صفحه لاگین در صورت عدم ورود
-    } else {
-      // Fetch the favorite books data
-      setLoading(true);
-    }
-  }, [isLoggedIn, navigate]);
 
   // Fetch user preferences from API
   const fetchUserPreferences = async () => {
@@ -63,7 +45,7 @@ const BookRecommendationPage = () => {
         setUserPreferences([]);
       }
     } catch (err) {
-      // console.error("Error fetching preferences:", err);
+      console.error("Error fetching preferences:", err);
       setError("Failed to fetch user preferences.");
     } finally {
       setLoading(false);
@@ -109,7 +91,7 @@ const BookRecommendationPage = () => {
 
       setBooksByPreference(newBooksByPreference);
     } catch (error) {
-      // console.error("Error fetching books:", error);
+      console.error("Error fetching books:", error);
       setError("Error fetching books.");
     } finally {
       setLoading(false);
@@ -138,7 +120,7 @@ const BookRecommendationPage = () => {
         Array.isArray(response.data) ? response.data : [],
       );
     } catch (err) {
-      // console.error("Error fetching favorite authors:", err);
+      console.error("Error fetching favorite authors:", err);
       setError("Failed to fetch books by favorite authors.");
     } finally {
       setLoading(false);
@@ -176,12 +158,43 @@ const BookRecommendationPage = () => {
     return () => window.removeEventListener("scroll", handleScroll); // Cleanup
   }, [loading, hasMore]);
 
+  // Function to save the favorite author
+  const handleSaveAuthor = async (author) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+      setError("User not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/users/${user}/favoriteAuthors`,
+        { author },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Save Author Response:", response.data);
+    } catch (error) {
+      console.error(
+        "Failed to save author:",
+        error.response ? error.response.data : error.message,
+      );
+      setError("Failed to save author.");
+    }
+  };
+
   if (loading && page === 1) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="book-page">
-      <Navbar isLoggedIn={true} />
+      <Navbar />
+      {/* Section for Favorite Authors' Books */}
       {booksByFavoriteAuthors.length > 0 && (
         <div className="book-category">
           <h2>Books by Your Favorite Authors</h2>
@@ -194,7 +207,7 @@ const BookRecommendationPage = () => {
                 <div
                   key={book.id}
                   className="book-item"
-                  onClick={() => handleBookClick(book.id)} // استفاده از handleBookClick
+                  onClick={() => handleSaveAuthor(book.volumeInfo.authors[0])}
                 >
                   <button
                     className="heart-icon"
@@ -250,22 +263,17 @@ const BookRecommendationPage = () => {
                   (favBook) => favBook.id === book.id,
                 );
                 return (
-                  <div
-                    key={book.id}
-                    className="book-item"
-                    onClick={() => handleBookClick(book.id)} // استفاده از handleBookClick
-                  >
+                  <div key={book.id} className="book-item">
                     <button
                       className="heart-icon"
-                      onClick={(e) => {
-                        e.stopPropagation(); // جلوگیری از هدایت به صفحه BookDetail
+                      onClick={() =>
                         toggleFavorite({
                           id: book.id,
                           title: book.volumeInfo.title,
                           imageLinks: book.volumeInfo.imageLinks,
                           description: book.volumeInfo.description,
-                        });
-                      }}
+                        })
+                      }
                       style={{ color: isFavorite ? "red" : "white" }}
                     >
                       ♥
@@ -277,6 +285,7 @@ const BookRecommendationPage = () => {
                       }
                       alt={book.volumeInfo.title || "No Title"}
                       className="book-thumbnail"
+                      onClick={() => navigate(`/book/${book.id}`)}
                     />
                     <Link to={`/book/${book.id}`} className="book-title">
                       {book.volumeInfo.title}

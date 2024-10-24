@@ -16,7 +16,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="favorites-page-custom">
-      <Navbar isLoggedIn={true} />
+      <Navbar />
       <button className="backButton-custom" onClick={() => navigate(-1)}>
         <FaArrowLeft />
       </button>
@@ -28,7 +28,6 @@ const FavoritesPage = () => {
               src={book.imageLinks?.thumbnail || "/default-image.jpg"}
               alt={book.title || "No Title"}
               className="favorite-thumbnail-custom"
-              onClick={() => navigate(`/book/${book.id}`)}
             />
             <Link to={`/book/${book.id}`} className="favorite-title-custom">
               {book.title}
