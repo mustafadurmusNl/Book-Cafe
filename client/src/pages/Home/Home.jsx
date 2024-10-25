@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = localStorage.getItem("token");
-      setIsLoggedIn(!!token); // Update state based on token presence
+      setIsLoggedIn(!token); // Update state based on token presence
     };
 
     // Call the checkLoginStatus function on component mount
@@ -25,7 +25,7 @@ const Home = () => {
   return (
     <div data-testid={TEST_ID.container}>
       <Landing />
-      {!isLoggedIn && <AuthForm />}
+      {isLoggedIn && <AuthForm />}
     </div>
   );
 };

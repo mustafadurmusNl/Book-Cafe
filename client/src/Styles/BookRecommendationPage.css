@@ -21,6 +21,7 @@
 }
 .book-grid {
   display: grid;
+  display: grid;
   gap: 20px;
   width: 100%;
   padding: 0;
@@ -38,7 +39,7 @@
     transform 0.5s ease,
     box-shadow 0.5s ease;
   height: 250px;
-  height: 430px;
+  height: 250px;
   justify-content: flex-start;
 }
 .book-item .book-preview {
@@ -177,7 +178,7 @@
 }
 @media (max-width: 2133px) {
   .book-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
   }
 }
 
@@ -189,7 +190,7 @@
 
 @media (max-width: 1280px) {
   .book-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(8, 1fr);
   }
 }
 
