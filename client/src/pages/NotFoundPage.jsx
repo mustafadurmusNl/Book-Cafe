@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../Styles/NotFoundPage.css";
-import four from "/Users/yousraelmaghraby/cohort48-project-group-B/client/public/images/406.gif";
+import four from "../../public/images/406.gif";
 const NotFoundPage = () => {
   return (
     <div className="wrapper">
