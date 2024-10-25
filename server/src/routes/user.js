@@ -20,15 +20,15 @@ userRouter.get("/getall", getall);
 userRouter.put("/:id", updateUserPreferences);
 userRouter.get("/:id/preferences", UserPreferences);
 userRouter.put("/:id/favoriteAuthors", authenticateJWT, saveUserFavoriteAuthor);
+
 userRouter.get(
   "/:id/favoriteAuthors",
   authenticateJWT,
   getBooksByFavoriteAuthors,
 );
-// POST /api/categories - This route will save user preferences
 userRouter.post("/categories", authenticateJWT, (req, res) => {
-  const userId = req.user.id; // Get user ID from the verified token
-  const preferences = req.body.preferences; // Extract preferences from request body
+  const userId = req.user.id;
+  const preferences = req.body.preferences;
 
   // Validate preferences (optional)
   if (!Array.isArray(preferences)) {

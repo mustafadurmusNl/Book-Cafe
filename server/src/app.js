@@ -47,7 +47,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
 // Set up the routes for book recommendations
 app.use("/api/recommendedBooks", recommendationRouter);
-app.use("/api/bookDetail", bookDetailRouter);
+app.use("/api/book", bookDetailRouter);
 // MongoDB connection
 connectDB();
 
