@@ -9,6 +9,7 @@ import {
   faStar,
   faPlus,
   faSignOutAlt,
+  faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
@@ -133,6 +134,12 @@ const Navbar = () => {
                 <Link to="/favorites">
                   <FontAwesomeIcon icon={faStar} />
                   <span>Favorites</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/recommendations">
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                  <span>Recommendations</span>
                 </Link>
               </li>
               <li className="welcome">📚 Hello, {name}! 📚</li>
