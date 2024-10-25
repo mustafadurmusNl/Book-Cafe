@@ -29,7 +29,8 @@ const App = () => {
         <Footer />
       </div>
       {location.pathname === "/" && <Navbar />}
-      <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} /> <Routes>
+      <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />{" "}
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<CategoryAndPreferences />} />
         <Route path="/recommendations" element={<BookRecommendationPage />} />
@@ -37,9 +38,7 @@ const App = () => {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-
       <Footer />
-
     </FavoriteProvider>
   );
 };

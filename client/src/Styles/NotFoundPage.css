@@ -39,3 +39,43 @@ footer {
   position: relative;
   bottom: 0;
 }
+.four {
+}
+.alfour {
+  display: flex;
+  background: blanchedalmond;
+  height: 500px;
+  width: 800px;
+  margin: 20px auto;
+  border-radius: 22px;
+  padding: 20px;
+}
+.four img {
+  height: 100%;
+  width: 350px;
+  border-radius: 10px;
+}
+.text {
+  text-align: center;
+  margin-top: 61px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+  gap: 19px;
+}
+.e {
+  font-size: 14px;
+  width: 200px;
+  margin: 20px auto;
+}
+.text p {
+  background: none;
+  line-height: 2.2;
+}
+.text a {
+  text-decoration: none;
+  font-weight: bolder;
+  font-family: sans-serif;
+  color: black;
+  font-size: 20px;
+}
