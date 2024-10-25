@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+// BookRecommendationPage.js
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -204,11 +206,7 @@ const BookRecommendationPage = () => {
                 (favBook) => favBook.id === book.id,
               );
               return (
-                <div
-                  key={book.id}
-                  className="book-item"
-                  onClick={() => handleSaveAuthor(book.volumeInfo.authors[0])}
-                >
+                <div key={book.id} className="book-item">
                   <button
                     className="heart-icon"
                     onClick={() =>
@@ -266,14 +264,15 @@ const BookRecommendationPage = () => {
                   <div key={book.id} className="book-item">
                     <button
                       className="heart-icon"
-                      onClick={() =>
+                      onClick={() => {
                         toggleFavorite({
                           id: book.id,
                           title: book.volumeInfo.title,
                           imageLinks: book.volumeInfo.imageLinks,
                           description: book.volumeInfo.description,
-                        })
-                      }
+                        });
+                        handleSaveAuthor(book.volumeInfo.authors[0]);
+                      }}
                       style={{ color: isFavorite ? "red" : "white" }}
                     >
                       ♥
@@ -285,9 +284,14 @@ const BookRecommendationPage = () => {
                       }
                       alt={book.volumeInfo.title || "No Title"}
                       className="book-thumbnail"
-                      onClick={() => navigate(`/book/${book.id}`)}
                     />
-                    <Link to={`/book/${book.id}`} className="book-title">
+                    <Link
+                      to={`/book/${book.id}`}
+                      className="book-title"
+                      onClick={() =>
+                        console.log(`Navigating to book ${book.id}`)
+                      }
+                    >
                       {book.volumeInfo.title}
                     </Link>
                     <div className="book-info">
@@ -299,13 +303,11 @@ const BookRecommendationPage = () => {
                 );
               })
             ) : (
-              <p>No books available for {preference}.</p>
+              <p>No books found for this preference.</p>
             )}
           </div>
         </div>
       ))}
-
-      {loading && <p>Loading more books...</p>}
     </div>
   );
 };

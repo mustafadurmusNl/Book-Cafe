@@ -124,3 +124,16 @@
   color: #333;
   font-size: 20px;
 }
+.readButton-custom {
+  background-color: rgb(234, 133, 27);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  width: 40%;
+  text-align: center;
+}

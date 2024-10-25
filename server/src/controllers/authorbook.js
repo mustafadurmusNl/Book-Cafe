@@ -60,7 +60,7 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
     const shuffledBooks = books.sort(() => 0.5 - Math.random());
 
     // Select the first 5 random books
-    const randomBooks = shuffledBooks.slice(0, 16);
+    const randomBooks = shuffledBooks.slice(0, 4);
 
     // Return the random books fetched from the API
     res.status(200).json(randomBooks);

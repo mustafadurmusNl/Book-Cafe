@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate here
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,37 +12,54 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const location = useLocation();
-  const navigate = useNavigate(); // Moved useNavigate here
-  const [name, Setname] = useState("");
-
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-    const getname = JSON.parse(localStorage.getItem("username"));
-    Setname(getname);
+    const storedName = JSON.parse(localStorage.getItem("username"));
     setIsLoggedIn(loggedInStatus);
+    setName(storedName);
   }, []);
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Corrected "toke" to "token"
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("username");
-    localStorage.setItem("isLoggedIn", false); // Optional: if you are storing login state in localStorage
-    setIsLoggedIn(false); // Update state
-    navigate("/"); // Redirect to home page
+    localStorage.setItem("isLoggedIn", false);
+    setIsLoggedIn(false);
+    if (location.pathname === "/") {
+      window.location.reload();
+    } else {
+      navigate("/");
+    }
   };
+
   const handleLogin = () => {
     localStorage.setItem("isLoggedIn", true);
+
     setIsLoggedIn(true);
+
+    navigate("/");
   };
+
+  const handleRegister = () => {
+    localStorage.setItem("isLoggedIn", true);
+
+    setIsLoggedIn(true);
+    navigate("/");
+  };
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -53,26 +70,32 @@ const Navbar = () => {
       reader.readAsDataURL(file);
     }
   };
+
   const triggerFileSelectPopup = () => {
     fileInputRef.current.click();
   };
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
   const closeDropdown = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
     }
   };
+
   useEffect(() => {
     document.addEventListener("mousedown", closeDropdown);
     return () => {
       document.removeEventListener("mousedown", closeDropdown);
     };
   }, []);
+
   if (location.pathname === "/login" || location.pathname === "/register") {
-    return null;
+    return null; // Hide navbar on login/register pages
   }
+
   return (
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
@@ -112,7 +135,7 @@ const Navbar = () => {
                   <span>Favorites</span>
                 </Link>
               </li>
-              <li className="welcome">📚 hello, {name} 😍 📚</li>
+              <li className="welcome">📚 Hello, {name}! 📚</li>
             </ul>
           </div>
           <div className="bc-navbar-right">
@@ -129,9 +152,9 @@ const Navbar = () => {
                 <ul>
                   <li onClick={triggerFileSelectPopup}>
                     <FontAwesomeIcon icon={faPlus} />
-                    <span>Photo</span>
+                    <span>Upload Photo</span>
                   </li>
-                  <li>{"user@example.com"}</li>
+                  <li>{name}</li>
                   <li onClick={handleLogout}>
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     <span>Logout</span>
@@ -149,12 +172,18 @@ const Navbar = () => {
         </>
       ) : (
         <div className="bc-navbar-right">
-          <button className="fancy-button" onClick={handleLogin}>
-            Register
-          </button>
-          <button className="fancy-button" onClick={handleLogin}>
-            Login
-          </button>
+          <a href="#Form">
+            {" "}
+            <button className="fancy-button" onClick={handleLogin}>
+              <span>Login</span>
+            </button>
+          </a>
+          <a href="#Form">
+            {" "}
+            <button className="fancy-button" onClick={handleRegister}>
+              <span>Register</span>
+            </button>
+          </a>
         </div>
       )}
     </nav>
