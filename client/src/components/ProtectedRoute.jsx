@@ -1,4 +1,3 @@
-
 import { useEffect } from "react"; // Import useEffect
 import PropTypes from "prop-types"; // Import PropTypes
 import { useAuth } from "../context/AuthContext";
@@ -11,10 +10,13 @@ const ProtectedRoute = ({ children }) => {
     if (!user) {
       // If user is not authenticated, navigate to the homepage
       navigate("/", { replace: true });
-      
+
       // Wait for navigation to complete, then scroll down
       setTimeout(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
       }, 10); // Adjust delay as necessary
     }
   }, [user, navigate]);

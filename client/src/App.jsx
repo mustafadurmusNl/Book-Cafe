@@ -27,11 +27,14 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<AuthForm />} />
-            <Route path="/categories" element={
+            <Route
+              path="/categories"
+              element={
                 <ProtectedRoute>
                   <CategoryAndPreferences />
                 </ProtectedRoute>
-              } />
+              }
+            />
             <Route
               path="/recommendations"
               element={
