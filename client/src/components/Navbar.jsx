@@ -5,16 +5,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faList,
-  faSearch,
+  // faSearch,
   faStar,
   faPlus,
   faSignOutAlt,
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
+import SearchBooks from "./SearchBooks";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
@@ -29,9 +30,9 @@ const Navbar = () => {
     setName(storedName);
   }, []);
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  // const handleSearchChange = (e) => {
+  //   setSearchTerm(e.target.value);
+  // };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -108,13 +109,14 @@ const Navbar = () => {
       {isLoggedIn ? (
         <>
           <div className="bc-navbar-search">
-            <input
+            <SearchBooks />
+            {/* <input
               type="text"
               placeholder="Search..."
               value={searchTerm}
               onChange={handleSearchChange}
-            />
-            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+            /> */}
+            {/* <FontAwesomeIcon icon={faSearch} className="search-icon" /> */}
           </div>
           <div className="bc-navbar-left">
             <ul className="bc-navbar-links">
