@@ -2,22 +2,33 @@
 import express from "express";
 import { createBook, getAllBooks } from "../controllers/bookController.js";
 import axios from "axios";
+import fs from "fs"; // Import file system for logging
 
 const bookRouter = express.Router();
 
 bookRouter.post("/create", createBook);
 bookRouter.get("/", getAllBooks);
 
+// Helper function to log messages to a file
+const logToFile = (message) => {
+  const logMessage = `${new Date().toISOString()} - ${message}\n`;
+  fs.appendFileSync("debug.log", logMessage); // Appends logs to debug.log file
+};
+
 bookRouter.get("/search", async (req, res) => {
   const { query } = req.query;
   const apiKey = process.env.API_KEY;
-  console.log("Google API Key:", apiKey);
+
+  // Log API Key and Query parameter
+  logToFile(`Google API Key: ${apiKey}`);
+  logToFile(`Search Query parameter: ${query}`);
 
   if (!query) {
-    console.error("Query parameter is missing.");
+    logToFile("Error: Query parameter is missing.");
     return res.status(400).json({ error: "Query parameter is required" });
   }
 
+  // Parse query for title, author, or category
   let searchQuery = query
     .toLowerCase()
     .split(" ")
@@ -28,13 +39,16 @@ bookRouter.get("/search", async (req, res) => {
     })
     .join(" ");
 
-  console.log("Search Query:", searchQuery); // لاگ برای نمایش کوئری نهایی
+  // Log the final search query
+  logToFile(`Formatted Search Query: ${searchQuery}`);
 
   try {
     const response = await axios.get(
       `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&key=${apiKey}`,
     );
-    console.log("API Response:", response.data); // لاگ برای نمایش پاسخ گوگل بوکس API
+
+    // Log response data
+    logToFile(`API Response: ${JSON.stringify(response.data)}`);
 
     if (response.data && response.data.items) {
       res.json(response.data);
@@ -42,9 +56,9 @@ bookRouter.get("/search", async (req, res) => {
       res.status(404).json({ error: "No books found" });
     }
   } catch (error) {
-    console.error(
-      "Error fetching data from Google Books API:",
-      error.response?.data || error.message,
+    // Log error details
+    logToFile(
+      `Error fetching data from Google Books API: ${error.response?.data || error.message}`,
     );
     res.status(500).json({
       error: "Failed to fetch data from Google Books API",
@@ -52,4 +66,5 @@ bookRouter.get("/search", async (req, res) => {
     });
   }
 });
+
 export default bookRouter;
