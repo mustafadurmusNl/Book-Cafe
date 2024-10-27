@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // controllers/bookController.js
 import axios from "axios";
 

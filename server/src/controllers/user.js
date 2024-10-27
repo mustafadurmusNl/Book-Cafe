@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import User from "../models/User.js";
 import { logError } from "../util/logging.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import jwt from "jsonwebtoken";
-
+import axios from "axios";
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, preferences } = req.body;
@@ -129,5 +130,85 @@ export const UserPreferences = async (req, res) => {
   } catch (err) {
     // Handle server error
     res.status(500).json({ error: "Server error" });
+  }
+};
+export const updateUserBooks = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { bookId } = req.body; // Single book ID from the request body
+
+    if (!bookId) {
+      return res.status(400).json({ error: "Book ID is required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Add the new book ID to the favoriteBook array if it's not already there
+    if (!user.favoriteBook.includes(bookId)) {
+      user.favoriteBook.push(bookId);
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Book added to favorites successfully",
+      favoriteBook: user.favoriteBook,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
+export const getUserFavoriteBooks = async (req, res) => {
+  const { userId } = req.params; // Get user ID from request parameters
+
+  try {
+    // Fetch user data from the database
+    const user = await User.findById(userId).select("favoriteBook"); // Adjust the field name as necessary
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const favoriteBookIds = user.favoriteBook; // Assuming favoriteBook is an array of IDs
+
+    // Fetch details for each favorite book using the Google Books API
+    const bookDetailsPromises = favoriteBookIds.map((bookId) =>
+      axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}`),
+    );
+
+    // Wait for all book detail requests to complete
+    const bookDetailsResponses = await Promise.all(bookDetailsPromises);
+    const bookDetails = bookDetailsResponses.map((response) => response.data);
+
+    // Respond with the book details
+    res.json(bookDetails);
+  } catch (error) {
+    console.error("Error fetching user favorite books:", error);
+    res.status(500).json({ error: "Failed to fetch user favorite books" });
+  }
+};
+
+export const removeFavoriteBook = async (req, res) => {
+  const { userId, bookId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Remove the book ID from the user's favorites
+    user.favoriteBook = user.favoriteBook.filter((id) => id !== bookId);
+
+    await user.save();
+
+    res.status(200).json({ message: "Favorite book removed successfully." });
+  } catch (error) {
+    console.error("Error removing favorite book:", error);
+    res.status(500).json({ message: "Server error." });
   }
 };
