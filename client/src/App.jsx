@@ -17,7 +17,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const location = useLocation();
-
   return (
     <AuthProvider>
       <FavoriteProvider>
