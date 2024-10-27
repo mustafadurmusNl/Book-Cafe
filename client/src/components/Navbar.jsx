@@ -5,34 +5,43 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faList,
-  // faSearch,
   faStar,
   faPlus,
   faSignOutAlt,
+  faSignInAlt,
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchBooks from "./SearchBooks";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [searchTerm, setSearchTerm] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true",
+  );
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  useEffect(() => {
-    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-    const storedName = JSON.parse(localStorage.getItem("username"));
-    setIsLoggedIn(loggedInStatus);
-    setName(storedName);
-  }, []);
+  // const [name, setName] = useState("");
+  const [showLoginText, setShowLoginText] = useState(false);
+  const [name, setName] = useState(
+    JSON.parse(localStorage.getItem("username")) || "",
+  );
 
-  // const handleSearchChange = (e) => {
-  //   setSearchTerm(e.target.value);
-  // };
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+      setIsLoggedIn(loggedInStatus);
+    };
+
+    handleRouteChange();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const storedName = JSON.parse(localStorage.getItem("username"));
+    setName(storedName || "");
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -40,24 +49,22 @@ const Navbar = () => {
     localStorage.removeItem("username");
     localStorage.setItem("isLoggedIn", false);
     setIsLoggedIn(false);
-    if (location.pathname === "/") {
-      window.location.reload();
-    } else {
-      navigate("/");
-    }
+    navigate("/");
   };
+  // };
 
   const handleLogin = () => {
-    localStorage.setItem("isLoggedIn", true);
-
     setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
+    navigate("/login");
+  };
 
-    navigate("/");
+  const triggerFileSelectPopup = () => {
+    fileInputRef.current.click();
   };
 
   const handleRegister = () => {
     localStorage.setItem("isLoggedIn", true);
-
     setIsLoggedIn(true);
     navigate("/");
   };
@@ -71,10 +78,6 @@ const Navbar = () => {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const triggerFileSelectPopup = () => {
-    fileInputRef.current.click();
   };
 
   const toggleDropdown = () => {
@@ -95,8 +98,21 @@ const Navbar = () => {
   }, []);
 
   if (location.pathname === "/login" || location.pathname === "/register") {
-    return null; // Hide navbar on login/register pages
+    return null;
   }
+
+  useEffect(() => {
+    if (location.hash === "#Form") {
+      setShowLoginText(true);
+      setName("");
+    } else {
+      const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+      const storedName = JSON.parse(localStorage.getItem("username"));
+      setIsLoggedIn(loggedInStatus);
+      setShowLoginText(false);
+      setName(storedName || "");
+    }
+  }, [location.hash]);
 
   return (
     <nav className="bc-navbar">
@@ -110,13 +126,6 @@ const Navbar = () => {
         <>
           <div className="bc-navbar-search">
             <SearchBooks />
-            {/* <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            /> */}
-            {/* <FontAwesomeIcon icon={faSearch} className="search-icon" /> */}
           </div>
           <div className="bc-navbar-left">
             <ul className="bc-navbar-links">
@@ -144,7 +153,9 @@ const Navbar = () => {
                   <span>Recommendations</span>
                 </Link>
               </li>
-              <li className="welcome">📚 Hello, {name}! 📚</li>
+              <li className="welcome">
+                📚 {isLoggedIn ? `Hello, ${name}!` : ""} 📚
+              </li>
             </ul>
           </div>
           <div className="bc-navbar-right">
@@ -159,14 +170,22 @@ const Navbar = () => {
             {showDropdown && (
               <div className="dropdown-menu" ref={dropdownRef}>
                 <ul>
-                  <li onClick={triggerFileSelectPopup}>
+                  <li
+                    onClick={triggerFileSelectPopup}
+                    style={{ cursor: "pointer" }}
+                  >
                     <FontAwesomeIcon icon={faPlus} />
                     <span>Upload Photo</span>
                   </li>
                   <li>{name}</li>
-                  <li onClick={handleLogout}>
-                    <FontAwesomeIcon icon={faSignOutAlt} />
-                    <span>Logout</span>
+                  <li
+                    onClick={showLoginText ? handleLogin : handleLogout}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <FontAwesomeIcon
+                      icon={showLoginText ? faSignInAlt : faSignOutAlt}
+                    />
+                    <span>{showLoginText ? "Login" : "Logout"}</span>
                   </li>
                 </ul>
               </div>
