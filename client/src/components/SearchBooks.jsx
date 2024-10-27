@@ -18,10 +18,9 @@ const SearchBooks = () => {
     if (!searchTerm.trim()) return;
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/books/search?query=${encodeURIComponent(
-          searchTerm,
-        )}`,
+        `http://localhost:3000/api/books/search?query=${encodeURIComponent(searchTerm)}`,
       );
+
       setSearchResults(response.data.items || []);
     } catch (error) {
       alert("Error fetching data:", error);

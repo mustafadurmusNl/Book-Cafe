@@ -73,13 +73,11 @@ input:focus {
   outline: none;
 }
 
+.container .log,
 .regist:hover {
-  background-color: #ede0d4;
-  padding: 5px;
-}
-.log:hover {
-  background-color: #ede0d4;
-  padding: 5px;
+  background-color: #653a2a !important;
+  color: #ddd !important;
+  padding-top: 10px;
 }
 
 .ground {
