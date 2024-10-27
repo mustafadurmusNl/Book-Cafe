@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div data-testid={TEST_ID.container}>
       <Landing />
-      {!user && <AuthForm />} 
+      {!user && <AuthForm />}
     </div>
   );
 };
