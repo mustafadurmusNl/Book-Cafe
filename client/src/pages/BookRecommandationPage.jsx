@@ -23,6 +23,7 @@ const BookRecommendationPage = () => {
   const fetchUserPreferences = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
+    console.log("User:", user);
 
     if (!user || !token) {
       setError("User not authenticated. Please log in.");
@@ -32,7 +33,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${user}/preferences`,
+        `http://localhost:3000/api/users/${user.id}/preferences`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -114,7 +115,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${user}/favoriteAuthors`,
+        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -144,6 +145,24 @@ const BookRecommendationPage = () => {
       fetchBooksForPreferences();
     }
   }, [userPreferences, page]);
+
+  // Infinite scroll event handler
+  // const handleScroll = () => {
+  //   if (
+  //     window.innerHeight + document.documentElement.scrollTop >=
+  //     document.documentElement.offsetHeight - 300
+  //   ) {
+  //     if (!loading && hasMore) {
+  //       setPage((prevPage) => prevPage + 1);
+  //     }
+  //   }
+  // };
+
+  // Attach scroll event listener on component mount
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll); // Cleanup
+  // }, [loading, hasMore]);
 
   // Function to save the favorite author
   const handleSaveAuthor = async (author) => {

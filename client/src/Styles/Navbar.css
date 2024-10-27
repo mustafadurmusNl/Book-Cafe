@@ -616,3 +616,14 @@
     gap: 10px;
   }
 }
+.bc-navbar-links li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.bc-navbar-links li span {
+  margin-left: 8px;
+  font-size: 14px;
+}
