@@ -15,7 +15,6 @@ import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
   const location = useLocation();
-
   return (
     <AuthProvider>
       <FavoriteProvider>
