@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -13,7 +12,6 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AuthForm from "./components/AuthForm";
 import { FavoriteProvider } from "./context/FavoriteContext";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const location = useLocation();
@@ -27,38 +25,13 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<AuthForm />} />
-            <Route
-              path="/categories"
-              element={
-                <ProtectedRoute>
-                  <CategoryAndPreferences />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/categories" element={<CategoryAndPreferences />} />
             <Route
               path="/recommendations"
-              element={
-                <ProtectedRoute>
-                  <BookRecommendationPage />
-                </ProtectedRoute>
-              }
+              element={<BookRecommendationPage />}
             />
-            <Route
-              path="/book/:id"
-              element={
-                <ProtectedRoute>
-                  <BookDetailComponent />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/favorites"
-              element={
-                <ProtectedRoute>
-                  <FavoritesPage />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/book/:id" element={<BookDetailComponent />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Footer />
