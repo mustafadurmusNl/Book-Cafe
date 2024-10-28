@@ -24,7 +24,7 @@
 
 .bc-navbar-logo h1 {
   display: flex !important;
-  align-items: center !important; /* Ensures vertical alignment if needed */
+  align-items: center !important;
   color: rgb(169, 123, 73);
   font-size: 16px !important;
   margin: 0 !important;
@@ -94,10 +94,10 @@
   padding: 10px 60px 10px 20px;
   border-radius: 20px;
   border: 1px solid rgb(169, 123, 73);
-  width: 650px;
+  width: 600px;
   background-color: rgb(252, 240, 226);
   text-align: left;
-  margin-top: 2%;
+  margin-top: 3%;
   position: relative;
 }
 
@@ -149,31 +149,6 @@
   cursor: pointer;
   margin-right: 40px;
 }
-.profile-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid rgb(169, 123, 73);
-}
-
-.profile-tooltip {
-  position: absolute;
-  top: 110%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  color: rgb(169, 123, 73);
-  padding: 8px 12px;
-  border-radius: 5px;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
-  z-index: 1;
-}
 
 .profile-image-container:hover .profile-tooltip {
   opacity: 1;
@@ -203,7 +178,7 @@
 
 .profile-tooltip {
   position: absolute;
-  top: 110%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 14px;
@@ -264,7 +239,14 @@
 }
 @media (min-width: 2133px) {
   .bc-navbar-search input {
-    width: 1400px;
+    padding: 10px 60px 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgb(169, 123, 73);
+    width: 800px;
+    background-color: rgb(252, 240, 226);
+    text-align: left;
+    margin-top: 3%;
+    position: relative;
   }
   .bc-navbar-links li .faHome,
   .bc-navbar-links li .faList,
@@ -279,7 +261,7 @@
   }
   .profile-tooltip {
     position: absolute;
-    top: 6.5%;
+    top: 8%;
     left: 95.9%;
   }
 }
@@ -318,24 +300,9 @@
   .bc-navbar-search input {
     width: 450px;
   }
-  .bc-navbar-links li .faHome,
-  .bc-navbar-links li .faList,
-  .bc-navbar-links li .faStar {
-    font-size: 22px;
-  }
-  .bc-navbar {
-    padding: 10px 10px;
-  }
-}
-
-@media (max-width: 993px) {
-  .bc-navbar-search input {
-    width: 250px;
-  }
-  .bc-navbar-logo h1 {
-    padding-top: 1px;
-  }
-  .search-icon {
+  .profile-tooltip {
+    position: absolute;
+    top: 6%;
     left: 90%;
   }
   .bc-navbar-links li .faHome,
@@ -343,13 +310,60 @@
   .bc-navbar-links li .faStar {
     font-size: 22px;
   }
-  .bc-navbar-links li {
-    font-size: 14px;
-  }
   .bc-navbar {
     padding: 10px 10px;
   }
 }
+@media (max-width: 993px) {
+  .bc-navbar {
+    padding: 10px 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile-image-container {
+    margin-top: 20%;
+  }
+  .bc-navbar-search {
+    margin-top: 10px;
+    order: 2;
+  }
+
+  .bc-navbar-links {
+    order: 1;
+  }
+
+  .bc-navbar-search input {
+    padding: 10px 60px 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgb(169, 123, 73);
+    width: 800px;
+    background-color: rgb(252, 240, 226);
+    text-align: left;
+    position: relative;
+  }
+  .profile-tooltip {
+    display: none;
+  }
+
+  .search-icon {
+    left: 95%;
+  }
+
+  .bc-navbar-logo h1 {
+    padding-top: 1px;
+  }
+
+  .bc-navbar-links li .faHome,
+  .bc-navbar-links li .faList,
+  .bc-navbar-links li .faStar {
+    font-size: 22px;
+  }
+
+  .bc-navbar-links li {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 744px) {
   .bc-navbar {
     flex-direction: column;
@@ -379,7 +393,7 @@
     width: 95%;
   }
   .search-icon {
-    left: 93%;
+    left: 90%;
   }
   .bc-navbar-links {
     justify-content: center;
@@ -406,7 +420,6 @@
 
   .bc-navbar-right {
     flex-direction: column;
-    width: 100%;
   }
 }
 @media (max-width: 664px) {
@@ -442,7 +455,7 @@
     width: 95%;
   }
   .search-icon {
-    left: 93%;
+    left: 90%;
   }
   .bc-navbar-links {
     display: flex;
@@ -484,7 +497,7 @@
   }
 }
 
-@media (max-width: 526px) {
+@media (max-width: 546px) {
   .bc-navbar {
     display: flex;
     flex-direction: column;
@@ -513,10 +526,10 @@
     margin-bottom: 10px;
   }
   .bc-navbar-search input {
-    width: 80%;
+    width: 90%;
   }
   .search-icon {
-    left: 84%;
+    left: 83%;
   }
   .bc-navbar-links {
     display: flex;
@@ -581,10 +594,10 @@
     margin-bottom: 10px;
   }
   .bc-navbar-search input {
-    width: 80%;
+    width: 94%;
   }
   .search-icon {
-    left: 83%;
+    left: 85%;
   }
   .bc-navbar-links {
     display: flex;
