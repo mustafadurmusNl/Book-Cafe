@@ -102,7 +102,7 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    if (location.hash === "#Form") {
+    if (location.hash === "#Form" || location.pathname === "/") {
       setShowLoginText(true);
       setName("");
     } else {
@@ -112,7 +112,7 @@ const Navbar = () => {
       setShowLoginText(false);
       setName(storedName || "");
     }
-  }, [location.hash]);
+  }, [location.hash, location.pathname]);
 
   return (
     <nav className="bc-navbar">
