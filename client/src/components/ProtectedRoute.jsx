@@ -13,16 +13,16 @@ const ProtectedRoute = ({ children }) => {
       // If user is not authenticated, navigate to the homepage
       navigate("/", { replace: true });
 
-     // Delay scroll to ensure navigation completes
-     setTimeout(() => {
-      const formElement = document.getElementById("Form");
-      if (formElement) {
-        window.scrollTo({
-          top: formElement.offsetTop,
-          behavior: "smooth",
-        });
-      }
-    }, 150); // Delay for smoother experience
+      // Delay scroll to ensure navigation completes
+      setTimeout(() => {
+        const formElement = document.getElementById("Form");
+        if (formElement) {
+          window.scrollTo({
+            top: formElement.offsetTop,
+            behavior: "smooth",
+          });
+        }
+      }, 150); // Delay for smoother experience
     }
   }, [isLoggedIn, navigate]);
 

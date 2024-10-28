@@ -26,19 +26,31 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<AuthForm />} />
-            
+
             {/* Protected Routes */}
-            <Route 
-              path="/categories" 
-              element={<ProtectedRoute><CategoryAndPreferences /></ProtectedRoute>} 
+            <Route
+              path="/categories"
+              element={
+                <ProtectedRoute>
+                  <CategoryAndPreferences />
+                </ProtectedRoute>
+              }
             />
-            <Route 
-              path="/recommendations" 
-              element={<ProtectedRoute><BookRecommendationPage /></ProtectedRoute>} 
+            <Route
+              path="/recommendations"
+              element={
+                <ProtectedRoute>
+                  <BookRecommendationPage />
+                </ProtectedRoute>
+              }
             />
-            <Route 
-              path="/favorites" 
-              element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} 
+            <Route
+              path="/favorites"
+              element={
+                <ProtectedRoute>
+                  <FavoritesPage />
+                </ProtectedRoute>
+              }
             />
 
             <Route path="/book/:id" element={<BookDetailComponent />} />
