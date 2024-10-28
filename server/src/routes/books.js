@@ -44,7 +44,7 @@ bookRouter.get("/search", async (req, res) => {
 
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&key=${apiKey}`,
+      `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`,
     );
 
     // Log response data

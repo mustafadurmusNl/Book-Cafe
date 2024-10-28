@@ -65,7 +65,7 @@ const BookRecommendationPage = () => {
         const currentBooks = booksByPreference[preference] || [];
         const startIndex = currentBooks.length;
         const getRandomNumber = () => {
-          return Math.floor(Math.random() * 200) + 1; // Random number between 1 and 100
+          return Math.floor(Math.random() * 50) + 1; // Random number between 1 and 100
         };
 
         return axios
