@@ -2,27 +2,32 @@ import { useEffect } from "react"; // Import useEffect
 import PropTypes from "prop-types"; // Import PropTypes
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { isLoggedIn } = useAuth(); // Use isLoggedIn directly
   const navigate = useNavigate(); // Use useNavigate to handle navigation
 
   useEffect(() => {
-    if (!user) {
+    if (!isLoggedIn) {
+      toast.error("User not found. Please log in.");
       // If user is not authenticated, navigate to the homepage
       navigate("/", { replace: true });
 
-      // Wait for navigation to complete, then scroll down
-      setTimeout(() => {
+     // Delay scroll to ensure navigation completes
+     setTimeout(() => {
+      const formElement = document.getElementById("Form");
+      if (formElement) {
         window.scrollTo({
-          top: document.body.scrollHeight,
+          top: formElement.offsetTop,
           behavior: "smooth",
         });
-      }, 10); // Adjust delay as necessary
+      }
+    }, 150); // Delay for smoother experience
     }
-  }, [user, navigate]);
+  }, [isLoggedIn, navigate]);
 
   // If user is authenticated, return children; otherwise return null
-  return user ? children : null; // Prevent rendering protected content for unauthenticated users
+  return isLoggedIn ? children : null; // Prevent rendering protected content for unauthenticated users
 };
 // Define prop types
 ProtectedRoute.propTypes = {

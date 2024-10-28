@@ -10,8 +10,9 @@ import right from "../../public/images/11.gif";
 import logo from "../../public/images/logo.png";
 import { toast } from "react-hot-toast";
 import { json, useNavigate } from "react-router-dom";
-
+import { useAuth } from "../context/AuthContext";
 const AuthForm = () => {
+  const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +38,7 @@ const AuthForm = () => {
         toast.error(response.data.error);
       } else {
         toast.success(`Welcome back, ${response.data.name}!`);
+        login(response.data);
         navigate("/recommendations");
       }
     } catch (error) {
@@ -65,6 +67,7 @@ const AuthForm = () => {
         localStorage.setItem("username", JSON.stringify(data.name)); // Store the user ID
 
         toast.success(data.message);
+        login(data);
         navigate("/categories"); // Redirect to category selection
       }
     } catch (error) {

@@ -12,9 +12,11 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AuthForm from "./components/AuthForm";
 import { FavoriteProvider } from "./context/FavoriteContext";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 
 const App = () => {
   const location = useLocation();
+
   return (
     <AuthProvider>
       <FavoriteProvider>
@@ -24,13 +26,22 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<AuthForm />} />
-            <Route path="/categories" element={<CategoryAndPreferences />} />
-            <Route
-              path="/recommendations"
-              element={<BookRecommendationPage />}
+            
+            {/* Protected Routes */}
+            <Route 
+              path="/categories" 
+              element={<ProtectedRoute><CategoryAndPreferences /></ProtectedRoute>} 
             />
+            <Route 
+              path="/recommendations" 
+              element={<ProtectedRoute><BookRecommendationPage /></ProtectedRoute>} 
+            />
+            <Route 
+              path="/favorites" 
+              element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} 
+            />
+
             <Route path="/book/:id" element={<BookDetailComponent />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Footer />
