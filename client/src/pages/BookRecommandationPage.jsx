@@ -32,7 +32,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${user}/preferences`,
+        `http://localhost:3000/api/users/${user.id}/preferences`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${user}/favoriteAuthors`,
+        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -157,7 +157,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/${user}/favoriteAuthors`,
+        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
         { author },
         {
           headers: {
@@ -199,7 +199,7 @@ const BookRecommendationPage = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/users/${user}/favoriteBook`,
+        `http://localhost:3000/api/users/${user.id}/favoriteBook`,
         { bookId: book.id }, // Send bookId as payload
         {
           headers: {
