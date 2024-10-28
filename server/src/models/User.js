@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   preferences: { type: [String], default: [] },
   firstLogin: { type: Boolean, default: true },
   favoriteAuthors: { type: [String], default: [] },
+  favoriteBook: { type: [String], default: [] },
 });
 const UserModel = mongoose.model("User", userSchema);
 

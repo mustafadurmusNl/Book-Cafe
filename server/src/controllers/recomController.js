@@ -20,8 +20,8 @@ export const getBooksByPreference = async (req, res) => {
         params: {
           q: preference,
           key: googleBooksApiKey,
-          maxResults: 16,
-          startIndex: startIndex || 0,
+          maxResults: 32,
+          startIndex: startIndex,
         },
       },
     );

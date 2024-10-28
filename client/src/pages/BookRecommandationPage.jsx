@@ -64,12 +64,15 @@ const BookRecommendationPage = () => {
       const fetchPromises = userPreferences.map((preference) => {
         const currentBooks = booksByPreference[preference] || [];
         const startIndex = currentBooks.length;
+        const getRandomNumber = () => {
+          return Math.floor(Math.random() * 200) + 1; // Random number between 1 and 100
+        };
 
         return axios
           .get("http://localhost:3000/api/recommendedBooks", {
             params: {
               preference,
-              startIndex,
+              startIndex: getRandomNumber(),
             },
           })
           .then((response) => ({
@@ -142,24 +145,6 @@ const BookRecommendationPage = () => {
     }
   }, [userPreferences, page]);
 
-  // Infinite scroll event handler
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 300
-    ) {
-      if (!loading && hasMore) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-  };
-
-  // Attach scroll event listener on component mount
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup
-  }, [loading, hasMore]);
-
   // Function to save the favorite author
   const handleSaveAuthor = async (author) => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -187,6 +172,49 @@ const BookRecommendationPage = () => {
         error.response ? error.response.data : error.message,
       );
       setError("Failed to save author.");
+    }
+  };
+
+  const handleFavoriteSubmit = async (book) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+      setError("User not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      // Only proceed if authors exist
+      const author =
+        book.volumeInfo.authors && book.volumeInfo.authors.length > 0
+          ? book.volumeInfo.authors[0]
+          : null;
+
+      if (author) {
+        // Save author only if it exists
+        handleSaveAuthor(author);
+      } else {
+        console.warn("No authors found for the book:", book);
+      }
+
+      const response = await axios.post(
+        `http://localhost:3000/api/users/${user}/favoriteBook`,
+        { bookId: book.id }, // Send bookId as payload
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Book saved to favorites:", response.data);
+    } catch (err) {
+      console.error(
+        "Failed to save favorite book:",
+        err.response ? err.response.data : err.message,
+      );
+      setError("Failed to save favorite book.");
     }
   };
 
@@ -231,7 +259,7 @@ const BookRecommendationPage = () => {
                     <div className="placeholder-cover">
                       <p className="book-title">{book.volumeInfo.title}</p>
                       <p className="book-author">
-                        {book.volumeInfo.authors.join(", ")}
+                        {book.volumeInfo.authors.join(", ") || "Unknown Author"}
                       </p>
                     </div>
                   )}
@@ -271,27 +299,29 @@ const BookRecommendationPage = () => {
                           imageLinks: book.volumeInfo.imageLinks,
                           description: book.volumeInfo.description,
                         });
-                        handleSaveAuthor(book.volumeInfo.authors[0]);
+                        handleFavoriteSubmit(book); // Pass entire book object
                       }}
                       style={{ color: isFavorite ? "red" : "white" }}
                     >
                       ♥
                     </button>
-                    <img
-                      src={
-                        book.volumeInfo.imageLinks?.thumbnail ||
-                        "/default-image.jpg"
-                      }
-                      alt={book.volumeInfo.title || "No Title"}
-                      className="book-thumbnail"
-                    />
-                    <Link
-                      to={`/book/${book.id}`}
-                      className="book-title"
-                      onClick={() =>
-                        console.log(`Navigating to book ${book.id}`)
-                      }
-                    >
+                    {book.volumeInfo.imageLinks?.thumbnail ? (
+                      <img
+                        src={book.volumeInfo.imageLinks.thumbnail}
+                        alt={book.volumeInfo.title}
+                        className="book-thumbnail"
+                      />
+                    ) : (
+                      <div className="placeholder-cover">
+                        <p className="book-title">{book.volumeInfo.title}</p>
+                        <p className="book-author">
+                          {book.volumeInfo.authors
+                            ? book.volumeInfo.authors.join(", ")
+                            : "Unknown Author"}
+                        </p>
+                      </div>
+                    )}
+                    <Link to={`/book/${book.id}`} className="book-title">
                       {book.volumeInfo.title}
                     </Link>
                     <div className="book-info">
@@ -303,7 +333,7 @@ const BookRecommendationPage = () => {
                 );
               })
             ) : (
-              <p>No books found for this preference.</p>
+              <p>No books available for this preference.</p>
             )}
           </div>
         </div>

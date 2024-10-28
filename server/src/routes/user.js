@@ -6,10 +6,14 @@ import {
   getall,
   updateUserPreferences,
   UserPreferences,
+  updateUserBooks,
+  getUserFavoriteBooks,
+  removeFavoriteBook,
 } from "../controllers/user.js";
 import authenticateJWT from "./auth.js"; // Change to import for consistency
 import { saveUserFavoriteAuthor } from "../controllers/author.js";
 import { getBooksByFavoriteAuthors } from "../controllers/authorbook.js";
+import Book from "../models/Book.js";
 
 const userRouter = express.Router();
 
@@ -20,11 +24,17 @@ userRouter.get("/getall", getall);
 userRouter.put("/:id", updateUserPreferences);
 userRouter.get("/:id/preferences", UserPreferences);
 userRouter.put("/:id/favoriteAuthors", authenticateJWT, saveUserFavoriteAuthor);
-
 userRouter.get(
   "/:id/favoriteAuthors",
   authenticateJWT,
   getBooksByFavoriteAuthors,
+);
+userRouter.post("/:id/favoriteBook", authenticateJWT, updateUserBooks);
+userRouter.get("/:userId/favoriteBooks", authenticateJWT, getUserFavoriteBooks);
+userRouter.delete(
+  "/:userId/favoriteBook/:bookId",
+  authenticateJWT,
+  removeFavoriteBook,
 );
 userRouter.post("/categories", authenticateJWT, (req, res) => {
   const userId = req.user.id;
