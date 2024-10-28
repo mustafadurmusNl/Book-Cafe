@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import User from "../models/User.js";
 import { logError } from "../util/logging.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
