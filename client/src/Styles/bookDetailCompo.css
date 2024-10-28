@@ -8,6 +8,7 @@
   border-radius: 20px;
   justify-content: space-between;
   align-items: flex-start;
+  position: relative;
 }
 .bookImage-custom {
   width: 40%;
@@ -92,8 +93,8 @@
 
 .heart-icon-bdc {
   position: absolute;
-  top: 17%;
-  left: 81%;
+  top: -2%;
+  left: 95%;
   font-size: 24px;
   color: white;
   cursor: pointer;
@@ -136,4 +137,98 @@
   margin-top: 10px;
   width: 40%;
   text-align: center;
+}
+@media (max-width: 2133px) {
+  .heart-icon-bdc {
+    top: -3%;
+    left: 95% !important;
+  }
+}
+
+/* نمایشگرهای بین 1422px تا 2133px */
+@media (max-width: 1422px) {
+  .heart-icon-bdc {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    top: -2%;
+    left: 94%;
+  }
+}
+
+/* نمایشگرهای بین 1280px تا 1422px */
+@media (max-width: 1280px) {
+  .heart-icon-bdc {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    top: -1%;
+    left: 93%;
+  }
+}
+
+/* نمایشگرهای بین 993px تا 1280px */
+@media (max-width: 993px) {
+  .heart-icon-bdc {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    top: 0%;
+    left: 92%;
+  }
+}
+
+/* نمایشگرهای بین 744px تا 993px */
+@media (max-width: 744px) {
+  .heart-icon-bdc {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    top: 0%;
+    left: 90%;
+  }
+}
+
+/* نمایشگرهای بین 664px تا 744px */
+@media (max-width: 664px) {
+  .heart-icon-bdc {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    top: 1%;
+    left: 88%;
+  }
+}
+
+/* نمایشگرهای بین 526px تا 664px */
+@media (max-width: 526px) {
+  .heart-icon-bdc {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+    top: 2%;
+    left: 86%;
+  }
+}
+
+/* نمایشگرهای کوچک‌تر از 480px */
+@media (max-width: 480px) {
+  .heart-icon-bdc {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+    top: 2%;
+    left: 85%;
+  }
+}
+
+/* نمایشگرهای بسیار کوچک‌تر از 325px */
+@media (max-width: 325px) {
+  .heart-icon-bdc {
+    width: 22px;
+    height: 22px;
+    font-size: 9px;
+    top: 3%;
+    left: 83%;
+  }
 }

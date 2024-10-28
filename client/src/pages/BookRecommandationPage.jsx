@@ -305,22 +305,28 @@ const BookRecommendationPage = () => {
                     >
                       ♥
                     </button>
-                    {book.volumeInfo.imageLinks?.thumbnail ? (
-                      <img
-                        src={book.volumeInfo.imageLinks.thumbnail}
-                        alt={book.volumeInfo.title}
-                        className="book-thumbnail"
-                      />
-                    ) : (
-                      <div className="placeholder-cover">
-                        <p className="book-title">{book.volumeInfo.title}</p>
-                        <p className="book-author">
-                          {book.volumeInfo.authors
-                            ? book.volumeInfo.authors.join(", ")
-                            : "Unknown Author"}
-                        </p>
-                      </div>
-                    )}
+                    <Link to={`/book/${book.id}`}>
+                      {book.volumeInfo.imageLinks?.thumbnail ? (
+                        <img
+                          src={book.volumeInfo.imageLinks.thumbnail}
+                          alt={book.volumeInfo.title}
+                          className="book-thumbnail"
+                          style={{ cursor: "pointer" }}
+                        />
+                      ) : (
+                        <div
+                          className="placeholder-cover"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <p className="book-title">{book.volumeInfo.title}</p>
+                          <p className="book-author">
+                            {book.volumeInfo.authors
+                              ? book.volumeInfo.authors.join(", ")
+                              : "Unknown Author"}
+                          </p>
+                        </div>
+                      )}
+                    </Link>
                     <Link to={`/book/${book.id}`} className="book-title">
                       {book.volumeInfo.title}
                     </Link>
