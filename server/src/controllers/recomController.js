@@ -19,7 +19,7 @@ export const getBooksByPreference = async (req, res) => {
       {
         params: {
           q: preference,
-          maxResults: 32,
+          maxResults: 36,
           startIndex: startIndex,
         },
       },

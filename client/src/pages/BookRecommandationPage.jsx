@@ -8,6 +8,38 @@ import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 import { FavoriteContext } from "../context/FavoriteContext";
 
+const ScrollToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    isVisible && (
+      <button className="scroll-to-top" onClick={scrollToTop}>
+        ↑
+      </button>
+    )
+  );
+};
+
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
   const [booksByFavoriteAuthors, setBooksByFavoriteAuthors] = useState([]);
@@ -65,7 +97,7 @@ const BookRecommendationPage = () => {
         const currentBooks = booksByPreference[preference] || [];
         const startIndex = currentBooks.length;
         const getRandomNumber = () => {
-          return Math.floor(Math.random() * 50) + 1; // Random number between 1 and 100
+          return Math.floor(Math.random() * 10) + 1;
         };
 
         return axios
@@ -185,14 +217,12 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      // Only proceed if authors exist
       const author =
         book.volumeInfo.authors && book.volumeInfo.authors.length > 0
           ? book.volumeInfo.authors[0]
           : null;
 
       if (author) {
-        // Save author only if it exists
         handleSaveAuthor(author);
       } else {
         console.warn("No authors found for the book:", book);
@@ -200,7 +230,7 @@ const BookRecommendationPage = () => {
 
       const response = await axios.post(
         `http://localhost:3000/api/users/${user.id}/favoriteBook`,
-        { bookId: book.id }, // Send bookId as payload
+        { bookId: book.id },
         {
           headers: {
             "Content-Type": "application/json",
@@ -224,7 +254,6 @@ const BookRecommendationPage = () => {
   return (
     <div className="book-page">
       <Navbar />
-      {/* Section for Favorite Authors' Books */}
       {booksByFavoriteAuthors.length > 0 && (
         <div className="book-category">
           <h2>Books by Your Favorite Authors</h2>
@@ -235,16 +264,18 @@ const BookRecommendationPage = () => {
               );
               return (
                 <div key={book.id} className="book-item">
+                  <p className="authorname">{book.volumeInfo.authors[0]}</p>
                   <button
                     className="heart-icon"
-                    onClick={() =>
+                    onClick={() => {
                       toggleFavorite({
                         id: book.id,
                         title: book.volumeInfo.title,
                         imageLinks: book.volumeInfo.imageLinks,
                         description: book.volumeInfo.description,
-                      })
-                    }
+                      });
+                      handleFavoriteSubmit(book);
+                    }}
                     style={{ color: isFavorite ? "red" : "white" }}
                   >
                     ♥
@@ -278,7 +309,6 @@ const BookRecommendationPage = () => {
         </div>
       )}
 
-      {/* Section for User Preferences' Books */}
       {Object.keys(booksByPreference).map((preference) => (
         <div key={preference} className="book-category">
           <h2>Best {preference} Books</h2>
@@ -299,7 +329,7 @@ const BookRecommendationPage = () => {
                           imageLinks: book.volumeInfo.imageLinks,
                           description: book.volumeInfo.description,
                         });
-                        handleFavoriteSubmit(book); // Pass entire book object
+                        handleFavoriteSubmit(book);
                       }}
                       style={{ color: isFavorite ? "red" : "white" }}
                     >
@@ -344,6 +374,8 @@ const BookRecommendationPage = () => {
           </div>
         </div>
       ))}
+      {/* Scroll To Top Button */}
+      <ScrollToTopButton />
     </div>
   );
 };

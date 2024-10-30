@@ -1,6 +1,25 @@
 .navbar {
   width: 100%;
 }
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  background-color: #bc6c25;
+  color: aliceblue;
+  border: none;
+  border-radius: 50%;
+  padding: 12px 22px;
+  cursor: pointer;
+  font-size: 27px;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+.authorname {
+  font-size: 13px;
+  background: chocolate;
+  padding: 10px;
+  margin-bottom: 1px;
+}
 .book-page {
   display: flex;
   flex-direction: column;
