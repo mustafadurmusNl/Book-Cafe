@@ -34,7 +34,7 @@ const SearchBooks = () => {
     if (!searchTerm.trim()) return;
     try {
       const response = await axios.get(
-        `api/users/books/search?query=${encodeURIComponent(searchTerm)}`,
+        `api/books/search?query=${encodeURIComponent(searchTerm)}`,
       );
       setSearchResults(response.data.items || []);
     } catch (error) {
