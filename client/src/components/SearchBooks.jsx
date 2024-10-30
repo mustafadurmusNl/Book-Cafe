@@ -1,17 +1,18 @@
+// SearchBooks.js
 import React, { useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useAuth } from "../context/AuthContext"; // Import useAuth hook
+import { useAuth } from "../context/AuthContext";
 import "../Styles/SearchBooks.css";
 
 const SearchBooks = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth(); // Access isLoggedIn from AuthContext
+  const { isLoggedIn } = useAuth();
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -19,7 +20,6 @@ const SearchBooks = () => {
 
   const handleSearchSubmit = async () => {
     if (!isLoggedIn) {
-      // If user is not logged in, prevent search and scroll to login form
       toast.error("Please log in to search for books.");
       const formElement = document.getElementById("Form");
       if (formElement) {
@@ -34,11 +34,14 @@ const SearchBooks = () => {
     if (!searchTerm.trim()) return;
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/books/search?query=${encodeURIComponent(searchTerm)}`,
+        `${process.env.BASE_SERVER_URL}/api/books/search?query=${encodeURIComponent(searchTerm)}`,
       );
-      setSearchResults(response.data.items || []);
+      setSearchResults(response.data.data || []);
     } catch (error) {
-      alert("Error fetching data:", error);
+      toast.error(
+        "Error fetching data: " +
+          (error.response?.data?.error || error.message),
+      );
     }
   };
 
@@ -77,6 +80,12 @@ const SearchBooks = () => {
               className="search-result-item"
               onClick={() => handleBookClick(book.id)}
             >
+              <img
+                src={
+                  book.volumeInfo?.imageLinks?.thumbnail || "/default-image.jpg"
+                }
+                alt=""
+              />
               <div className="book-title">{book.volumeInfo.title}</div>
               <div className="book-author">
                 {book.volumeInfo.authors?.join(", ")}

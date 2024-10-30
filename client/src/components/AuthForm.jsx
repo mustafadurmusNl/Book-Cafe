@@ -22,7 +22,7 @@ const AuthForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/users/login",
+        `${process.env.BASE_SERVER_URL}/api/users/login`,
         {
           email,
           password,
@@ -50,7 +50,7 @@ const AuthForm = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/users/register",
+        `${process.env.BASE_SERVER_URL}/api/users/register`,
         {
           name,
           email,
@@ -76,7 +76,10 @@ const AuthForm = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.open("http://localhost:3000/api/auth/google/callback", "_self");
+    window.open(
+      `${process.env.BASE_SERVER_URL}/api/auth/google/callback`,
+      "_self",
+    );
   };
 
   return (
