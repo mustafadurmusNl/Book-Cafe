@@ -12,7 +12,7 @@ export const getBooksByPreference = async (req, res) => {
   }
 
   try {
-    const API_KEY = process.env.API_KEY; // Get Google Books API key from environment variables
+    // Get Google Books API key from environment variables
     logInfo("googleapikey", googleBooksApiKey);
     // Make a request to Google Books API
     const response = await axios.get(
@@ -22,7 +22,6 @@ export const getBooksByPreference = async (req, res) => {
           q: preference,
           maxResults: 36,
           startIndex: startIndex,
-          key: API_KEY,
         },
       },
     );
