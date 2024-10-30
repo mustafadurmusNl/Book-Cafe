@@ -19,7 +19,7 @@ const userRouter = express.Router();
 
 // User routes
 userRouter.post("/register", registerUser);
-userRouter.post("/login", loginUser);
+userRouter.post("/users/login", loginUser);
 userRouter.get("/getall", getall);
 userRouter.put("/:id", updateUserPreferences);
 userRouter.get("/:id/preferences", UserPreferences);
