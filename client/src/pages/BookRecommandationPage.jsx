@@ -63,14 +63,11 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/users/${user.id}/preferences`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await axios.get(`api/users/${user.id}/preferences`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       if (response.data && Array.isArray(response.data.preferences)) {
         setUserPreferences(response.data.preferences);
@@ -101,7 +98,7 @@ const BookRecommendationPage = () => {
         };
 
         return axios
-          .get("http://localhost:3000/api/recommendedBooks", {
+          .get("api/recommendedBooks", {
             params: {
               preference,
               startIndex: getRandomNumber(),
@@ -145,14 +142,11 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await axios.get(`api/users/${user.id}/favoriteAuthors`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       setBooksByFavoriteAuthors(
         Array.isArray(response.data) ? response.data : [],
       );
@@ -189,7 +183,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
+        `api/users/${user.id}/favoriteAuthors`,
         { author },
         {
           headers: {
@@ -229,7 +223,7 @@ const BookRecommendationPage = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/users/${user.id}/favoriteBook`,
+        `api/users/${user.id}/favoriteBook`,
         { bookId: book.id },
         {
           headers: {
