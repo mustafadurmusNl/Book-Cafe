@@ -11,8 +11,8 @@ export const getBooksByPreference = async (req, res) => {
   }
 
   try {
-    const API_KEY = process.env.API_KEY; // Get Google Books API key from environment variables
-
+    const googleBooksApiKey = process.env.API_KEY; // Get Google Books API key from environment variables
+    logInfo("googleapikey", googleBooksApiKey);
     // Make a request to Google Books API
     const response = await axios.get(
       "https://www.googleapis.com/books/v1/volumes",
@@ -21,15 +21,15 @@ export const getBooksByPreference = async (req, res) => {
           q: preference,
           maxResults: 36,
           startIndex: startIndex,
-          key: API_KEY,
         },
       },
     );
     logInfo("Fetching books for preference:", preference);
-
+    logInfo("Google API Key:", googleBooksApiKey);
     // Return the books fetched from the API
     res.json(response.data.items || []);
   } catch (error) {
+    logError("googleapikey", process.env.API_KEY);
     logError("Error fetching books from Google API:", error.message);
     res.status(500).json({ error: "Error fetching books" });
   }

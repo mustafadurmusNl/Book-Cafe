@@ -63,7 +63,7 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(`${user.id}/preferences`, {
+      const response = await axios.get(`api/users/${user.id}/preferences`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ const BookRecommendationPage = () => {
         };
 
         return axios
-          .get("/recommendedBooks", {
+          .get("api/recommendedBooks", {
             params: {
               preference,
               startIndex: getRandomNumber(),
@@ -142,7 +142,7 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(`${user.id}/favoriteAuthors`, {
+      const response = await axios.get(`api/users/${user.id}/favoriteAuthors`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

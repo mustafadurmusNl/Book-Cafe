@@ -62,7 +62,7 @@ const CategoryAndPreferences = () => {
 
     try {
       const preferencesResponse = await axios.put(
-        `${user.id}`,
+        `api/users/${user.id}`,
         {
           preferences: selectedCategories,
         },
