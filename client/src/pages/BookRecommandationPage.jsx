@@ -64,7 +64,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}api/users/${user.id}/preferences`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/users/${user.id}/preferences`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
