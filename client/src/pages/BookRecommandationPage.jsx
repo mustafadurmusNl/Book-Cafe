@@ -8,23 +8,27 @@ import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 import { FavoriteContext } from "../context/FavoriteContext";
 
-const baseURL =
-  process.env.REACT_APP_API_URL ||
-  "https://c48-group-b-65d4744c77ac.herokuapp.com";
-
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const toggleVisibility = () => {
-      setIsVisible(window.pageYOffset > 300);
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
     };
+
     window.addEventListener("scroll", toggleVisibility);
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -47,6 +51,7 @@ const BookRecommendationPage = () => {
   const { favorites, toggleFavorite } = useContext(FavoriteContext);
   const navigate = useNavigate();
 
+  // Fetch user preferences from API
   const fetchUserPreferences = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
@@ -58,13 +63,18 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(
-        `${baseURL}/api/users/${user.id}/preferences`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get(`api/users/${user.id}/preferences`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-      setUserPreferences(response.data.preferences || []);
+      });
+
+      if (response.data && Array.isArray(response.data.preferences)) {
+        setUserPreferences(response.data.preferences);
+      } else {
+        setError("User preferences not found or invalid.");
+        setUserPreferences([]);
+      }
     } catch (err) {
       console.error("Error fetching preferences:", err);
       setError("Failed to fetch user preferences.");
@@ -73,6 +83,7 @@ const BookRecommendationPage = () => {
     }
   };
 
+  // Fetch books for each preference query
   const fetchBooksForPreferences = async () => {
     if (!Array.isArray(userPreferences) || userPreferences.length === 0) return;
 
@@ -80,10 +91,18 @@ const BookRecommendationPage = () => {
 
     try {
       const fetchPromises = userPreferences.map((preference) => {
-        const startIndex = Math.floor(Math.random() * 10) + 1;
+        const currentBooks = booksByPreference[preference] || [];
+        const startIndex = currentBooks.length;
+        const getRandomNumber = () => {
+          return Math.floor(Math.random() * 10) + 1;
+        };
+
         return axios
-          .get(`${baseURL}/api/recommendedBooks`, {
-            params: { preference, startIndex },
+          .get("api/recommendedBooks", {
+            params: {
+              preference,
+              startIndex: getRandomNumber(),
+            },
           })
           .then((response) => ({
             preference,
@@ -92,9 +111,12 @@ const BookRecommendationPage = () => {
       });
 
       const results = await Promise.all(fetchPromises);
+
       const newBooksByPreference = results.reduce(
         (acc, { preference, books }) => {
-          if (books.length === 0) setHasMore(false);
+          if (books.length === 0) {
+            setHasMore(false);
+          }
           acc[preference] = [...(acc[preference] || []), ...books];
           return acc;
         },
@@ -120,13 +142,14 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(
-        `${baseURL}/api/users/${user.id}/favoriteAuthors`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get(`api/users/${user.id}/favoriteAuthors`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
+      });
+      setBooksByFavoriteAuthors(
+        Array.isArray(response.data) ? response.data : [],
       );
-      setBooksByFavoriteAuthors(response.data || []);
     } catch (err) {
       console.error("Error fetching favorite authors:", err);
       setError("Failed to fetch books by favorite authors.");
@@ -135,17 +158,20 @@ const BookRecommendationPage = () => {
     }
   };
 
+  // Fetch user preferences once on component mount
   useEffect(() => {
     fetchUserPreferences();
     fetchBooksByFavoriteAuthors();
   }, []);
 
+  // Fetch books whenever preferences or page changes
   useEffect(() => {
     if (userPreferences.length > 0) {
       fetchBooksForPreferences();
     }
   }, [userPreferences, page]);
 
+  // Function to save the favorite author
   const handleSaveAuthor = async (author) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
@@ -156,13 +182,21 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      await axios.put(
-        `${baseURL}/api/users/${user.id}/favoriteAuthors`,
+      const response = await axios.put(
+        `api/users/${user.id}/favoriteAuthors`,
         { author },
-        { headers: { Authorization: `Bearer ${token}` } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
+      console.log("Save Author Response:", response.data);
     } catch (error) {
-      console.error("Failed to save author:", error);
+      console.error(
+        "Failed to save author:",
+        error.response ? error.response.data : error.message,
+      );
       setError("Failed to save author.");
     }
   };
@@ -177,11 +211,19 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const author = book.volumeInfo.authors?.[0];
-      if (author) handleSaveAuthor(author);
+      const author =
+        book.volumeInfo.authors && book.volumeInfo.authors.length > 0
+          ? book.volumeInfo.authors[0]
+          : null;
 
-      await axios.post(
-        `${baseURL}/api/users/${user.id}/favoriteBook`,
+      if (author) {
+        handleSaveAuthor(author);
+      } else {
+        console.warn("No authors found for the book:", book);
+      }
+
+      const response = await axios.post(
+        `api/users/${user.id}/favoriteBook`,
         { bookId: book.id },
         {
           headers: {
@@ -190,8 +232,12 @@ const BookRecommendationPage = () => {
           },
         },
       );
+      console.log("Book saved to favorites:", response.data);
     } catch (err) {
-      console.error("Failed to save favorite book:", err);
+      console.error(
+        "Failed to save favorite book:",
+        err.response ? err.response.data : err.message,
+      );
       setError("Failed to save favorite book.");
     }
   };
@@ -216,18 +262,32 @@ const BookRecommendationPage = () => {
                   <button
                     className="heart-icon"
                     onClick={() => {
-                      toggleFavorite(book);
+                      toggleFavorite({
+                        id: book.id,
+                        title: book.volumeInfo.title,
+                        imageLinks: book.volumeInfo.imageLinks,
+                        description: book.volumeInfo.description,
+                      });
                       handleFavoriteSubmit(book);
                     }}
                     style={{ color: isFavorite ? "red" : "white" }}
                   >
                     ♥
                   </button>
-                  <img
-                    src={book.volumeInfo.imageLinks?.thumbnail || ""}
-                    alt={book.volumeInfo.title}
-                    className="book-thumbnail"
-                  />
+                  {book.volumeInfo.imageLinks?.thumbnail ? (
+                    <img
+                      src={book.volumeInfo.imageLinks.thumbnail}
+                      alt={book.volumeInfo.title}
+                      className="book-thumbnail"
+                    />
+                  ) : (
+                    <div className="placeholder-cover">
+                      <p className="book-title">{book.volumeInfo.title}</p>
+                      <p className="book-author">
+                        {book.volumeInfo.authors.join(", ") || "Unknown Author"}
+                      </p>
+                    </div>
+                  )}
                   <Link to={`/book/${book.id}`} className="book-title">
                     {book.volumeInfo.title}
                   </Link>
@@ -242,6 +302,7 @@ const BookRecommendationPage = () => {
           </div>
         </div>
       )}
+
       {Object.keys(booksByPreference).map((preference) => (
         <div key={preference} className="book-category">
           <h2>Best {preference} Books</h2>
@@ -256,7 +317,12 @@ const BookRecommendationPage = () => {
                     <button
                       className="heart-icon"
                       onClick={() => {
-                        toggleFavorite(book);
+                        toggleFavorite({
+                          id: book.id,
+                          title: book.volumeInfo.title,
+                          imageLinks: book.volumeInfo.imageLinks,
+                          description: book.volumeInfo.description,
+                        });
                         handleFavoriteSubmit(book);
                       }}
                       style={{ color: isFavorite ? "red" : "white" }}
@@ -264,11 +330,26 @@ const BookRecommendationPage = () => {
                       ♥
                     </button>
                     <Link to={`/book/${book.id}`}>
-                      <img
-                        src={book.volumeInfo.imageLinks?.thumbnail || ""}
-                        alt={book.volumeInfo.title}
-                        className="book-thumbnail"
-                      />
+                      {book.volumeInfo.imageLinks?.thumbnail ? (
+                        <img
+                          src={book.volumeInfo.imageLinks.thumbnail}
+                          alt={book.volumeInfo.title}
+                          className="book-thumbnail"
+                          style={{ cursor: "pointer" }}
+                        />
+                      ) : (
+                        <div
+                          className="placeholder-cover"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <p className="book-title">{book.volumeInfo.title}</p>
+                          <p className="book-author">
+                            {book.volumeInfo.authors
+                              ? book.volumeInfo.authors.join(", ")
+                              : "Unknown Author"}
+                          </p>
+                        </div>
+                      )}
                     </Link>
                     <Link to={`/book/${book.id}`} className="book-title">
                       {book.volumeInfo.title}
@@ -287,6 +368,7 @@ const BookRecommendationPage = () => {
           </div>
         </div>
       ))}
+      {/* Scroll To Top Button */}
       <ScrollToTopButton />
     </div>
   );
