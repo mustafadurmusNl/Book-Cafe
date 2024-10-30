@@ -12,6 +12,7 @@ import {
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchBooks from "./SearchBooks";
+import icoc from "../../public/images/image.png";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -118,7 +119,7 @@ const Navbar = () => {
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
         <Link to="/">
-          <img src="/image/image.png" alt="Book Cafe" />
+          <img src={icoc} alt="Book Cafe" />
           <h1>Book Cafe</h1>
         </Link>
       </div>
