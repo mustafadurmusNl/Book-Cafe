@@ -17,7 +17,7 @@ const BookDetailComponent = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`api/book/book/${id}`);
+        const response = await axios.get(`api/users/book/book/${id}`);
         setBook(response.data);
       } catch (error) {
         setError(true);
