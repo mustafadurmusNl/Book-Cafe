@@ -101,7 +101,7 @@ const BookRecommendationPage = () => {
         };
 
         return axios
-          .get(`${process.env.BASE_SERVER_URL}api/recommendedBooks`, {
+          .get(`${process.env.BASE_SERVER_URL}/api/recommendedBooks`, {
             params: {
               preference,
               startIndex: getRandomNumber(),
