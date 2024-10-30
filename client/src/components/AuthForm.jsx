@@ -21,10 +21,13 @@ const AuthForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/users/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.BASE_SERVER_URL}/api/users/login`,
+        {
+          email,
+          password,
+        },
+      );
       if (response.data) {
         // Store token if returned by the server
         localStorage.setItem("token", response.data.token);
@@ -46,11 +49,14 @@ const AuthForm = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/users/register", {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${process.env.BASE_SERVER_URL}/api/users/register`,
+        {
+          name,
+          email,
+          password,
+        },
+      );
 
       if (data.error) {
         toast.error(data.error);
@@ -70,7 +76,10 @@ const AuthForm = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.open("api/auth/google/callback", "_self");
+    window.open(
+      `${process.env.BASE_SERVER_URL}/api/auth/google/callback`,
+      "_self",
+    );
   };
 
   return (

@@ -25,7 +25,9 @@ const FavoritesPage = () => {
 
       try {
         const userId = user.id;
-        const response = await axios.get(`api/users/${userId}/favoriteBooks`);
+        const response = await axios.get(
+          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBooks`,
+        );
         setFavorites(response.data); // Set the favorites from API
       } catch (err) {
         setError("Failed to load favorite books.");
@@ -45,7 +47,9 @@ const FavoritesPage = () => {
       const userId = user.id;
       if (isFavorite) {
         // Remove from favorites
-        await axios.delete(`api/users/${userId}/favoriteBook/${book.id}`);
+        await axios.delete(
+          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook/${book.id}`,
+        );
         const updatedFavorites = favorites.filter(
           (favBook) => favBook.id !== book.id,
         );
@@ -53,9 +57,12 @@ const FavoritesPage = () => {
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Update local storage
       } else {
         // Add to favorites
-        await axios.post(`api/users/${userId}/favoriteBook`, {
-          bookId: book.id,
-        });
+        await axios.post(
+          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook`,
+          {
+            bookId: book.id,
+          },
+        );
         const updatedFavorites = [...favorites, book];
         setFavorites(updatedFavorites);
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Update local storage
