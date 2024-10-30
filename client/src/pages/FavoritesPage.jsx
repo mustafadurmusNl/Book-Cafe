@@ -26,7 +26,7 @@ const FavoritesPage = () => {
       try {
         const userId = user.id;
         const response = await axios.get(
-          `http://localhost:3000/api/users/${userId}/favoriteBooks`,
+          `api/users/${userId}/favoriteBooks`,
         );
         setFavorites(response.data); // Set the favorites from API
       } catch (err) {
@@ -48,7 +48,7 @@ const FavoritesPage = () => {
       if (isFavorite) {
         // Remove from favorites
         await axios.delete(
-          `http://localhost:3000/api/users/${userId}/favoriteBook/${book.id}`,
+          `api/users/${userId}/favoriteBook/${book.id}`,
         );
         const updatedFavorites = favorites.filter(
           (favBook) => favBook.id !== book.id,
@@ -58,7 +58,7 @@ const FavoritesPage = () => {
       } else {
         // Add to favorites
         await axios.post(
-          `http://localhost:3000/api/users/${userId}/favoriteBook`,
+          `api/users/${userId}/favoriteBook`,
           { bookId: book.id },
         );
         const updatedFavorites = [...favorites, book];

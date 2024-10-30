@@ -18,7 +18,7 @@ const BookDetailComponent = () => {
     const fetchBook = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/book/book/${id}`,
+          `api/book/book/${id}`,
         );
         setBook(response.data);
       } catch (error) {
