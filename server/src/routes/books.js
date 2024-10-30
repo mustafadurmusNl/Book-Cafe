@@ -1,17 +1,19 @@
 import express from "express";
 import { createBook, getAllBooks } from "../controllers/bookController.js";
 import axios from "axios";
-import fs from "fs"; // Import file system for logging
+import fs from "fs";
 
 const bookRouter = express.Router();
+
+// Import dotenv to read environment variables
+import dotenv from "dotenv";
+dotenv.config();
 
 bookRouter.post("/create", createBook);
 bookRouter.get("/", getAllBooks);
 
-// Helper function to log messages to a file
 const logToFile = (message) => {
   if (process.env.NODE_ENV !== "production") {
-    // Only log to file in non-production
     const logMessage = `${new Date().toISOString()} - ${message}\n`;
     fs.appendFileSync("debug.log", logMessage);
   }
@@ -19,18 +21,17 @@ const logToFile = (message) => {
 
 bookRouter.get("/search", async (req, res) => {
   const { query } = req.query;
-  const apiKey = process.env.API_KEY;
 
-  // Log presence of API Key and Query parameter
-  logToFile("Google API Key is set.");
   logToFile(`Search Query parameter: ${query}`);
 
   if (!query) {
     logToFile("Error: Query parameter is missing.");
-    return res.status(400).json({ error: "Query parameter is required." });
+    return res
+      .status(400)
+      .json({ success: false, error: "Query parameter is required." });
   }
 
-  // Parse query for title, author, or category
+  // Format search query for Google Books API
   let searchQuery = query
     .toLowerCase()
     .split(" ")
@@ -41,24 +42,21 @@ bookRouter.get("/search", async (req, res) => {
     })
     .join(" ");
 
-  // Log the final search query
   logToFile(`Formatted Search Query: ${searchQuery}`);
 
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&key=${apiKey}`, // Add the API key in the query
+      `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`,
     );
 
-    // Log response data
     logToFile(`API Response: ${JSON.stringify(response.data)}`);
 
     if (response.data && response.data.items) {
-      res.json({ success: true, data: response.data.items }); // Standardized success response
+      res.json({ success: true, data: response.data.items });
     } else {
       res.status(404).json({ success: false, error: "No books found." });
     }
   } catch (error) {
-    // Log error details
     logToFile(
       `Error fetching data from Google Books API: ${error.response?.data || error.message}`,
     );
