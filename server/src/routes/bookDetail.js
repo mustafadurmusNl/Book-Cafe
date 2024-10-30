@@ -3,6 +3,6 @@ import { getBookDetail } from "../controllers/bookDetailController.js";
 
 const bookDetailRouter = express.Router();
 
-bookDetailRouter.get("/", getBookDetail);
+bookDetailRouter.get("/detail", getBookDetail);
 
 export default bookDetailRouter;
