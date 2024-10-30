@@ -21,7 +21,7 @@ const AuthForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("api/users/login", {
+      const response = await axios.post("/api/users/login", {
         email,
         password,
       });
@@ -46,7 +46,7 @@ const AuthForm = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("api/users/register", {
+      const { data } = await axios.post("/api/users/register", {
         name,
         email,
         password,
