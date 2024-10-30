@@ -63,11 +63,14 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(`api/users/${user.id}/preferences`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/users/${user.id}/preferences`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (response.data && Array.isArray(response.data.preferences)) {
         setUserPreferences(response.data.preferences);
@@ -98,7 +101,7 @@ const BookRecommendationPage = () => {
         };
 
         return axios
-          .get("api/recommendedBooks", {
+          .get(`${process.env.REACT_APP_API_BASE_URL}/api/recommendedBooks`, {
             params: {
               preference,
               startIndex: getRandomNumber(),
@@ -142,11 +145,14 @@ const BookRecommendationPage = () => {
     }
 
     try {
-      const response = await axios.get(`api/users/${user.id}/favoriteAuthors`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/users/${user.id}/favoriteAuthors`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       setBooksByFavoriteAuthors(
         Array.isArray(response.data) ? response.data : [],
       );
@@ -183,7 +189,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.put(
-        `api/users/${user.id}/favoriteAuthors`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/users/${user.id}/favoriteAuthors`,
         { author },
         {
           headers: {
@@ -223,7 +229,7 @@ const BookRecommendationPage = () => {
       }
 
       const response = await axios.post(
-        `api/users/${user.id}/favoriteBook`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/users/${user.id}/favoriteBook`,
         { bookId: book.id },
         {
           headers: {
