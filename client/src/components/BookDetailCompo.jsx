@@ -34,6 +34,78 @@ const BookDetailComponent = () => {
   // Render loading message while fetching book data
   if (!book) return <div>Loading...</div>;
 
+  // Function to save the favorite author
+  const handleSaveAuthor = async (author) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+      alert("User not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `api/users/${user.id}/favoriteAuthors`,
+        { author },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Save Author Response:", response.data);
+    } catch (error) {
+      console.error(
+        "Failed to save author:",
+        error.response ? error.response.data : error.message,
+      );
+      alert("Failed to save author.");
+    }
+  };
+
+  // Function to handle submitting a favorite book
+  const handleFavoriteSubmit = async (book) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+      alert("User not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      const author =
+        book.volumeInfo.authors && book.volumeInfo.authors.length > 0
+          ? book.volumeInfo.authors[0]
+          : null;
+
+      if (author) {
+        await handleSaveAuthor(author); // Save the author
+      } else {
+        console.warn("No authors found for the book:", book);
+      }
+
+      const response = await axios.post(
+        `api/users/${user.id}/favoriteBook`,
+        { bookId: book.id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Book saved to favorites:", response.data);
+    } catch (err) {
+      console.error(
+        "Failed to save favorite book:",
+        err.response ? err.response.data : err.message,
+      );
+      alert("Failed to save favorite book.");
+    }
+  };
+
   // Determine if the book is in favorites
   const isFavorite = favorites.some((favBook) => favBook.id === id);
   const pdfAvailable = book.accessInfo?.pdf?.isAvailable; // Check if PDF is available
@@ -112,7 +184,10 @@ const BookDetailComponent = () => {
           </div>
           <button
             className="heart-icon-bdc"
-            onClick={() => toggleFavorite({ id, ...book.volumeInfo })} // Toggle favorite status
+            onClick={() => {
+              toggleFavorite({ id, ...book.volumeInfo }); // Toggle favorite status
+              handleFavoriteSubmit(book); // Call favorite submit function
+            }}
             style={{ color: isFavorite ? "red" : "white" }} // Change color based on favorite status
             aria-label={
               isFavorite ? "Remove from favorites" : "Add to favorites"
