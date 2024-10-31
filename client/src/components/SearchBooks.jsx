@@ -80,6 +80,12 @@ const SearchBooks = () => {
               className="search-result-item"
               onClick={() => handleBookClick(book.id)}
             >
+              <img
+                src={
+                  book.volumeInfo?.imageLinks?.thumbnail || "/default-image.jpg"
+                }
+                alt=""
+              />
               <div className="book-title">{book.volumeInfo.title}</div>
               <div className="book-author">
                 {book.volumeInfo.authors?.join(", ")}
