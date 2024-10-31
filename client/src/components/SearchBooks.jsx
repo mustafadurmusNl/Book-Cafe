@@ -30,11 +30,11 @@ const SearchBooks = () => {
       }
       return;
     }
-
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
     if (!searchTerm.trim()) return;
     try {
       const response = await axios.get(
-        `/api/books/search?query=${encodeURIComponent(searchTerm)}`,
+        `${baseURL}/api/books/search?query=${encodeURIComponent(searchTerm)}`,
       );
       setSearchResults(response.data.data || []);
     } catch (error) {
