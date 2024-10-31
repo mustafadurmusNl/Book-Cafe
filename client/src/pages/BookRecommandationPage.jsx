@@ -64,7 +64,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${user.id}/preferences`,
+        `${process.env.BASE_SERVER_URL}/api/users/${user.id}/preferences`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ const BookRecommendationPage = () => {
         };
 
         return axios
-          .get("http://localhost:3000/api/recommendedBooks", {
+          .get(`${process.env.BASE_SERVER_URL}/api/recommendedBooks`, {
             params: {
               preference,
               startIndex: getRandomNumber(),
@@ -146,7 +146,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
+        `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteAuthors`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -189,7 +189,7 @@ const BookRecommendationPage = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/${user.id}/favoriteAuthors`,
+        `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteAuthors`,
         { author },
         {
           headers: {
@@ -229,7 +229,7 @@ const BookRecommendationPage = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/users/${user.id}/favoriteBook`,
+        `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteBook`,
         { bookId: book.id },
         {
           headers: {

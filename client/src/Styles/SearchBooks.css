@@ -39,16 +39,22 @@
   border-radius: 10px;
 }
 .search-result-item {
-  padding: 6px 10px; /* کاهش ارتفاع */
+  padding: 6px 10px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
   display: flex;
-  justify-content: space-between; /* نمایش عنوان و نویسنده در یک خط */
-  white-space: nowrap; /* جلوگیری از شکستن متن */
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 81px;
+  margin-bottom: 2px;
+  background: antiquewhite;
+  align-items: center;
+  border-bottom: 2px solid rgb(168, 123, 73);
 }
-
+.search-result-item img {
+  width: 50px;
+}
 .search-result-item:hover {
   background-color: rgb(242, 230, 216); /* رنگ هاور به کرمی روشن‌تر */
 }
@@ -66,8 +72,7 @@
 }
 
 .book-author {
-  color: #961111;
-  background-color: rgb(252, 240, 226) !important;
+  color: #bc6c25;
   margin-left: 10px; /* فاصله بین عنوان و نویسنده */
   border-radius: 20px;
 }
