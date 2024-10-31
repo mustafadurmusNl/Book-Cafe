@@ -30,7 +30,8 @@ const SearchBooks = () => {
       }
       return;
     }
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const baseURL =
+      process.env.REACT_APP_API_BASE_URL || "http://localhost:3000";
     if (!searchTerm.trim()) return;
     try {
       const response = await axios.get(
