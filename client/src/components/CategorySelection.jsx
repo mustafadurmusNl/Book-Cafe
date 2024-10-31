@@ -9,11 +9,26 @@ import background2 from "../../public/images/99.gif";
 
 const CategoryAndPreferences = () => {
   const categories = [
-    "Fiction", "Non-Fiction", "Mystery", "Fantasy", "Romance",
-    "Sci-Fi", "Thriller", "Food & Cooking", "Biography",
-    "Self-Help", "Historical Fiction", "Young Adult", "Horror",
-    "Graphic Novels", "Poetry", "Business", "Travel",
-    "Health & Fitness", "Children's Books", "True Crime",
+    "Fiction",
+    "Non-Fiction",
+    "Mystery",
+    "Fantasy",
+    "Romance",
+    "Sci-Fi",
+    "Thriller",
+    "Food & Cooking",
+    "Biography",
+    "Self-Help",
+    "Historical Fiction",
+    "Young Adult",
+    "Horror",
+    "Graphic Novels",
+    "Poetry",
+    "Business",
+    "Travel",
+    "Health & Fitness",
+    "Children's Books",
+    "True Crime",
   ];
 
   const { selectedCategories, updateCategories } = useCategory(); // Get selected categories from context
@@ -43,7 +58,12 @@ const CategoryAndPreferences = () => {
       await axios.put(
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}`,
         { preferences: selectedCategories },
-        { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       setMessage("Preferences saved successfully!");
       setError(null);
@@ -73,7 +93,10 @@ const CategoryAndPreferences = () => {
             </button>
           ))}
         </div>
-        <button onClick={handleSubmit} disabled={selectedCategories.length === 0}>
+        <button
+          onClick={handleSubmit}
+          disabled={selectedCategories.length === 0}
+        >
           Confirm
         </button>
         {message && <p style={{ color: "green" }}>{message}</p>}

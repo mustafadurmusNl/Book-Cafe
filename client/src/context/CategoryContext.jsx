@@ -14,9 +14,12 @@ export const CategoryProvider = ({ children }) => {
       if (user) {
         const token = localStorage.getItem("token");
         try {
-          const response = await axios.get(`${process.env.BASE_SERVER_URL}/api/users/${user.id}/preferences`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const response = await axios.get(
+            `${process.env.BASE_SERVER_URL}/api/users/${user.id}/preferences`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          );
           const preferences = response.data.preferences || [];
           setSelectedCategories(preferences);
         } catch (error) {
@@ -39,8 +42,8 @@ export const CategoryProvider = ({ children }) => {
   );
 };
 
- CategoryProvider.propTypes = {
-   children: PropTypes.node.isRequired,
- };
+CategoryProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export const useCategory = () => useContext(CategoryContext);

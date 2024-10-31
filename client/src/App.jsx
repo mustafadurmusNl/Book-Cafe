@@ -21,10 +21,15 @@ const App = () => {
   return (
     <AuthProvider>
       <FavoriteProvider>
-        <CategoryProvider> {/* Wrap with CategoryProvider */}
+        <CategoryProvider>
+          {" "}
+          {/* Wrap with CategoryProvider */}
           <div className="app-container">
             {location.pathname === "/" && <Navbar />}
-            <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
+            <Toaster
+              position="bottom-right"
+              toastOptions={{ duration: 2000 }}
+            />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<AuthForm />} />
