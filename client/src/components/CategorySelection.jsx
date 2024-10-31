@@ -1,55 +1,34 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCategory } from "../context/CategoryContext"; // Import the context
+import Navbar from "./Navbar";
 import "../Styles/CategorySelection.css";
-import { logError, logInfo } from "../../../server/src/util/logging";
-import Cookies from "js-cookie";
 import background from "../../public/images/15.jpg";
 import background2 from "../../public/images/99.gif";
-import Navbar from "./Navbar";
 
 const CategoryAndPreferences = () => {
   const categories = [
-    "Fiction",
-    "Non-Fiction",
-    "Mystery",
-    "Fantasy",
-    "Romance",
-    "Sci-Fi",
-    "Thriller",
-    "Food & Cooking",
-    "Biography",
-    "Self-Help",
-    "Historical Fiction",
-    "Young Adult",
-    "Horror",
-    "Graphic Novels",
-    "Poetry",
-    "Business",
-    "Travel",
-    "Health & Fitness",
-    "Children's Books",
-    "True Crime",
+    "Fiction", "Non-Fiction", "Mystery", "Fantasy", "Romance",
+    "Sci-Fi", "Thriller", "Food & Cooking", "Biography",
+    "Self-Help", "Historical Fiction", "Young Adult", "Horror",
+    "Graphic Novels", "Poetry", "Business", "Travel",
+    "Health & Fitness", "Children's Books", "True Crime",
   ];
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const { selectedCategories, updateCategories } = useCategory(); // Get selected categories from context
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
-  const profileImage = localStorage.getItem("profileImage");
-
   const handleCategoryClick = (category) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(
-        selectedCategories.filter((cat) => cat !== category),
-      );
-    } else {
-      setSelectedCategories([...selectedCategories, category]);
-    }
+    const newSelectedCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((cat) => cat !== category)
+      : [...selectedCategories, category];
+
+    updateCategories(newSelectedCategories); // Update context with selected categories
   };
 
   const handleSubmit = async (e) => {
@@ -61,27 +40,16 @@ const CategoryAndPreferences = () => {
     }
 
     try {
-      const preferencesResponse = await axios.put(
+      await axios.put(
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}`,
-        {
-          preferences: selectedCategories,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        { preferences: selectedCategories },
+        { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
       );
-      setMessage(preferencesResponse.data.message);
+      setMessage("Preferences saved successfully!");
       setError(null);
       navigate("/recommendations");
     } catch (err) {
-      // Handle error
-      logError("Error:", err);
-      const errorMessage =
-        err.response?.data?.error || "An error occurred. Please try again.";
-      setError(errorMessage);
+      setError("An error occurred. Please try again.");
       setMessage("");
     }
   };
@@ -93,7 +61,6 @@ const CategoryAndPreferences = () => {
         <img className="background" src={background} alt="" />
         <img className="background2" src={background2} alt="" />
         <h1 className="catergory-title">Discover Your Interests</h1>
-
         {error && <div className="error-message">{error}</div>}
         <div className="category-list">
           {categories.map((category) => (
@@ -106,10 +73,7 @@ const CategoryAndPreferences = () => {
             </button>
           ))}
         </div>
-        <button
-          onClick={handleSubmit}
-          disabled={selectedCategories.length === 0}
-        >
+        <button onClick={handleSubmit} disabled={selectedCategories.length === 0}>
           Confirm
         </button>
         {message && <p style={{ color: "green" }}>{message}</p>}
