@@ -21,7 +21,6 @@ export const getBooksByPreference = async (req, res) => {
           q: preference,
           maxResults: 36,
           startIndex: startIndex,
-          key: googleBooksApiKey,
         },
       },
     );
