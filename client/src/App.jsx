@@ -12,29 +12,60 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AuthForm from "./components/AuthForm";
 import { FavoriteProvider } from "./context/FavoriteContext";
 import { AuthProvider } from "./context/AuthContext";
+import { CategoryProvider } from "./context/CategoryContext"; // Import CategoryProvider
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const location = useLocation();
+
   return (
     <AuthProvider>
       <FavoriteProvider>
-        <div className="app-container">
-          {location.pathname === "/" && <Navbar />}
-          <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<AuthForm />} />
-            <Route path="/categories" element={<CategoryAndPreferences />} />
-            <Route
-              path="/recommendations"
-              element={<BookRecommendationPage />}
+        <CategoryProvider>
+          {" "}
+          {/* Wrap with CategoryProvider */}
+          <div className="app-container">
+            {location.pathname === "/" && <Navbar />}
+            <Toaster
+              position="bottom-right"
+              toastOptions={{ duration: 2000 }}
             />
-            <Route path="/book/:id" element={<BookDetailComponent />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-          <Footer />
-        </div>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<AuthForm />} />
+
+              {/* Protected Routes */}
+              <Route
+                path="/categories"
+                element={
+                  <ProtectedRoute>
+                    <CategoryAndPreferences />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/recommendations"
+                element={
+                  <ProtectedRoute>
+                    <BookRecommendationPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/favorites"
+                element={
+                  <ProtectedRoute>
+                    <FavoritesPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route path="/book/:id" element={<BookDetailComponent />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+            <Footer />
+          </div>
+        </CategoryProvider>
       </FavoriteProvider>
     </AuthProvider>
   );

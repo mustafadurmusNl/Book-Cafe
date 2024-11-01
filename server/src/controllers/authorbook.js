@@ -21,7 +21,7 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
 
     logInfo("User's favorite authors:", favoriteAuthors);
 
-    const googleBooksApiKey = process.env.API_KEY; // Get Google Books API key from environment variables
+    // Get Google Books API key from environment variables
     const books = [];
 
     // Loop through the favorite authors and fetch books for each
@@ -33,10 +33,8 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
           "https://www.googleapis.com/books/v1/volumes",
           {
             params: {
-              q: `inauthor:${author}`, // Use "inauthor" to search by author
-              key: googleBooksApiKey,
-
-              // You can customize how many books per author
+              q: `inauthor:${author}`,
+              maxResults: 6,
             },
           },
         );
@@ -60,7 +58,7 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
     const shuffledBooks = books.sort(() => 0.5 - Math.random());
 
     // Select the first 5 random books
-    const randomBooks = shuffledBooks.slice(0, 4);
+    const randomBooks = shuffledBooks.slice(0, 6);
 
     // Return the random books fetched from the API
     res.status(200).json(randomBooks);

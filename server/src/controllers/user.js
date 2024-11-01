@@ -167,28 +167,35 @@ export const updateUserBooks = async (req, res) => {
 };
 
 export const getUserFavoriteBooks = async (req, res) => {
-  const { userId } = req.params; // Get user ID from request parameters
+  const { userId } = req.params;
+  console.log("Received request for userId:", userId);
 
   try {
-    // Fetch user data from the database
-    const user = await User.findById(userId).select("favoriteBook"); // Adjust the field name as necessary
+    const user = await User.findById(userId).select("favoriteBook");
+    console.log("User fetched:", user);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const favoriteBookIds = user.favoriteBook; // Assuming favoriteBook is an array of IDs
+    const favoriteBookIds = user.favoriteBook;
+    console.log("Favorite book IDs:", favoriteBookIds);
 
-    // Fetch details for each favorite book using the Google Books API
     const bookDetailsPromises = favoriteBookIds.map((bookId) =>
-      axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}`),
+      fetchBookDetailsWithRetry(bookId),
     );
 
-    // Wait for all book detail requests to complete
     const bookDetailsResponses = await Promise.all(bookDetailsPromises);
-    const bookDetails = bookDetailsResponses.map((response) => response.data);
+    const bookDetails = bookDetailsResponses.filter(
+      (response) => response !== null,
+    );
 
-    // Respond with the book details
+    if (bookDetails.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No favorite books found or all requests failed." });
+    }
+
     res.json(bookDetails);
   } catch (error) {
     console.error("Error fetching user favorite books:", error);
@@ -214,5 +221,27 @@ export const removeFavoriteBook = async (req, res) => {
   } catch (error) {
     console.error("Error removing favorite book:", error);
     res.status(500).json({ message: "Server error." });
+  }
+};
+
+const fetchBookDetailsWithRetry = async (bookId, retries = 3, delay = 1000) => {
+  try {
+    const response = await axios.get(
+      `https://www.googleapis.com/books/v1/volumes/${bookId}`,
+    );
+    return response.data; // Return the book details
+  } catch (error) {
+    if (error.response && error.response.status === 429 && retries > 0) {
+      console.warn(
+        `Rate limit hit for book ID ${bookId}. Retrying in ${delay}ms...`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return fetchBookDetailsWithRetry(bookId, retries - 1, delay * 2); // Exponential backoff
+    }
+    console.error(
+      `Failed to fetch book with ID ${bookId}:`,
+      error.response ? error.response.data : error.message,
+    );
+    return null; // Return null for failed requests
   }
 };

@@ -10,25 +10,25 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Initialize user state based on localStorage data
     const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
+    const isLoggedInStatus = localStorage.getItem("isLoggedIn") === "true";
 
-    if (storedUser && token) {
+    if (storedUser && token && isLoggedInStatus) {
       setUser(JSON.parse(storedUser));
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false); // Ensure accurate status when not logged in
     }
-  }, []);
-
-  useEffect(() => {
-    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedInStatus);
   }, []);
 
   const login = (userData) => {
     localStorage.setItem("token", userData.token);
     localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("isLoggedIn", true);
-    setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
     setUser(userData);
+    setIsLoggedIn(true);
     navigate("/recommendations");
   };
 
@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
     setUser(null);
+    setIsLoggedIn(false);
     navigate("/login");
   };
 
