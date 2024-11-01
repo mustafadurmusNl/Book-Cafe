@@ -1,5 +1,5 @@
 import React from "react";
-import "./landing.css";
+import "../Styles/landing.css";
 import two from "../../public/images/3.jpg";
 import a from "../../public/images/20.jpg";
 import b from "../../public/images/21.jpg";

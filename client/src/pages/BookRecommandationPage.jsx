@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 import { FavoriteContext } from "../context/FavoriteContext";
+import Book from "../../../server/src/models/Book";
 
 const BookRecommendationPage = () => {
   const [booksByPreference, setBooksByPreference] = useState({});
@@ -220,7 +221,6 @@ const BookRecommendationPage = () => {
 
   if (loading && page === 1) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-
   return (
     <div className="book-page">
       <Navbar />
@@ -249,6 +249,14 @@ const BookRecommendationPage = () => {
                   >
                     ♥
                   </button>
+
+                  {/* اضافه کردن نویسندگان */}
+                  <div className="book-author">
+                    {book.volumeInfo.authors
+                      ? book.volumeInfo.authors.join(", ")
+                      : "Unknown Author"}
+                  </div>
+
                   {book.volumeInfo.imageLinks?.thumbnail ? (
                     <img
                       src={book.volumeInfo.imageLinks.thumbnail}
@@ -258,9 +266,6 @@ const BookRecommendationPage = () => {
                   ) : (
                     <div className="placeholder-cover">
                       <p className="book-title">{book.volumeInfo.title}</p>
-                      <p className="book-author">
-                        {book.volumeInfo.authors.join(", ") || "Unknown Author"}
-                      </p>
                     </div>
                   )}
                   <Link to={`/book/${book.id}`} className="book-title">
@@ -305,6 +310,15 @@ const BookRecommendationPage = () => {
                     >
                       ♥
                     </button>
+
+                    {/* اضافه کردن نویسندگان */}
+                    <div className="book-author">
+                      Author :
+                      {book.volumeInfo.authors
+                        ? book.volumeInfo.authors.join(", ")
+                        : "Unknown Author"}
+                    </div>
+
                     <Link to={`/book/${book.id}`}>
                       {book.volumeInfo.imageLinks?.thumbnail ? (
                         <img
@@ -319,11 +333,6 @@ const BookRecommendationPage = () => {
                           style={{ cursor: "pointer" }}
                         >
                           <p className="book-title">{book.volumeInfo.title}</p>
-                          <p className="book-author">
-                            {book.volumeInfo.authors
-                              ? book.volumeInfo.authors.join(", ")
-                              : "Unknown Author"}
-                          </p>
                         </div>
                       )}
                     </Link>
@@ -349,3 +358,132 @@ const BookRecommendationPage = () => {
 };
 
 export default BookRecommendationPage;
+
+//   return (
+//     <div className="book-page">
+//       <Navbar />
+//       {/* Section for Favorite Authors' Books */}
+//       {booksByFavoriteAuthors.length > 0 && (
+//         <div className="book-category">
+//           <h2>Books by Your Favorite Authors</h2>
+//           <div className="book-grid">
+//             {booksByFavoriteAuthors.map((book) => {
+//               const isFavorite = favorites.some(
+//                 (favBook) => favBook.id === book.id,
+//               );
+//               return (
+//                 <div key={book.id} className="book-item">
+//                   <button
+//                     className="heart-icon"
+//                     onClick={() =>
+//                       toggleFavorite({
+//                         id: book.id,
+//                         title: book.volumeInfo.title,
+//                         imageLinks: book.volumeInfo.imageLinks,
+//                         description: book.volumeInfo.description,
+//                       })
+//                     }
+//                     style={{ color: isFavorite ? "red" : "white" }}
+//                   >
+//                     ♥
+//                   </button>
+//                   {book.volumeInfo.imageLinks?.thumbnail ? (
+//                     <img
+//                       src={book.volumeInfo.imageLinks.thumbnail}
+//                       alt={book.volumeInfo.title}
+//                       className="book-thumbnail"
+//                     />
+//                   ) : (
+//                     <div className="placeholder-cover">
+//                       <p className="book-title">{book.volumeInfo.title}</p>
+//                       <p className="book-author">
+//                         {book.volumeInfo.authors.join(", ") || "Unknown Author"}
+//                       </p>
+//                     </div>
+//                   )}
+//                   <Link to={`/book/${book.id}`} className="book-title">
+//                     {book.volumeInfo.title}
+//                   </Link>
+//                   <div className="book-info">
+//                     {book.volumeInfo.description
+//                       ? book.volumeInfo.description.slice(0, 100) + "..."
+//                       : "No description available."}
+//                   </div>
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Section for User Preferences' Books */}
+//       {Object.keys(booksByPreference).map((preference) => (
+//         <div key={preference} className="book-category">
+//           <h2>Best {preference} Books</h2>
+//           <div className="book-grid">
+//             {booksByPreference[preference].length > 0 ? (
+//               booksByPreference[preference].map((book) => {
+//                 const isFavorite = favorites.some(
+//                   (favBook) => favBook.id === book.id,
+//                 );
+//                 return (
+//                   <div key={book.id} className="book-item">
+//                     <button
+//                       className="heart-icon"
+//                       onClick={() => {
+//                         toggleFavorite({
+//                           id: book.id,
+//                           title: book.volumeInfo.title,
+//                           imageLinks: book.volumeInfo.imageLinks,
+//                           description: book.volumeInfo.description,
+//                         });
+//                         handleFavoriteSubmit(book); // Pass entire book object
+//                       }}
+//                       style={{ color: isFavorite ? "red" : "white" }}
+//                     >
+//                       ♥
+//                     </button>
+//                     <Link to={`/book/${book.id}`}>
+//                       {book.volumeInfo.imageLinks?.thumbnail ? (
+//                         <img
+//                           src={book.volumeInfo.imageLinks.thumbnail}
+//                           alt={book.volumeInfo.title}
+//                           className="book-thumbnail"
+//                           style={{ cursor: "pointer" }}
+//                         />
+//                       ) : (
+//                         <div
+//                           className="placeholder-cover"
+//                           style={{ cursor: "pointer" }}
+//                         >
+//                           <p className="book-title">{book.volumeInfo.title}</p>
+//                           <p className="book-author">
+//                             {book.volumeInfo.authors
+//                               ? book.volumeInfo.authors.join(", ")
+//                               : "Unknown Author"}
+//                           </p>
+//                         </div>
+//                       )}
+//                     </Link>
+//                     <Link to={`/book/${book.id}`} className="book-title">
+//                       {book.volumeInfo.title}
+//                     </Link>
+//                     <div className="book-info">
+//                       {book.volumeInfo.description
+//                         ? book.volumeInfo.description.slice(0, 100) + "..."
+//                         : "No description available."}
+//                     </div>
+//                   </div>
+//                 );
+//               })
+//             ) : (
+//               <p>No books available for this preference.</p>
+//             )}
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+// export default BookRecommendationPage;
