@@ -3,7 +3,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.container-auther {
+.container-auth {
   width: 100%;
   height: fit-content;
   position: relative;
@@ -13,17 +13,17 @@ body {
   padding: 50px;
 }
 
-.all-auther {
+.all-auth {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 12px 12px 12px 0px;
-  box-shadow: 0 22px 50px rgb(219 129 28 / 107%);
+  box-shadow: 0 22px 50px rgba(219, 129, 28, 0.7);
   padding: 30px;
   width: 400px;
   text-align: center;
   height: 650px;
 }
 
-.right-auther {
+.right-auth {
   width: 200px;
   position: absolute;
   left: 0;
@@ -31,7 +31,7 @@ body {
   border-radius: 50%;
 }
 
-.left-auther {
+.left-auth {
   width: 200px;
   position: absolute;
   right: 20px;
@@ -70,18 +70,18 @@ input:focus {
   outline: none;
 }
 
-.log-auther,
-.regist-auther:hover {
+.container-auth .log-auth,
+.regist-auth:hover {
   background-color: #653a2a !important;
   color: #ddd !important;
   padding-top: 10px;
 }
 
-.ground-auther {
+.ground-auth {
   width: 400px;
   height: 650px;
   border-radius: 12px 0px 0px 12px;
-  box-shadow: 0 22px 50px rgb(219 129 28 / 107%);
+  box-shadow: 0 22px 50px rgba(219, 129, 28, 0.7);
 }
 
 form {
@@ -89,15 +89,15 @@ form {
   font-family: cursive;
 }
 
-.google-button-auther img {
+.google-button-auth img {
   width: 35px;
   position: absolute;
   left: 4px;
   top: 6px;
 }
 
-.log-auther,
-.regist-auther {
+.container-auth .log-auth,
+.regist-auth {
   width: 200px;
   padding: 6px;
   background-color: #ddb892;
@@ -109,10 +109,9 @@ form {
   transition: background-color 0.3s;
   margin-bottom: 10px;
   font-family: system-ui;
-  transition: 0.2s step-end;
 }
 
-.google-button-auther {
+.google-button-auth {
   position: relative;
   background: linear-gradient(
     45deg,
@@ -139,36 +138,35 @@ form {
     0 8px 30px rgba(219, 68, 55, 0.4);
 }
 
-.google-button-auther:hover {
+.google-button-auth:hover {
   color: white;
 }
 
-.form-group-auther {
+.form-group-auth {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-.input-with-icon-auther {
+.input-with-icon-auth {
   position: relative;
 }
 
 input[type="password"] {
-  width: 100%;
-  padding-right: 30px;
+  padding-right: 35px;
 }
 
-.check-icon-auther {
+.check-icon-auth {
   color: green;
   position: absolute;
   right: 10px;
-  top: 35%;
+  top: 32%;
   transform: translateY(-50%);
   font-size: 18px;
   opacity: 0;
-  transition: opacity 15s ease-in-out !important;
+  transition: opacity 0.8s ease-in-out;
 }
 
-.show-auther {
-  opacity: 1 !important;
+.show-auth {
+  opacity: 1;
 }
