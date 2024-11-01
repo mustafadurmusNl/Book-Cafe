@@ -22,7 +22,6 @@ const userRouter = express.Router();
 userRouter.post(
   "/register",
   (req, res, next) => {
-    console.log("Register route hit");
     next();
   },
   registerUser,

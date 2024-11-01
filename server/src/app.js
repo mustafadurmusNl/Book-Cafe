@@ -44,7 +44,6 @@ app.use(passport.session());
 app.use("/api/user", userRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/users", userRoutes);
-console.log("User routes initialized");
 app.use("/api/auth", router);
 // Set up the routes for book recommendations
 app.use("/api/recommendedBooks", recommendationRouter);
