@@ -9,8 +9,11 @@ import logo from "../../public/images/logo.png";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
+import { json, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const AuthForm = () => {
+  const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,8 +26,11 @@ const AuthForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/users/login",
-        { email, password },
+        `${process.env.BASE_SERVER_URL}/api/users/login`,
+        {
+          email,
+          password,
+        },
       );
       if (response.data) {
         localStorage.setItem("token", response.data.token);
@@ -35,6 +41,7 @@ const AuthForm = () => {
         toast.error(response.data.error);
       } else {
         toast.success(`Welcome back, ${response.data.name}!`);
+        login(response.data);
         navigate("/recommendations");
       }
     } catch (error) {
@@ -50,8 +57,13 @@ const AuthForm = () => {
     }
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/users/register",
-        { name, email, password, confirmPassword },
+        `${process.env.BASE_SERVER_URL}/api/users/register`,
+        {
+          name,
+          email,
+          password,
+  , confirmPassword
+        },
       );
       if (data.error) {
         toast.error(data.error);
@@ -60,7 +72,10 @@ const AuthForm = () => {
         localStorage.setItem("user", JSON.stringify(data.id));
         localStorage.setItem("username", JSON.stringify(data.name));
         toast.success(data.message);
-        navigate("/categories");
+
+        login(data);
+        navigate("/categories"); 
+
       }
     } catch (error) {
       toast.error("Error: " + error.message);
@@ -68,7 +83,10 @@ const AuthForm = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.open("http://localhost:3000/api/auth/google/callback", "_self");
+    window.open(
+      `${process.env.BASE_SERVER_URL}/api/auth/google/callback`,
+      "_self",
+    );
   };
 
   const handlePasswordChange = (e) => {

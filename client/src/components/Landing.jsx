@@ -1,5 +1,8 @@
+
 import React from "react";
 import "../Styles/landing.css";
+import React, { useRef } from "react";
+
 import two from "../../public/images/3.jpg";
 import a from "../../public/images/20.jpg";
 import b from "../../public/images/21.jpg";
@@ -14,10 +17,27 @@ import j from "../../public/images/29.jpg";
 import k from "../../public/images/30.jpg";
 import l from "../../public/images/31.jpg";
 
-// Array of images
 const images = [a, b, c, d, e, f, g, h, i, j, k, l];
 
 export default function Landing() {
+  const formRef = useRef(null); // Initialize the reference for the form section
+
+  const handleExploreClick = () => {
+    // Ensure formRef is defined and scrollIntoView is a function
+    if (
+      formRef.current &&
+      typeof formRef.current.scrollIntoView === "function"
+    ) {
+      // Scroll smoothly to the form section
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+
+      // After reaching the target element, scroll down by an additional 200 pixels
+      setTimeout(() => {
+        window.scrollBy({ top: 750, behavior: "smooth" });
+      }, 500); // Adjust the delay as needed to match the scroll speed of `scrollIntoView`
+    }
+  };
+
   return (
     <>
       <div className="land">
@@ -31,9 +51,11 @@ export default function Landing() {
             help you find your next literary escape! Curated reading suggestions
             at your fingertips.
           </h2>
-          <a href="#Form">
-            <button className="gr"></button>{" "}
-            <button className="Explor">Explore Now</button>
+          <a>
+            <button className="gr"></button>
+            <button className="Explor" onClick={handleExploreClick}>
+              Explore Now
+            </button>
           </a>
         </div>
 
@@ -42,7 +64,8 @@ export default function Landing() {
         </div>
       </div>
 
-      <div className="land2">
+      {/* Attach the formRef here to scroll to this section */}
+      <div className="land2" ref={formRef}>
         <div className="info">
           <h3>Find Your Next Favorite Read</h3>
           <h4>
