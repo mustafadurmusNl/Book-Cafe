@@ -81,36 +81,39 @@ const BookDetailComponent = () => {
               "No detailed description available."}
           </p>
           <div className="bookButtons-custom">
-            <a
-              href={pdfAvailable ? pdfLink : "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="pdfButton-custom"
-              onClick={(e) => {
-                if (!pdfAvailable) {
-                  e.preventDefault(); // Prevent default action if PDF not available
-                  alert("PDF not available."); // Alert user
-                }
-              }}
-            >
-              View PDF
-            </a>
-            <a
-              href={buyLink || "#"} // Ensure to handle buy link properly
-              target="_blank" // Use "_blank" to open in new tab
-              rel="noopener noreferrer"
-              className="buyButton-custom"
-            >
-              Buy Link
-            </a>
-            <a
-              href={readLink || "#"} // Handle read link properly
-              target="_blank"
-              rel="noopener noreferrer"
-              className="readButton-custom"
-            >
-              Read Now
-            </a>
+            {/* Conditionally render the PDF button if available */}
+            {pdfAvailable && (
+              <a
+                href={pdfLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pdfButton-custom"
+              >
+                View PDF
+              </a>
+            )}
+            {/* Conditionally render the Buy Link button if available */}
+            {buyLink && (
+              <a
+                href={buyLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="buyButton-custom"
+              >
+                Buy Link
+              </a>
+            )}
+            {/* Conditionally render the Read Now button if available */}
+            {readLink && (
+              <a
+                href={readLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="readButton-custom"
+              >
+                Read Now
+              </a>
+            )}
           </div>
           <button
             className="heart-icon-bdc"
