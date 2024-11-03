@@ -25,7 +25,7 @@ router.get(
       }
 
       res.redirect(
-        `http://localhost:8080?token=${token}&userId=${userId}&isNewUser=${isNewUser}`,
+        `${process.env.FRONTEND_URL}?token=${token}&userId=${userId}&isNewUser=${isNewUser}`,
       );
     } catch (error) {
       return res.status(500).send("Internal Server Error");
