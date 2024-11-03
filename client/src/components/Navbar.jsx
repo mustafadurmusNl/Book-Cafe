@@ -12,12 +12,14 @@ import {
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchBooks from "./SearchBooks";
+import icoc from "../../public/images/image.png";
+import icoo from "../../public/images/pro1.png";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true",
   );
-  const [profileImage, setProfileImage] = useState("/image/pro1.png");
+
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -70,16 +72,16 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setProfileImage(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -119,7 +121,7 @@ const Navbar = () => {
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
         <Link to="/">
-          <img src="/image/image.png" alt="Book Cafe" />
+          <img src={icoc} alt="Book Cafe" />
           <h1>Book Cafe</h1>
         </Link>
       </div>
@@ -161,11 +163,7 @@ const Navbar = () => {
           </div>
           <div className="bc-navbar-right">
             <div className="profile-image-container" onClick={toggleDropdown}>
-              <img
-                src={profileImage}
-                alt="User Profile"
-                className="profile-image"
-              />
+              <img src={icoo} alt="User Profile" className="profile-image" />
               <span className="profile-tooltip">Profile</span>
             </div>
             {showDropdown && (
@@ -194,7 +192,7 @@ const Navbar = () => {
             <input
               ref={fileInputRef}
               type="file"
-              onChange={handleImageUpload}
+              // onChange={handleImageUpload}
               style={{ display: "none" }}
             />
           </div>
