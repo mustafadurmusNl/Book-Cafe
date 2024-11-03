@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
   googleId: { type: String, unique: true, sparse: true },
@@ -11,6 +12,20 @@ const userSchema = new mongoose.Schema({
   favoriteAuthors: { type: [String], default: [] },
   favoriteBook: { type: [String], default: [] },
 });
+
+// Method to generate JWT for a user instance
+userSchema.methods.generateJWT = function () {
+  return jwt.sign(
+    {
+      id: this._id,
+      email: this.email,
+      name: this.name,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }, // Adjust expiration as needed
+  );
+};
+
 const UserModel = mongoose.model("User", userSchema);
 
 export default UserModel;

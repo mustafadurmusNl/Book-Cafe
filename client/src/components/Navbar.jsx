@@ -48,6 +48,7 @@ const Navbar = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("username");
     localStorage.setItem("isLoggedIn", false);
+    localStorage.removeItem("favorites");
     setIsLoggedIn(false);
     navigate("/");
   };

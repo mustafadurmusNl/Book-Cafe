@@ -1,29 +1,37 @@
 import express from "express";
 import passport from "passport";
+import User from "../models/User.js";
+
 const router = express.Router();
-import dotenv from "dotenv";
-dotenv.config();
-const BASE_URL = process.env.FRONTEND_URL;
+
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] }),
 );
+
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: false,
+  }),
   async (req, res) => {
-    const user = req.user;
-    if (user.firstLogin) {
-      user.firstLogin = false;
-      await user.save();
-      res.redirect(`${BASE_URL}/recommendations`);
-    } else {
-      res.redirect(`${BASE_URL}/categories`);
+    try {
+      const token = req.user.generateJWT();
+      const userId = req.user._id;
+      const isNewUser = req.user.firstLogin;
+      if (isNewUser) {
+        await User.findByIdAndUpdate(userId, { firstLogin: false });
+      }
+
+      res.redirect(
+        `http://localhost:8080?token=${token}&userId=${userId}&isNewUser=${isNewUser}`,
+      );
+    } catch (error) {
+      console.error("Error updating user firstLogin status:", error);
+      return res.status(500).send("Internal Server Error");
     }
   },
 );
-router.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
-});
+
 export default router;
