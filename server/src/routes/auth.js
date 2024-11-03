@@ -28,7 +28,6 @@ router.get(
         `http://localhost:8080?token=${token}&userId=${userId}&isNewUser=${isNewUser}`,
       );
     } catch (error) {
-      console.error("Error updating user firstLogin status:", error);
       return res.status(500).send("Internal Server Error");
     }
   },
