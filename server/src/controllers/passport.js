@@ -34,6 +34,7 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("خطأ في استراتيجية Google:", error);
         return done(error, false);
       }
