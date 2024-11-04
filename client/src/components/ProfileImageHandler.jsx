@@ -14,11 +14,14 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`${process.env.BASE_SERVER_URL}/api/profile`, {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        const response = await axios.get(
+          `${process.env.BASE_SERVER_URL}/api/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           },
-        });
+        );
         if (response.data.profileImage) {
           setProfileImage(response.data.profileImage);
         }
@@ -37,11 +40,15 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
     formData.append("profileImage", file);
 
     try {
-      const response = await axios.post(`${process.env.BASE_SERVER_URL}/api/profile/upload`, formData, {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      const response = await axios.post(
+        `${process.env.BASE_SERVER_URL}/api/profile/upload`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         },
-      });
+      );
       return response.data.profileImageUrl;
     } catch (error) {
       logError("Image upload failed:", error);
@@ -89,7 +96,10 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
       {showDropdown && (
         <div className="dropdown-menu" ref={dropdownRef}>
           <ul>
-            <li onClick={() => fileInputRef.current.click()} style={{ cursor: "pointer" }}>
+            <li
+              onClick={() => fileInputRef.current.click()}
+              style={{ cursor: "pointer" }}
+            >
               <FontAwesomeIcon icon={faPlus} />
               <span>Upload Photo</span>
             </li>
@@ -109,14 +119,19 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
           </ul>
         </div>
       )}
-      <input ref={fileInputRef} type="file" onChange={handleImageUpload} style={{ display: "none" }} />
+      <input
+        ref={fileInputRef}
+        type="file"
+        onChange={handleImageUpload}
+        style={{ display: "none" }}
+      />
     </div>
   );
 };
 //proptye
- ProfileImageHandler.propTypes = {
-   name: PropTypes.string.isRequired,
-   setIsLoggedIn: PropTypes.func.isRequired,
-   navigate: PropTypes.func.isRequired,
- };
+ProfileImageHandler.propTypes = {
+  name: PropTypes.string.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
+};
 export default ProfileImageHandler;

@@ -3,16 +3,21 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faList, faStar, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHome,
+  faList,
+  faStar,
+  faThumbsUp,
+} from "@fortawesome/free-solid-svg-icons";
 import SearchBooks from "./SearchBooks";
 import ProfileImageHandler from "./ProfileImageHandler";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
+    localStorage.getItem("isLoggedIn") === "true",
   );
   const [name, setName] = useState(
-    JSON.parse(localStorage.getItem("username")) || ""
+    JSON.parse(localStorage.getItem("username")) || "",
   );
   const location = useLocation();
   const navigate = useNavigate();
@@ -73,13 +78,15 @@ const Navbar = () => {
                   <span>Recommendations</span>
                 </Link>
               </li>
-              <li className="welcome">
-                📚 Hello, {name}! 📚
-              </li>
+              <li className="welcome">📚 Hello, {name}! 📚</li>
             </ul>
           </div>
           <div className="bc-navbar-right">
-            <ProfileImageHandler name={name} setIsLoggedIn={setIsLoggedIn} navigate={navigate} />
+            <ProfileImageHandler
+              name={name}
+              setIsLoggedIn={setIsLoggedIn}
+              navigate={navigate}
+            />
           </div>
         </>
       ) : (
@@ -90,7 +97,10 @@ const Navbar = () => {
             </button>
           </a>
           <a href="#Form">
-            <button className="fancy-button" onClick={() => navigate("/register")}>
+            <button
+              className="fancy-button"
+              onClick={() => navigate("/register")}
+            >
               <span>Register</span>
             </button>
           </a>
