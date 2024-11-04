@@ -12,41 +12,24 @@ import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
 import recommendationRouter from "./routes/recommendation.js";
 import bookDetailRouter from "./routes/bookDetail.js";
-
 // Load environment variables
 dotenv.config();
 
 const app = express();
-
-// Enable 'trust proxy' for Heroku
-app.set("trust proxy", 1);
-
-// Middleware for CORS
+// Middleware
 app.use(
   cors({
-    origin: "http://localhost:8080", // Make sure this matches your front-end's local server port
+    origin: "http://localhost:8080",
     credentials: true,
   }),
 );
 
-// Apply HTTPS redirection only in production
-if (process.env.NODE_ENV === "production") {
-  app.use((req, res, next) => {
-    if (req.headers["x-forwarded-proto"] === "https") {
-      next(); // Request was via https, so do no special handling
-    } else {
-      res.redirect("https://" + req.headers.host + req.url); // Redirect to https
-    }
-  });
-}
-
-// Other middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
+// Session setup with MongoStore
 
-// Session setup with MongoStore (update your session settings as needed)
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -63,9 +46,9 @@ app.use("/api/user", userRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
+// Set up the routes for book recommendations
 app.use("/api/recommendedBooks", recommendationRouter);
 app.use("/api/book", bookDetailRouter);
-
 // MongoDB connection
 connectDB();
 
