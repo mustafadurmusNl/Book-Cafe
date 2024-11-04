@@ -10,7 +10,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.BASE_SERVER_URL}/api/auth/google/callback`,
+      callbackURL:
+        "https://c48-group-b-65d4744c77ac.herokuapp.com/api/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
