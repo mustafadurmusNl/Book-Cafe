@@ -12,7 +12,6 @@ import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
 import recommendationRouter from "./routes/recommendation.js";
 import bookDetailRouter from "./routes/bookDetail.js";
-import sslRedirect from "heroku-ssl-redirect";
 // Load environment variables
 dotenv.config();
 
@@ -24,9 +23,6 @@ app.use(
     credentials: true,
   }),
 );
-if (process.env.NODE_ENV === "production") {
-  app.use(sslRedirect());
-}
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
