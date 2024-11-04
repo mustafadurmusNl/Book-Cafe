@@ -12,10 +12,22 @@ import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
 import recommendationRouter from "./routes/recommendation.js";
 import bookDetailRouter from "./routes/bookDetail.js";
+
 // Load environment variables
 dotenv.config();
 
 const app = express();
+
+// HTTPS redirection middleware (only in production)
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.headers["x-forwarded-proto"] !== "https") {
+      return res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+    next();
+  });
+}
+
 // Middleware
 app.use(
   cors({
@@ -27,8 +39,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
-// Session setup with MongoStore
 
+// Session setup with MongoStore
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -45,9 +57,9 @@ app.use("/api/user", userRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", router);
-// Set up the routes for book recommendations
 app.use("/api/recommendedBooks", recommendationRouter);
 app.use("/api/book", bookDetailRouter);
+
 // MongoDB connection
 connectDB();
 
