@@ -18,6 +18,9 @@ dotenv.config();
 
 const app = express();
 
+// Enable 'trust proxy' for Heroku
+app.set("trust proxy", 1);
+
 // Middleware for CORS
 app.use(
   cors({
@@ -29,7 +32,7 @@ app.use(
 // Apply HTTPS redirection only in production
 if (process.env.NODE_ENV === "production") {
   app.use((req, res, next) => {
-    if (req.secure) {
+    if (req.headers["x-forwarded-proto"] === "https") {
       next(); // Request was via https, so do no special handling
     } else {
       res.redirect("https://" + req.headers.host + req.url); // Redirect to https
