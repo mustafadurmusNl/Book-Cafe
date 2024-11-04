@@ -61,7 +61,7 @@ export const loginUser = async (req, res) => {
       const token = jwt.sign(
         { email: user.email, id: user._id, name: user.name },
         process.env.JWT_SECRET,
-        { expiresIn: "1h" }, // Set token expiration if needed
+        { expiresIn: "1h" },
       );
 
       // Instead of setting it as a cookie, return it in the response
@@ -69,7 +69,8 @@ export const loginUser = async (req, res) => {
         message: "Login successful",
         name: user.name,
         token: token,
-        id: user._id, // Send the token back to the client
+        id: user._id, // Send the user ID back to the client
+        profileImage: user.profileImage, // Include the profile image URL
       });
     } else {
       return res.status(401).json({ error: "Incorrect password" });

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   firstLogin: { type: Boolean, default: true },
   favoriteAuthors: { type: [String], default: [] },
   favoriteBook: { type: [String], default: [] },
+  profileImage: { type: String, default: " " },
 });
 const UserModel = mongoose.model("User", userSchema);
 
