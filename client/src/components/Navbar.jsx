@@ -14,14 +14,18 @@ import {
 import SearchBooks from "./SearchBooks";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true",
+  );
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const [name, setName] = useState(JSON.parse(localStorage.getItem("username")) || "");
+  const [name, setName] = useState(
+    JSON.parse(localStorage.getItem("username")) || "",
+  );
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -40,7 +44,7 @@ const Navbar = () => {
     setIsLoggedIn(false);
     setName("");
     navigate("/");
-    window.location.reload(); 
+    window.location.reload();
   };
 
   const triggerFileSelectPopup = () => {
@@ -131,7 +135,10 @@ const Navbar = () => {
             <ul>
               {isLoggedIn ? (
                 <>
-                  <li onClick={triggerFileSelectPopup} style={{ cursor: "pointer" }}>
+                  <li
+                    onClick={triggerFileSelectPopup}
+                    style={{ cursor: "pointer" }}
+                  >
                     <FontAwesomeIcon icon={faPlus} />
                     <span>Upload Photo</span>
                   </li>
@@ -142,7 +149,10 @@ const Navbar = () => {
                   </li>
                 </>
               ) : (
-                <li onClick={() => navigate("/login")} style={{ cursor: "pointer" }}>
+                <li
+                  onClick={() => navigate("/login")}
+                  style={{ cursor: "pointer" }}
+                >
                   <FontAwesomeIcon icon={faSignInAlt} />
                   <span>Login</span>
                 </li>
