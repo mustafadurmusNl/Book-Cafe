@@ -61,10 +61,12 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "assert": "^2.1.0",
+    "axios": "^1.7.7",
     "babel-jest": "^29.7.0",
     "browserify-zlib": "^0.2.0",
     "browserslist": "^4.24.0",
     "client": "file:",
+    "cloudinary-core": "^2.13.1",
     "emoji-mart": "^5.6.0",
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
@@ -82,8 +84,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "url": "^0.11.4",
-    "util": "^0.12.5",
-    "axios": "^1.7.7"
+    "util": "^0.12.5"
   },
   "browserslist": {
     "production": [
