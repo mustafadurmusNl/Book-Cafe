@@ -14,11 +14,18 @@ import authenticateJWT from "./auth.js"; // Change to import for consistency
 import { saveUserFavoriteAuthor } from "../controllers/author.js";
 import { getBooksByFavoriteAuthors } from "../controllers/authorbook.js";
 import Book from "../models/Book.js";
+import { registerUser as registerUserController } from "../controllers/user.js";
 
 const userRouter = express.Router();
 
 // User routes
-userRouter.post("/register", registerUser);
+userRouter.post(
+  "/register",
+  (req, res, next) => {
+    next();
+  },
+  registerUser,
+);
 userRouter.post("/login", loginUser);
 userRouter.get("/getall", getall);
 userRouter.put("/:id", updateUserPreferences);

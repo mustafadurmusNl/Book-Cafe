@@ -1,42 +1,39 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React, { useState, useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios"; // Import axios
-import "./AuthForm.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
+import { FaCheckCircle } from "react-icons/fa";
+import "../Styles/AuthForm.css";
 import backgroundImage from "../../public/images/5.jpg";
 import left from "../../public/images/13.gif";
 import right from "../../public/images/11.gif";
 import logo from "../../public/images/logo.png";
-import { toast } from "react-hot-toast";
-import { json, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 const AuthForm = () => {
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isMatched, setIsMatched] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.BASE_SERVER_URL}/api/auth/google`;
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${process.env.BASE_SERVER_URL}/api/users/login`,
-        {
-          email,
-          password,
-        },
+        { email, password },
       );
       if (response.data) {
-        // Store token if returned by the server
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.id));
         localStorage.setItem("username", JSON.stringify(response.data.name));
-      }
-      if (response.data.error) {
-        toast.error(response.data.error);
-      } else {
         toast.success(`Welcome back, ${response.data.name}!`);
         login(response.data);
         navigate("/recommendations");
@@ -48,50 +45,61 @@ const AuthForm = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
     try {
       const { data } = await axios.post(
         `${process.env.BASE_SERVER_URL}/api/users/register`,
-        {
-          name,
-          email,
-          password,
-        },
+        { name, email, password, confirmPassword },
       );
-
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        // Assuming the server returns a token and user ID after registration
-        localStorage.setItem("token", data.token); // Store the token
+      if (data) {
+        localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.id));
-        localStorage.setItem("username", JSON.stringify(data.name)); // Store the user ID
-
+        localStorage.setItem("username", JSON.stringify(data.name));
         toast.success(data.message);
         login(data);
-        navigate("/categories"); // Redirect to category selection
+        navigate("/categories");
       }
     } catch (error) {
       toast.error("Error: " + error.message);
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.open(
-      `${process.env.BASE_SERVER_URL}/api/auth/google/callback`,
-      "_self",
-    );
-  };
+  useEffect(() => {
+    setIsMatched(password === confirmPassword && password.length > 0);
+  }, [password, confirmPassword]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const userId = urlParams.get("userId");
+    const isNewUser = urlParams.get("isNewUser") === "true"; // Check if user is new
+
+    if (token && userId) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", userId);
+      login({ token, id: userId });
+
+      if (isNewUser) {
+        navigate("/categories");
+      } else {
+        navigate("/recommendations");
+      }
+    }
+  }, [login, navigate]);
 
   return (
-    <div className="container" id="Form">
-      <img className="left" src={left} alt="" />
-      <img className="right" src={right} alt="" />
-      <img className="ground" src={backgroundImage} alt="" />
-      <div className="all">
+    <div className="container-auth" id="Form">
+      <img className="left-auth" src={left} alt="" />
+      <img className="right-auth" src={right} alt="" />
+      <img className="ground-auth" src={backgroundImage} alt="" />
+      <div className="all-auth">
         <h2>{isLogin ? "Login" : "Register"}</h2>
         <form onSubmit={isLogin ? handleLogin : handleRegister}>
           {!isLogin && (
-            <div>
+            <div className="form-group-auth">
               <label htmlFor="name">Name:</label>
               <input
                 type="text"
@@ -102,7 +110,7 @@ const AuthForm = () => {
               />
             </div>
           )}
-          <div>
+          <div className="form-group-auth">
             <label htmlFor="email">Email:</label>
             <input
               type="email"
@@ -112,25 +120,50 @@ const AuthForm = () => {
               required
             />
           </div>
-          <div>
+          <div className="form-group-auth">
             <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="input-with-icon-auth">
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              {isMatched && (
+                <FaCheckCircle className="check-icon-auth show-auth" />
+              )}
+            </div>
           </div>
-          <button className="log" type="submit">
+          {!isLogin && (
+            <div className="form-group-auth">
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <div className="input-with-icon-auth">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required={!isLogin}
+                />
+                {isMatched && (
+                  <FaCheckCircle className="check-icon-auth show-auth" />
+                )}
+              </div>
+            </div>
+          )}
+          <button className="log-auth" type="submit">
             {isLogin ? "Login" : "Register"}
           </button>
         </form>
-        <button className="regist" onClick={() => setIsLogin((prev) => !prev)}>
-          {isLogin ? " Register" : " Login"}
+        <button
+          className="regist-auth"
+          onClick={() => setIsLogin((prev) => !prev)}
+        >
+          {isLogin ? "Register" : "Login"}
         </button>
         <div>
-          <button className="google-button" onClick={handleGoogleLogin}>
+          <button className="google-button-auth" onClick={handleGoogleLogin}>
             <img src={logo} alt="" />
             Login with Google
           </button>

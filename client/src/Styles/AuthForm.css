@@ -1,11 +1,12 @@
-/* AuthForm.css */
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+a {
+  text-decoration: none;
+}
 
-.container {
+.container-auth {
   width: 100%;
   height: fit-content;
   position: relative;
@@ -14,27 +15,26 @@ body {
   justify-content: center;
   padding: 50px;
 }
-a {
-  text-decoration: none;
-  scroll-behavior: "smooth";
-}
-.all {
+
+.all-auth {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 12px 12px 12px 0px;
-  box-shadow: 0 22px 50px rgb(219 129 28 / 107%);
+  box-shadow: 0 22px 50px rgba(219, 129, 28, 0.7);
   padding: 30px;
   width: 400px;
   text-align: center;
-  height: 550px;
+  height: 650px;
 }
-.right {
+
+.right-auth {
   width: 200px;
   position: absolute;
   left: 0;
   height: 200px;
   border-radius: 50%;
 }
-.left {
+
+.left-auth {
   width: 200px;
   position: absolute;
   right: 20px;
@@ -73,32 +73,34 @@ input:focus {
   outline: none;
 }
 
-.container .log,
-.regist:hover {
+.container-auth .log-auth,
+.regist-auth:hover {
   background-color: #653a2a !important;
   color: #ddd !important;
   padding-top: 10px;
 }
 
-.ground {
+.ground-auth {
   width: 400px;
-  height: 550px;
+  height: 650px;
   border-radius: 12px 0px 0px 12px;
-  box-shadow: 0 22px 50px rgb(219 129 28 / 107%);
+  box-shadow: 0 22px 50px rgba(219, 129, 28, 0.7);
 }
 
 form {
   color: #cd8742;
   font-family: cursive;
 }
-.google-button img {
+
+.google-button-auth img {
   width: 35px;
   position: absolute;
   left: 4px;
   top: 6px;
 }
-.container .log,
-.regist {
+
+.container-auth .log-auth,
+.regist-auth {
   width: 200px;
   padding: 6px;
   background-color: #ddb892;
@@ -110,10 +112,9 @@ form {
   transition: background-color 0.3s;
   margin-bottom: 10px;
   font-family: system-ui;
-  transition: 0.2s step-end;
 }
 
-.google-button {
+.google-button-auth {
   position: relative;
   background: linear-gradient(
     45deg,
@@ -140,6 +141,35 @@ form {
     0 8px 30px rgba(219, 68, 55, 0.4);
 }
 
-.google-button:hover {
+.google-button-auth:hover {
   color: white;
+}
+
+.form-group-auth {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-with-icon-auth {
+  position: relative;
+}
+
+input[type="password"] {
+  padding-right: 35px;
+}
+
+.check-icon-auth {
+  color: green;
+  position: absolute;
+  right: 10px;
+  top: 32%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.show-auth {
+  opacity: 1;
 }

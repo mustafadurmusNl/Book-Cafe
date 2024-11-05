@@ -82,7 +82,8 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "url": "^0.11.4",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "axios": "^1.7.7"
   },
   "browserslist": {
     "production": [
