@@ -336,7 +336,7 @@
     padding: 10px 60px 10px 20px;
     border-radius: 20px;
     border: 1px solid rgb(169, 123, 73);
-    width: 800px;
+    width: 600px;
     background-color: rgb(252, 240, 226);
     text-align: left;
     position: relative;
@@ -384,7 +384,7 @@
     font-size: 16px;
   }
   .bc-navbar-search {
-    width: 100%;
+    width: 90%;
     justify-content: center;
     margin-bottom: 10px;
     padding-left: 5px;

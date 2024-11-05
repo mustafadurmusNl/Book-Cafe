@@ -50,8 +50,8 @@ const BookDetailComponent = () => {
 
   return (
     <div>
-      <Navbar /> {/* Render Navbar */}
-      <div className="bookDetailContainer-custom">
+      <div className="navbar-container">
+        <Navbar /> {/* Render Navbar */}
         <button
           className="backButton-custom"
           onClick={() => navigate(-1)} // Navigate back to the previous page
@@ -59,10 +59,12 @@ const BookDetailComponent = () => {
         >
           <FaArrowLeft /> {/* Back button icon */}
         </button>
+      </div>
+      <div className="bookDetailContainer-custom">
         <div className="bookImage-custom">
           <img
-            src={book.volumeInfo?.imageLinks?.thumbnail || "/default-image.jpg"} // Image source with fallback
-            alt={book.volumeInfo?.title || "No Title"} // Alt text for image
+            src={book.volumeInfo?.imageLinks?.thumbnail || "/default-image.jpg"}
+            alt={book.volumeInfo?.title || "No Title"}
           />
         </div>
         <div className="bookInfo-custom">
@@ -80,8 +82,7 @@ const BookDetailComponent = () => {
             {book.volumeInfo?.description ||
               "No detailed description available."}
           </p>
-          <div className="bookButtons-custom">
-            {/* Conditionally render the PDF button if available */}
+          <div className="bookButtons-custom buttonContainer-custom">
             {pdfAvailable && (
               <a
                 href={pdfLink}
@@ -92,7 +93,6 @@ const BookDetailComponent = () => {
                 View PDF
               </a>
             )}
-            {/* Conditionally render the Buy Link button if available */}
             {buyLink && (
               <a
                 href={buyLink}
@@ -103,7 +103,6 @@ const BookDetailComponent = () => {
                 Buy Link
               </a>
             )}
-            {/* Conditionally render the Read Now button if available */}
             {readLink && (
               <a
                 href={readLink}
@@ -117,13 +116,13 @@ const BookDetailComponent = () => {
           </div>
           <button
             className="heart-icon-bdc"
-            onClick={() => toggleFavorite({ id, ...book.volumeInfo })} // Toggle favorite status
-            style={{ color: isFavorite ? "red" : "white" }} // Change color based on favorite status
+            onClick={() => toggleFavorite({ id, ...book.volumeInfo })}
+            style={{ color: isFavorite ? "red" : "white" }}
             aria-label={
               isFavorite ? "Remove from favorites" : "Add to favorites"
             }
           >
-            ♥ {/* Heart icon for favorites */}
+            ♥
           </button>
         </div>
       </div>
