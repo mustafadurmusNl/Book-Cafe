@@ -5,8 +5,9 @@ import { hashPassword, comparePassword } from "../helpers/auth.js";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 export const registerUser = async (req, res) => {
+  console.log("RegisterUser function called with data:", req.body);
   try {
-    const { name, email, password, preferences } = req.body;
+    const { name, email, password, preferences, confirmPassword } = req.body;
     if (!name) {
       return res.json({ error: "Name is required" });
     }
@@ -14,6 +15,9 @@ export const registerUser = async (req, res) => {
       return res.json({
         error: "Password is required and should be at least 6 characters long",
       });
+    }
+    if (password !== confirmPassword) {
+      return res.status(400).json({ error: "Passwords do not match." });
     }
     const exist = await User.findOne({ email });
     if (exist) {
