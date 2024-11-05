@@ -23,8 +23,6 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  // const [name, setName] = useState("");
-  const [showLoginText, setShowLoginText] = useState(false);
   const [name, setName] = useState(
     JSON.parse(localStorage.getItem("username")) || "",
   );
@@ -33,40 +31,24 @@ const Navbar = () => {
     const handleRouteChange = () => {
       const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
       setIsLoggedIn(loggedInStatus);
+      setName(JSON.parse(localStorage.getItem("username")) || "");
     };
 
     handleRouteChange();
   }, [location.pathname]);
 
-  useEffect(() => {
-    const storedName = JSON.parse(localStorage.getItem("username"));
-    setName(storedName || "");
-  }, []);
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     localStorage.removeItem("username");
-    localStorage.setItem("isLoggedIn", false);
+    localStorage.setItem("isLoggedIn", "false");
     setIsLoggedIn(false);
+    setName("");
     navigate("/");
-  };
-  // };
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", "true");
-    navigate("/login");
+    window.location.reload();
   };
 
   const triggerFileSelectPopup = () => {
     fileInputRef.current.click();
-  };
-
-  const handleRegister = () => {
-    localStorage.setItem("isLoggedIn", true);
-    setIsLoggedIn(true);
-    navigate("/");
   };
 
   const handleImageUpload = (event) => {
@@ -97,23 +79,6 @@ const Navbar = () => {
     };
   }, []);
 
-  if (location.pathname === "/login" || location.pathname === "/register") {
-    return null;
-  }
-
-  useEffect(() => {
-    if (location.hash === "#Form" || location.pathname === "/") {
-      setShowLoginText(true);
-      setName("");
-    } else {
-      const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-      const storedName = JSON.parse(localStorage.getItem("username"));
-      setIsLoggedIn(loggedInStatus);
-      setShowLoginText(false);
-      setName(storedName || "");
-    }
-  }, [location.hash, location.pathname]);
-
   return (
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
@@ -122,54 +87,54 @@ const Navbar = () => {
           <h1>Book Cafe</h1>
         </Link>
       </div>
-      {isLoggedIn ? (
-        <>
-          <div className="bc-navbar-search">
-            <SearchBooks />
-          </div>
-          <div className="bc-navbar-left">
-            <ul className="bc-navbar-links">
-              <li>
-                <Link to="/">
-                  <FontAwesomeIcon icon={faHome} />
-                  <span>Home</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/categories">
-                  <FontAwesomeIcon icon={faList} />
-                  <span>Categories</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/favorites">
-                  <FontAwesomeIcon icon={faStar} />
-                  <span>Favorites</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/recommendations">
-                  <FontAwesomeIcon icon={faThumbsUp} />
-                  <span>Recommendations</span>
-                </Link>
-              </li>
-              <li className="welcome">
-                📚 {isLoggedIn ? `Hello, ${name}!` : ""} 📚
-              </li>
-            </ul>
-          </div>
-          <div className="bc-navbar-right">
-            <div className="profile-image-container" onClick={toggleDropdown}>
-              <img
-                src={profileImage}
-                alt="User Profile"
-                className="profile-image"
-              />
-              <span className="profile-tooltip">Profile</span>
-            </div>
-            {showDropdown && (
-              <div className="dropdown-menu" ref={dropdownRef}>
-                <ul>
+      <div className="bc-navbar-search">
+        <SearchBooks />
+      </div>
+      <div className="bc-navbar-left">
+        <ul className="bc-navbar-links">
+          <li>
+            <Link to="/">
+              <FontAwesomeIcon icon={faHome} />
+              <span>Home</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/categories">
+              <FontAwesomeIcon icon={faList} />
+              <span>Categories</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/favorites">
+              <FontAwesomeIcon icon={faStar} />
+              <span>Favorites</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/recommendations">
+              <FontAwesomeIcon icon={faThumbsUp} />
+              <span>Recommendations</span>
+            </Link>
+          </li>
+          <li className="welcome">
+            📚 {isLoggedIn ? `Hello, ${name}!` : "Welcome to Book Cafe!"} 📚
+          </li>
+        </ul>
+      </div>
+      <div className="bc-navbar-right">
+        <div className="profile-image-container" onClick={toggleDropdown}>
+          <img
+            src={profileImage}
+            alt="User Profile"
+            className="profile-image"
+          />
+          <span className="profile-tooltip">Profile</span>
+        </div>
+        {showDropdown && (
+          <div className="dropdown-menu" ref={dropdownRef}>
+            <ul>
+              {isLoggedIn ? (
+                <>
                   <li
                     onClick={triggerFileSelectPopup}
                     style={{ cursor: "pointer" }}
@@ -178,42 +143,30 @@ const Navbar = () => {
                     <span>Upload Photo</span>
                   </li>
                   <li>{name}</li>
-                  <li
-                    onClick={showLoginText ? handleLogin : handleLogout}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <FontAwesomeIcon
-                      icon={showLoginText ? faSignInAlt : faSignOutAlt}
-                    />
-                    <span>{showLoginText ? "Login" : "Logout"}</span>
+                  <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                    <span>Logout</span>
                   </li>
-                </ul>
-              </div>
-            )}
-            <input
-              ref={fileInputRef}
-              type="file"
-              onChange={handleImageUpload}
-              style={{ display: "none" }}
-            />
+                </>
+              ) : (
+                <li
+                  onClick={() => navigate("/login")}
+                  style={{ cursor: "pointer" }}
+                >
+                  <FontAwesomeIcon icon={faSignInAlt} />
+                  <span>Login</span>
+                </li>
+              )}
+            </ul>
           </div>
-        </>
-      ) : (
-        <div className="bc-navbar-right">
-          <a href="#Form">
-            {" "}
-            <button className="fancy-button" onClick={handleLogin}>
-              <span>Login</span>
-            </button>
-          </a>
-          <a href="#Form">
-            {" "}
-            <button className="fancy-button" onClick={handleRegister}>
-              <span>Register</span>
-            </button>
-          </a>
-        </div>
-      )}
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          onChange={handleImageUpload}
+          style={{ display: "none" }}
+        />
+      </div>
     </nav>
   );
 };
