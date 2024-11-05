@@ -12,12 +12,13 @@ import {
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchBooks from "./SearchBooks";
+import icoc from "../../public/images/image.png";
+import icoo from "../../public/images/pro1.png";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true",
   );
-  const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -26,6 +27,7 @@ const Navbar = () => {
   const [name, setName] = useState(
     JSON.parse(localStorage.getItem("username")) || "",
   );
+  const [profileImage, setProfileImage] = useState(icoo); // Default profile image
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -41,6 +43,7 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.setItem("isLoggedIn", "false");
+    localStorage.removeItem("favorites");
     setIsLoggedIn(false);
     setName("");
     navigate("/");
@@ -83,10 +86,11 @@ const Navbar = () => {
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
         <Link to="/">
-          <img src="/image/image.png" alt="Book Cafe" />
+          <img src={icoc} alt="Book Cafe" />
           <h1>Book Cafe</h1>
         </Link>
       </div>
+
       <div className="bc-navbar-search">
         <SearchBooks />
       </div>

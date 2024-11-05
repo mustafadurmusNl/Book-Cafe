@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
+import { FaCheckCircle } from "react-icons/fa";
 import "../Styles/AuthForm.css";
 import backgroundImage from "../../public/images/5.jpg";
 import left from "../../public/images/13.gif";
 import right from "../../public/images/11.gif";
 import logo from "../../public/images/logo.png";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { FaCheckCircle } from "react-icons/fa";
-
 const AuthForm = () => {
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
@@ -20,6 +18,10 @@ const AuthForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isMatched, setIsMatched] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.BASE_SERVER_URL}/api/auth/google`;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,10 +34,6 @@ const AuthForm = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.id));
         localStorage.setItem("username", JSON.stringify(response.data.name));
-      }
-      if (response.data.error) {
-        toast.error(response.data.error);
-      } else {
         toast.success(`Welcome back, ${response.data.name}!`);
         login(response.data);
         navigate("/recommendations");
@@ -56,14 +54,10 @@ const AuthForm = () => {
         `${process.env.BASE_SERVER_URL}/api/users/register`,
         { name, email, password, confirmPassword },
       );
-
-      if (data.error) {
-        toast.error(data.error);
-      } else {
+      if (data) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.id));
         localStorage.setItem("username", JSON.stringify(data.name));
-
         toast.success(data.message);
         login(data);
         navigate("/categories");
@@ -73,16 +67,28 @@ const AuthForm = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.open(
-      `${process.env.BASE_SERVER_URL}/api/auth/google/callback`,
-      "_self",
-    );
-  };
-
   useEffect(() => {
     setIsMatched(password === confirmPassword && password.length > 0);
   }, [password, confirmPassword]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const userId = urlParams.get("userId");
+    const isNewUser = urlParams.get("isNewUser") === "true"; // Check if user is new
+
+    if (token && userId) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", userId);
+      login({ token, id: userId });
+
+      if (isNewUser) {
+        navigate("/categories");
+      } else {
+        navigate("/recommendations");
+      }
+    }
+  }, [login, navigate]);
 
   return (
     <div className="container-auth" id="Form">
@@ -154,7 +160,7 @@ const AuthForm = () => {
           className="regist-auth"
           onClick={() => setIsLogin((prev) => !prev)}
         >
-          {isLogin ? " Register" : " Login"}
+          {isLogin ? "Register" : "Login"}
         </button>
         <div>
           <button className="google-button-auth" onClick={handleGoogleLogin}>
