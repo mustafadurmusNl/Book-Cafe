@@ -33,6 +33,7 @@ const Navbar = () => {
   useEffect(() => {
     const storedName = JSON.parse(localStorage.getItem("username"));
     setName(storedName || "");
+    return () => {};
   }, []);
 
   if (location.pathname === "/login" || location.pathname === "/register") {
