@@ -13,6 +13,7 @@ import SearchBooks from "./SearchBooks";
 import ProfileImageHandler from "./ProfileImageHandler";
 import { useAuth } from "../context/AuthContext";
 import PropTypes from "prop-types"; // Import PropTypes
+import icccon from "/Users/yousraelmaghraby/cohort48-project-group-B/client/public/image/image.png";
 
 const Navbar = () => {
   const { isLoggedIn, user, setIsLoggedIn } = useAuth(); // Access global login state and function
@@ -28,7 +29,7 @@ const Navbar = () => {
     <nav className="bc-navbar">
       <div className="bc-navbar-logo">
         <Link to="/">
-          <img src="/image/image.png" alt="Book Cafe" />
+          <img src={icccon} alt="Book Cafe" />
           <h1>Book Cafe</h1>
         </Link>
       </div>
@@ -66,7 +67,7 @@ const Navbar = () => {
       <div className="bc-navbar-right">
         {isLoggedIn ? (
           <>
-            <span className="welcome">📚 Welcome, {user.name}! 📚</span>
+            <span className="welcome">📚 Welcome, {user.name}! ☕️📚</span>
             {/* Profile image handler is only visible when logged in */}
             <ProfileImageHandler
               name={user.name}
