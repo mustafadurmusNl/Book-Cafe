@@ -3,6 +3,7 @@ import PropTypes from "prop-types"; // Import PropTypes
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn } = useAuth(); // Use isLoggedIn directly
   const navigate = useNavigate(); // Use useNavigate to handle navigation
@@ -22,7 +23,7 @@ const ProtectedRoute = ({ children }) => {
             behavior: "smooth",
           });
         }
-      }, 150); // Delay for smoother experience
+      }, 100); // Delay for smoother experience
     }
   }, [isLoggedIn, navigate]);
 

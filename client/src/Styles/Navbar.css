@@ -1,3 +1,5 @@
+
+
 .bc-navbar {
   display: flex;
   justify-content: space-between;
@@ -639,4 +641,18 @@
 .bc-navbar-links li span {
   margin-left: 8px;
   font-size: 14px;
+}
+/* Update the profile icon size */
+.profile-icon {
+  font-size: 2rem; /* Adjust this size as needed */
+}
+/* Add space between the 'Welcome Book Cafe' text and the profile image */
+.bc-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adjust the gap as needed */
+}
+
+.welcome {
+  margin-right: 15px; /* Add space between welcome text and profile icon */
 }

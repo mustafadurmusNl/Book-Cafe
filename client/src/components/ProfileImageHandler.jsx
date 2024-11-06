@@ -1,16 +1,19 @@
-// ProfileImageHandler.jsx
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { logError } from "../util/logger";
 import PropTypes from "prop-types";
-const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
+import { logError } from "../util/logger";
+import { useAuth } from "../context/AuthContext";
+
+const ProfileImageHandler = ({ name }) => {
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
+  const { logout } = useAuth(); 
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
 
+  // Fetch profile image if the user is logged in
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -20,7 +23,7 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          },
+          }
         );
         if (response.data.profileImage) {
           setProfileImage(response.data.profileImage);
@@ -35,6 +38,7 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
     }
   }, []);
 
+  // Upload the image and return the URL
   const uploadImageToAPI = async (file) => {
     const formData = new FormData();
     formData.append("profileImage", file);
@@ -47,15 +51,14 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
-      return response.data.profileImageUrl;
+      return response.data.profileImageUrl; // URL of the uploaded image
     } catch (error) {
       logError("Image upload failed:", error);
       throw new Error("Image upload failed");
     }
   };
-
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -89,30 +92,24 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
     };
   }, []);
 
+
   return (
     <div className="profile-image-container" onClick={toggleDropdown}>
-      <img src={profileImage} alt="User Profile" className="profile-image" />
+      <img
+        src={profileImage} // Show a loading image while uploading
+        alt="User Profile"
+        className="profile-image"
+      />
       <span className="profile-tooltip">Profile</span>
       {showDropdown && (
         <div className="dropdown-menu" ref={dropdownRef}>
           <ul>
-            <li
-              onClick={() => fileInputRef.current.click()}
-              style={{ cursor: "pointer" }}
-            >
+            <li onClick={() => fileInputRef.current.click()} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon icon={faPlus} />
               <span>Upload Photo</span>
             </li>
             <li>{name}</li>
-            <li
-              onClick={() => {
-                localStorage.removeItem("token");
-                localStorage.setItem("isLoggedIn", "false");
-                setIsLoggedIn(false);
-                navigate("/");
-              }}
-              style={{ cursor: "pointer" }}
-            >
+            <li onClick={logout} style={{ cursor: "pointer" }}>
               <FontAwesomeIcon icon={faSignOutAlt} />
               <span>Logout</span>
             </li>
@@ -128,10 +125,12 @@ const ProfileImageHandler = ({ name, setIsLoggedIn, navigate }) => {
     </div>
   );
 };
-//proptye
+
+// Prop types validation
 ProfileImageHandler.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   setIsLoggedIn: PropTypes.func.isRequired,
   navigate: PropTypes.func.isRequired,
 };
+
 export default ProfileImageHandler;

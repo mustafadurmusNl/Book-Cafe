@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     setIsLoggedIn(true);
     navigate("/recommendations");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const logout = () => {
@@ -38,11 +40,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("isLoggedIn");
     setUser(null);
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, isLoggedIn }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, isLoggedIn,setIsLoggedIn}}>
       {children}
     </AuthContext.Provider>
   );
