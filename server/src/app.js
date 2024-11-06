@@ -12,6 +12,7 @@ import userRouter from "./routes/user.js";
 import bookRouter from "./routes/books.js";
 import recommendationRouter from "./routes/recommendation.js";
 import bookDetailRouter from "./routes/bookDetail.js";
+import imageRoutes from "./routes/imageRoutes.js";
 // Load environment variables
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
@@ -48,6 +50,7 @@ app.use("/api/auth", router);
 // Set up the routes for book recommendations
 app.use("/api/recommendedBooks", recommendationRouter);
 app.use("/api/book", bookDetailRouter);
+app.use("/api/profile", imageRoutes);
 // MongoDB connection
 connectDB();
 

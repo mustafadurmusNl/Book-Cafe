@@ -55,9 +55,12 @@ const CategoryAndPreferences = () => {
     }
 
     try {
-      await axios.put(
+      // eslint-disable-next-line no-unused-vars
+      const preferencesResponse = await axios.put(
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}`,
-        { preferences: selectedCategories },
+        {
+          preferences: selectedCategories,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -80,7 +83,7 @@ const CategoryAndPreferences = () => {
       <div className="category-container">
         <img className="background" src={background} alt="" />
         <img className="background2" src={background2} alt="" />
-        <h1 className="catergory-title">Discover Your Interests</h1>
+        <h1 className="category-title">Discover Your Interests</h1>
         {error && <div className="error-message">{error}</div>}
         <div className="category-list">
           {categories.map((category) => (
