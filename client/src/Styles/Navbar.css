@@ -233,10 +233,7 @@
   font-family: "Playwrite GB S";
   color: currentColor;
 }
-.avatar {
-  width: 40px;
-  height: 40px;
-}
+/* Large screens */
 @media (min-width: 2133px) {
   .bc-navbar-search input {
     padding: 10px 60px 10px 20px;
@@ -244,9 +241,7 @@
     border: 1px solid rgb(169, 123, 73);
     width: 800px;
     background-color: rgb(252, 240, 226);
-    text-align: left;
     margin-top: 3%;
-    position: relative;
   }
   .bc-navbar-links li .faHome,
   .bc-navbar-links li .faList,
@@ -256,342 +251,74 @@
   .bc-navbar-links li {
     font-size: 18px;
   }
-  .bc-navbar {
-    padding: 15px 30px;
-  }
   .profile-tooltip {
-    position: absolute;
     top: 8%;
     left: 95.9%;
   }
 }
 
+/* Medium screens */
 @media (max-width: 1422px) {
   .bc-navbar-search input {
     width: 600px;
   }
   .search-icon {
-    position: absolute;
     left: 93%;
     top: 50%;
   }
   .bc-navbar-links li {
     font-size: 14px;
   }
-  .bc-navbar-links li .faHome,
-  .bc-navbar-links li .faList,
-  .bc-navbar-links li .faStar {
-    font-size: 25px;
-  }
   .profile-tooltip {
-    position: absolute;
     top: 6%;
     left: 94.6%;
   }
 }
 
-@media (max-width: 1280px) {
-  .bc-navbar-search .search-icon {
-    right: 15px;
-  }
-  .bc-navbar-logo h1 {
-    padding-top: 1px;
-  }
-  .bc-navbar-search input {
-    width: 450px;
-  }
-  .profile-tooltip {
-    position: absolute;
-    top: 6%;
-    left: 90%;
-  }
-  .bc-navbar-links li .faHome,
-  .bc-navbar-links li .faList,
-  .bc-navbar-links li .faStar {
-    font-size: 22px;
-  }
-  .bc-navbar {
-    padding: 10px 10px;
-  }
-}
+/* Smaller screens */
 @media (max-width: 993px) {
   .bc-navbar {
-    padding: 10px 10px;
     flex-direction: column;
     align-items: center;
-  }
-  .profile-image-container {
-    margin-top: 20%;
   }
   .bc-navbar-search {
     margin-top: 10px;
     order: 2;
   }
-
-  .bc-navbar-links {
-    order: 1;
-  }
-
-  .bc-navbar-search input {
-    padding: 10px 60px 10px 20px;
-    border-radius: 20px;
-    border: 1px solid rgb(169, 123, 73);
-    width: 600px;
-    background-color: rgb(252, 240, 226);
-    text-align: left;
-    position: relative;
-  }
   .profile-tooltip {
     display: none;
   }
-
-  .search-icon {
-    left: 95%;
-  }
-
-  .bc-navbar-logo h1 {
-    padding-top: 1px;
-  }
-
-  .bc-navbar-links li .faHome,
-  .bc-navbar-links li .faList,
-  .bc-navbar-links li .faStar {
-    font-size: 22px;
-  }
-
   .bc-navbar-links li {
     font-size: 14px;
   }
 }
 
+/* Tablet screens */
 @media (max-width: 744px) {
   .bc-navbar {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding: 10px;
-  }
-  .bc-navbar-logo {
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
   }
   .bc-navbar-logo img {
     height: 45px;
-    margin-bottom: 5px;
-  }
-  .bc-navbar-logo h1 {
-    font-size: 16px;
-  }
-  .bc-navbar-search {
-    width: 90%;
-    justify-content: center;
-    margin-bottom: 10px;
-    padding-left: 5px;
-  }
-  .bc-navbar-search input {
-    width: 95%;
-  }
-  .search-icon {
-    left: 90%;
-  }
-  .bc-navbar-links {
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .bc-navbar-links li {
-    margin: 0 5px;
-  }
-  .bc-navbar-links a span {
-    font-size: 12px;
-    margin-top: -4px;
-  }
-  .bc-navbar-links a:hover span {
-    opacity: 1;
-    font-size: 12px;
-  }
-  .fancy-button {
-    font-size: 12px;
-    padding: 8px 15px;
-    width: 70%;
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
-  .bc-navbar-right {
-    flex-direction: column;
-  }
-}
-@media (max-width: 664px) {
-  .bc-navbar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-  }
-  .bc-navbar-logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .bc-navbar-logo img {
-    height: 45px;
-    margin-bottom: 5px;
-  }
-  .bc-navbar-logo h1 {
-    display: block;
-    font-size: 16px;
-  }
-  .bc-navbar-search {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    padding-left: 5px;
-  }
-  .bc-navbar-search input {
-    width: 95%;
-  }
-  .search-icon {
-    left: 90%;
-  }
-  .bc-navbar-links {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .bc-navbar-links li {
-    margin: 0 5px;
-  }
-  .bc-navbar-links a span {
-    font-size: 12px;
-    margin-top: -4px;
-  }
-  .bc-navbar-links a:hover span {
-    opacity: 1;
-    font-size: 12px;
-  }
-  .fancy-button {
-    font-size: 12px;
-    padding: 8px 15px;
-    width: 70%;
-    text-align: center;
-  }
-  .bc-navbar-auth {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  .profile-tooltip {
-    color: rgb(169, 123, 73);
-    padding: 15px;
-    font-size: 15px;
-    position: fixed;
-    top: 20%;
-    left: 97.2%;
-    transform: translateX(-50%);
-  }
-}
-
-@media (max-width: 546px) {
-  .bc-navbar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-  }
-  .bc-navbar-logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .bc-navbar-logo img {
-    height: 45px;
-    margin-bottom: 5px;
-  }
-  .bc-navbar-logo h1 {
-    display: block;
-    font-size: 16px;
-  }
-  .bc-navbar-search {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
   }
   .bc-navbar-search input {
     width: 90%;
   }
-  .search-icon {
-    left: 83%;
-  }
-  .bc-navbar-links {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .bc-navbar-links li {
-    margin: 0 5px;
-  }
-  .bc-navbar-links a span {
-    font-size: 12px;
-    margin-top: -4px;
-  }
-  .bc-navbar-links a:hover span {
-    opacity: 1;
-    font-size: 12px;
-  }
   .fancy-button {
     font-size: 12px;
-    padding: 8px 15px;
     width: 70%;
-    text-align: center;
-  }
-  .bc-navbar-auth {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  .profile-tooltip {
-    display: none;
   }
 }
 
+/* Mobile screens */
 @media (max-width: 480px) {
   .bc-navbar {
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding: 10px;
-  }
-  .bc-navbar-logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
   }
   .bc-navbar-logo img {
     height: 40px;
-    margin-bottom: 5px;
-  }
-  .bc-navbar-logo h1 {
-    display: block;
-    font-size: 16px;
-  }
-  .bc-navbar-search {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
   }
   .bc-navbar-search input {
     width: 94%;
@@ -599,36 +326,18 @@
   .search-icon {
     left: 85%;
   }
-  .bc-navbar-links {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .bc-navbar-links li {
-    margin: 0 5px;
+  .fancy-button {
+    width: 80%;
   }
   .bc-navbar-links a span {
     font-size: 12px;
     margin-top: -9px;
   }
-  .bc-navbar-links a:hover span {
-    opacity: 1;
-    font-size: 12px;
-  }
-  .fancy-button {
-    font-size: 12px;
-    padding: 8px 15px;
-    width: 80%;
-    text-align: center;
-  }
   .bc-navbar-auth {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 10px;
   }
 }
+
 .bc-navbar-links li {
   display: flex;
   align-items: center;

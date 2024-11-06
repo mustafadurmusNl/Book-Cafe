@@ -173,3 +173,34 @@ input[type="password"] {
 .show-auth {
   opacity: 1;
 }
+@media (max-width: 480px) {
+  .container-auth {
+    width: 350px;
+    margin: 20px auto;
+  }
+  .container-auth img {
+    display: none;
+  }
+  .all-auth {
+    height: fit-content;
+  }
+  .all-auth h2 {
+  }
+}
+@media (min-width: 481px) and (max-width: 750px) {
+  .container-auth {
+    width: 480; /* Adjust as needed */
+    /* Adjust the margin for tablet display */
+  }
+  .container-auth img {
+    display: none; /* Display images if hidden for smaller screens */
+    max-width: 100%; /* Ensure it fits within container */
+    margin: 0 auto;
+  }
+  .all-auth {
+    height: auto; /* Adjust to fit tablet screen content */
+  }
+  .all-auth h2 {
+    font-size: 1.5rem; /* Customize font size for tablet */
+  }
+}
