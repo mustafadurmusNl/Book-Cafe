@@ -1,6 +1,10 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 .bookDetailContainer-custom {
   display: flex;
-  max-width: 70%;
+  max-width: 80%;
   margin: 20px auto;
   background: rgb(252, 240, 226);
   padding: 20px;
@@ -28,7 +32,7 @@
 }
 
 .bookInfo-custom {
-  width: 60%;
+  width: 55%;
   display: flex;
   flex-direction: column;
 }
@@ -72,29 +76,46 @@
 }
 
 .bookButtons-custom {
-  display: flex;
+  display: flex !important;
+  flex-wrap: wrap;
   gap: 10px;
+  justify-content: space-between;
+}
+.buttonContainer-custom {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 600px !important;
+  gap: 10px !important;
+  margin: 0 auto !important;
 }
 
 .pdfButton-custom,
-.buyButton-custom {
-  background-color: rgb(234, 133, 27);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 10px;
-  width: 40%;
-  text-align: center;
+.buyButton-custom,
+.readButton-custom {
+  background-color: rgb(234, 133, 27) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 25px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  flex: 1 !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 45px !important;
+  line-height: 1 !important;
+  font-size: 16px !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .heart-icon-bdc {
   position: absolute;
-  top: -2%;
-  left: 95%;
+  top: -1% !important;
+  right: 1% !important;
   font-size: 24px;
   color: white;
   cursor: pointer;
@@ -108,23 +129,44 @@
   justify-content: center;
   align-items: center;
   transition: color 0.3s ease;
-  box-shadow: none !important;
 }
 
 .heart-icon.red {
   color: red;
 }
 
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+
 .backButton-custom {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: none;
+  position: absolute !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
   border: none;
   cursor: pointer;
-  color: #333;
+  color: #653a2a;
   font-size: 20px;
+  border-radius: 50%;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  margin-top: -10px;
+  margin-bottom: 20px;
 }
+
+.backButton-custom:hover {
+  background-color: rgba(169, 123, 73, 0.15);
+  box-shadow: 0px 2px 8px rgba(169, 123, 73, 0.5);
+  transform: translateY(-1px);
+}
+
 .readButton-custom {
   background-color: rgb(234, 133, 27);
   color: white;
@@ -140,95 +182,319 @@
 }
 @media (max-width: 2133px) {
   .heart-icon-bdc {
-    top: -3%;
-    left: 95% !important;
+    top: -2% !important;
+    left: 95.5% !important;
   }
 }
 
-/* نمایشگرهای بین 1422px تا 2133px */
 @media (max-width: 1422px) {
   .heart-icon-bdc {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     font-size: 20px;
-    top: -2%;
-    left: 94%;
+    top: 2%;
+    left: 95% !important;
+  }
+
+  .bookH-custom {
+    font-size: 20px;
   }
 }
 
-/* نمایشگرهای بین 1280px تا 1422px */
 @media (max-width: 1280px) {
   .heart-icon-bdc {
     width: 40px;
     height: 40px;
     font-size: 18px;
-    top: -1%;
-    left: 93%;
+    top: 1% !important;
+    left: 92% !important;
+  }
+  .bookDetailContainer-custom {
+    max-width: 90%;
+  }
+
+  .bookImage-custom {
+    width: 35%;
+  }
+
+  .bookInfo-custom {
+    width: 60%;
   }
 }
 
-/* نمایشگرهای بین 993px تا 1280px */
 @media (max-width: 993px) {
+  .backButton-custom {
+    position: relative;
+    margin-top: 185px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    margin-left: -25px;
+  }
+
+  .bookDetailContainer-custom {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .bookImage-custom {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+  }
+
+  .bookInfo-custom {
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .pdfButton-custom,
+  .buyButton-custom,
+  .readButton-custom {
+    width: 100%;
+  }
+
   .heart-icon-bdc {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     width: 35px;
     height: 35px;
     font-size: 16px;
-    top: 0%;
-    left: 92%;
+    z-index: 10;
   }
 }
 
-/* نمایشگرهای بین 744px تا 993px */
-@media (max-width: 744px) {
+@media (max-width: 768px) {
+  .backButton-custom {
+    position: relative;
+    margin-top: 185px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    margin-left: -25px;
+  }
+
+  .bookDetailContainer-custom {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .bookImage-custom {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+  }
+
+  .bookInfo-custom {
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .pdfButton-custom,
+  .buyButton-custom,
+  .readButton-custom {
+    width: 100%;
+  }
+
   .heart-icon-bdc {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-    top: 0%;
-    left: 90%;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    z-index: 10;
   }
 }
 
-/* نمایشگرهای بین 664px تا 744px */
 @media (max-width: 664px) {
+  .backButton-custom {
+    position: relative;
+    margin-top: 185px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    margin-left: -35px;
+  }
+
+  .bookDetailContainer-custom {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .bookImage-custom {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+  }
+
+  .bookInfo-custom {
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .pdfButton-custom,
+  .buyButton-custom,
+  .readButton-custom {
+    width: 100%;
+  }
+
   .heart-icon-bdc {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-    top: 1%;
-    left: 88%;
+    position: absolute;
+    top: -1% !important;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    z-index: 10;
   }
 }
 
-/* نمایشگرهای بین 526px تا 664px */
 @media (max-width: 526px) {
+  .backButton-custom {
+    position: relative;
+    margin-top: 210px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    margin-left: -5px;
+  }
+
+  .bookDetailContainer-custom {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .bookImage-custom {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+  }
+
+  .bookInfo-custom {
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .pdfButton-custom,
+  .buyButton-custom,
+  .readButton-custom {
+    width: 100%;
+  }
+
   .heart-icon-bdc {
-    width: 26px;
-    height: 26px;
-    font-size: 11px;
-    top: 2%;
-    left: 86%;
+    position: absolute;
+    top: 10px;
+    right: 10px !important;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    z-index: 10;
   }
 }
 
-/* نمایشگرهای کوچک‌تر از 480px */
 @media (max-width: 480px) {
+  .backButton-custom {
+    position: relative;
+    margin-top: 200px !important;
+    margin-bottom: 20px;
+    font-size: 18px;
+    margin-left: -5px !important;
+  }
+
+  .bookDetailContainer-custom {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .bookImage-custom {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+  }
+
+  .bookInfo-custom {
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .pdfButton-custom,
+  .buyButton-custom,
+  .readButton-custom {
+    width: 100%;
+  }
+
   .heart-icon-bdc {
-    width: 24px;
-    height: 24px;
-    font-size: 10px;
-    top: 2%;
-    left: 85%;
+    position: absolute;
+    top: 10px;
+    right: 30px !important;
+    transform: translateX(-10px);
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    z-index: 10;
   }
 }
-
-/* نمایشگرهای بسیار کوچک‌تر از 325px */
+@media (max-width: 440px) {
+  .backButton-custom {
+    margin-top: 230px !important;
+  }
+}
 @media (max-width: 325px) {
+  .backButton-custom {
+    position: relative;
+    margin-top: 250px;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+    margin-left: -10px;
+  }
+
+  .bookDetailContainer-custom {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .bookImage-custom {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+  }
+
+  .bookInfo-custom {
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .pdfButton-custom,
+  .buyButton-custom,
+  .readButton-custom {
+    width: 100%;
+    font-size: 12px !important;
+  }
+
   .heart-icon-bdc {
-    width: 22px;
-    height: 22px;
-    font-size: 9px;
-    top: 3%;
-    left: 83%;
+    position: absolute;
+    top: 10px;
+    right: 25px !important;
+    transform: translateX(-25px);
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    z-index: 10;
   }
 }
