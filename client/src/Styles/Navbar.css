@@ -642,7 +642,8 @@
 }
 /* Update the profile icon size */
 .profile-icon {
-  font-size: 2rem; /* Adjust this size as needed */
+  font-size: 3rem;
+  color: #975c31; /* Adjust this size as needed */
 }
 /* Add space between the 'Welcome Book Cafe' text and the profile image */
 .bc-navbar-right {
