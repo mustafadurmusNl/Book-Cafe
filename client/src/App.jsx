@@ -59,6 +59,14 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
 
               <Route path="/book/:id" element={<BookDetailComponent />} />
               <Route path="*" element={<NotFoundPage />} />
