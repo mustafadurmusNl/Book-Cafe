@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 
 const ProfileImageHandler = ({ name }) => {
   const [profileImage, setProfileImage] = useState("/image/pro1.png");
-  const { logout } = useAuth(); 
+  const { logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -23,7 +23,7 @@ const ProfileImageHandler = ({ name }) => {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         if (response.data.profileImage) {
           setProfileImage(response.data.profileImage);
@@ -51,7 +51,7 @@ const ProfileImageHandler = ({ name }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       return response.data.profileImageUrl; // URL of the uploaded image
     } catch (error) {
@@ -92,7 +92,6 @@ const ProfileImageHandler = ({ name }) => {
     };
   }, []);
 
-
   return (
     <div className="profile-image-container" onClick={toggleDropdown}>
       <img
@@ -104,7 +103,10 @@ const ProfileImageHandler = ({ name }) => {
       {showDropdown && (
         <div className="dropdown-menu" ref={dropdownRef}>
           <ul>
-            <li onClick={() => fileInputRef.current.click()} style={{ cursor: "pointer" }}>
+            <li
+              onClick={() => fileInputRef.current.click()}
+              style={{ cursor: "pointer" }}
+            >
               <FontAwesomeIcon icon={faPlus} />
               <span>Upload Photo</span>
             </li>
