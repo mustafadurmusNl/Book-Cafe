@@ -5,7 +5,6 @@ import User from "../models/User.js";
 
 dotenv.config();
 
-// تحديد URL إعادة التوجيه بناءً على بيئة التشغيل
 const callbackURL =
   process.env.NODE_ENV === "production"
     ? `${process.env.BASE_URL}/api/auth/google/callback`
@@ -35,7 +34,7 @@ passport.use(
         return done(null, user);
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error("خطأ في استراتيجية Google:", error);
+        console.error(error);
         return done(error, false);
       }
     },
