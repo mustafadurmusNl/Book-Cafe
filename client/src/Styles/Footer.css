@@ -14,3 +14,13 @@
   color: antiquewhite;
   text-decoration: none;
 }
+@media (max-width: 480px) {
+  .footer {
+  }
+  .footer p {
+    font-size: 11px;
+  }
+  .footer a {
+    padding: 0;
+  }
+}
