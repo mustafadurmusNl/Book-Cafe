@@ -7,8 +7,7 @@
 body {
   background-size: cover;
   background-position: center;
-  font-family: "Arial", sans-serif;
-  color: #333333;
+  color: rgb(109, 73, 35);
   margin: 0;
   padding: 0;
 }
@@ -22,7 +21,6 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Description paragraph */
 p {
   border-radius: 10px;
   background-color: #fff;
@@ -32,7 +30,6 @@ p {
   color: #2e1138;
 }
 
-/* Styling for category buttons */
 .category-list {
   display: grid;
   flex-wrap: wrap;
@@ -60,7 +57,7 @@ p {
 .category-item:hover {
   background-color: #2980b9;
   color: white;
-  transform: translateY(-4px); /* Subtle hover lift effect */
+  transform: translateY(-4px);
 }
 
 .category-item.selected {
@@ -69,7 +66,6 @@ p {
   border-color: #2980b9;
 }
 
-/* Submit button styling */
 button {
   display: block;
   background-color: #2ecc71;
@@ -82,7 +78,7 @@ button {
   transition:
     background-color 0.3s ease-in-out,
     transform 0.2s ease-in-out;
-  margin: 20px auto 0; /* Center the button */
+  margin: 20px auto 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -93,10 +89,9 @@ button:disabled {
 
 button:hover:enabled {
   background-color: #653a2a;
-  transform: translateY(-4px); /* Lift on hover */
+  transform: translateY(-4px);
 }
 
-/* Error message styling */
 .error-message {
   color: #e74c3c;
   font-weight: bold;
@@ -108,32 +103,123 @@ button:hover:enabled {
   margin: 20px auto;
   font-size: 40px;
   font-family: "Pacifico", cursive;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* shadow for the text */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   text-align: center;
 
   color: #653a2a;
-  border-radius: 10px; /* Optional: Smooth edges */
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* shadow for the h2 box */
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
 }
 .category-container {
   width: 700px;
   height: 700px;
   margin: 20px auto;
   text-align: center;
+  position: relative;
 }
 .category-container .background {
   width: 200px;
   position: absolute;
   left: 30px;
-  bottom: 172px;
+  bottom: 285px;
   border-radius: 30px;
+  transform: translateX(-330px);
 }
 
 .category-container .background2 {
   width: 200px;
   position: absolute;
   right: 30px;
-  bottom: 172px;
+  bottom: 285px;
   border-radius: 30px;
   height: 350px;
+  transform: translateX(330px);
+}
+@media (min-width: 1600px) {
+  .category-list {
+    grid-template-columns: repeat(4, 200px);
+  }
+}
+
+/* Medium screens */
+@media (max-width: 1200px) {
+  .category-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .category-container .background,
+  .category-container .background2 {
+    bottom: 30px;
+  }
+}
+@media (max-width: 1144px) {
+  .category-container .background {
+    bottom: 300px;
+    transform: translateX(-230px);
+  }
+
+  .category-container .background2 {
+    bottom: 300px;
+    transform: translateX(230px);
+  }
+}
+
+/* Small screens */
+@media (max-width: 992px) {
+  .category-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .category-container .background,
+  .category-container .background2 {
+    display: none;
+  }
+  .category-item {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+}
+@media (max-width: 768px) {
+  .category-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .category-item {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}
+@media (max-width: 576px) {
+  .category-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+
+  .category-item {
+    font-size: 0.7rem;
+    padding: 8px 10px;
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+
+  button {
+    font-size: 0.7rem;
+    padding: 8px 10px;
+    width: 90%;
+    margin: 10px auto;
+  }
+  .category-container {
+    width: 90% !important;
+  }
 }
