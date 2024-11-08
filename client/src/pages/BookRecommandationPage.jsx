@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-// BookRecommendationPage.jsx
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -75,7 +74,7 @@ const BookRecommendationPage = () => {
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}/preferences`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
       setUserPreferences(response.data.preferences || []);
     } catch (err) {
@@ -113,7 +112,7 @@ const BookRecommendationPage = () => {
           ...acc,
           [preference]: [...(acc[preference] || []), ...books],
         }),
-        { ...booksByPreference },
+        { ...booksByPreference }
       );
 
       setBooksByPreference(newBooksByPreference);
@@ -137,7 +136,7 @@ const BookRecommendationPage = () => {
     try {
       const response = await axios.get(
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteAuthors`,
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setBooksByFavoriteAuthors(filterUniqueBooks(response.data || []));
     } catch (err) {
@@ -177,7 +176,7 @@ const BookRecommendationPage = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       console.log("Book saved to favorites");
     } catch (err) {
@@ -232,6 +231,69 @@ const BookRecommendationPage = () => {
           </div>
         </div>
       )}
+
+      {Object.keys(booksByPreference).map((preference) => (
+        <div key={preference} className="book-category">
+          <h2>Best {preference} Books</h2>
+          <div className="book-grid">
+            {booksByPreference[preference].length > 0 ? (
+              booksByPreference[preference].map((book) => (
+                <div key={book.id} className="book-item">
+                  <button
+                    className="heart-icon"
+                    onClick={() => {
+                      toggleFavorite(book);
+                      handleFavoriteSubmit(book);
+                    }}
+                    style={{
+                      color: favorites.some((fav) => fav.id === book.id)
+                        ? "red"
+                        : "white",
+                    }}
+                  >
+                    ♥
+                  </button>
+                  <div className="book-author">
+                    Author :{" "}
+                    {book.volumeInfo.authors
+                      ? book.volumeInfo.authors.join(", ")
+                      : "Unknown Author"}
+                  </div>
+
+                  <Link to={`/book/${book.id}`}>
+                    {book.volumeInfo.imageLinks?.thumbnail ? (
+                      <img
+                        src={book.volumeInfo.imageLinks.thumbnail}
+                        alt={book.volumeInfo.title}
+                        className="book-thumbnail"
+                        style={{ cursor: "pointer" }}
+                      />
+                    ) : (
+                      <div
+                        className="placeholder-cover"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <p className="book-title">{book.volumeInfo.title}</p>
+                      </div>
+                    )}
+                  </Link>
+                  <Link to={`/book/${book.id}`} className="book-title">
+                    {book.volumeInfo.title}
+                  </Link>
+                  <div className="book-info">
+                    {book.volumeInfo.description
+                      ? book.volumeInfo.description.slice(0, 100) + "..."
+                      : "No description available."}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No books found for this preference.</p>
+            )}
+          </div>
+        </div>
+      ))}
+
       <ScrollToTopButton />
     </div>
   );
