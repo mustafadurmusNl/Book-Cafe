@@ -18,7 +18,6 @@ const ProfileImageHandler = ({ name }) => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          
           `${process.env.BASE_SERVER_URL}/api/profile`,
           {
             headers: {

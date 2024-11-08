@@ -74,7 +74,7 @@ const BookRecommendationPage = () => {
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}/preferences`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       setUserPreferences(response.data.preferences || []);
     } catch (err) {
@@ -112,7 +112,7 @@ const BookRecommendationPage = () => {
           ...acc,
           [preference]: [...(acc[preference] || []), ...books],
         }),
-        { ...booksByPreference }
+        { ...booksByPreference },
       );
 
       setBooksByPreference(newBooksByPreference);
@@ -136,7 +136,7 @@ const BookRecommendationPage = () => {
     try {
       const response = await axios.get(
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteAuthors`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setBooksByFavoriteAuthors(filterUniqueBooks(response.data || []));
     } catch (err) {
@@ -176,7 +176,7 @@ const BookRecommendationPage = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       console.log("Book saved to favorites");
     } catch (err) {
