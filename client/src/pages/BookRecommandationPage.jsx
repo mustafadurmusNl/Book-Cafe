@@ -6,9 +6,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 import { FavoriteContext } from "../context/FavoriteContext";
+import { logInfo } from "../util/logger";
 
 // Unique book filtering function
 const filterUniqueBooks = (books) => {
+  if (!Array.isArray(books)) {
+    console.error("Expected an array but received:", books);
+    return [];
+  }
   const uniqueBooks = new Map();
   books.forEach((book) => {
     if (!uniqueBooks.has(book.id)) {
@@ -138,7 +143,10 @@ const BookRecommendationPage = () => {
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteAuthors`,
         { headers: { Authorization: `Bearer ${token}` } },
       );
-      setBooksByFavoriteAuthors(filterUniqueBooks(response.data || []));
+      console.log("Favorite authors fetched", response.data);
+      const books = Array.isArray(response.data) ? response.data : [];
+      console.log("Books by favorite authors:", books);
+      setBooksByFavoriteAuthors(filterUniqueBooks(books));
     } catch (err) {
       console.error("Error fetching favorite authors:", err);
       setError("Failed to fetch books by favorite authors.");
