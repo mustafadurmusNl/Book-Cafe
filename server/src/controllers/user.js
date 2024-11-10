@@ -179,8 +179,13 @@ export const getUserFavoriteBooks = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const favoriteBookIds = user.favoriteBook;
+    const favoriteBookIds = user.favoriteBook || [];
     console.log("Favorite book IDs:", favoriteBookIds);
+
+    if (favoriteBookIds.length === 0) {
+      // **Here is the key change**: returning a 200 with an empty array when no favorite books are found.
+      return res.status(200).json([]);
+    }
 
     const bookDetailsPromises = favoriteBookIds.map((bookId) =>
       fetchBookDetailsWithRetry(bookId),
@@ -191,13 +196,8 @@ export const getUserFavoriteBooks = async (req, res) => {
       (response) => response !== null,
     );
 
-    if (bookDetails.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No favorite books found or all requests failed." });
-    }
-
-    res.json(bookDetails);
+    // **Even if all requests fail**, still send a 200 with an empty array
+    res.status(200).json(bookDetails);
   } catch (error) {
     console.error("Error fetching user favorite books:", error);
     res.status(500).json({ error: "Failed to fetch user favorite books" });

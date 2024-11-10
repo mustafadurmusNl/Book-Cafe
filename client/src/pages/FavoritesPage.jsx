@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 import "../Styles/FavoritesPage.css";
 import Navbar from "../components/Navbar";
+import { logError } from "../util/logger";
 
 const FavoritesPage = () => {
   const [favorites, setFavorites] = useState([]); // Manage favorites locally
@@ -12,33 +12,39 @@ const FavoritesPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Get user ID from local storage
-  const user = JSON.parse(localStorage.getItem("user"));
-
+  // Get user ID from local storage (only once using useMemo)
+  const user = useMemo(() => JSON.parse(localStorage.getItem("user")), []);
   useEffect(() => {
     const fetchFavoriteBooks = async () => {
-      if (!user) {
-        setError("User not found. Please log in.");
-        setLoading(false);
-        return;
-      }
+        if (!user) {
+            setError("User not found. Please log in.");
+            setLoading(false);
+            return;
+        }
 
-      try {
-        const userId = user.id;
-        const response = await axios.get(
-          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBooks`,
-        );
-        setFavorites(response.data); // Set the favorites from API
-      } catch (err) {
-        setError("Failed to load favorite books.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+        try {
+            const userId = user.id;
+            const response = await axios.get(
+                `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBooks`
+            );
+            setFavorites(response.data); // Set the favorites from API
+        } catch (err) {
+            if (err.response && err.response.status === 404) {
+                // Treat 404 as an empty favorites list
+                setFavorites([]);  // Set empty favorites array
+            } else {
+                // Handle other errors
+                setError("Failed to load favorite books.");
+                logError("An error occurred:", err);
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchFavoriteBooks();
-  }, [user]);
+}, [user]);
+
 
   // Handle toggling favorites
   const toggleFavorite = async (book) => {
@@ -48,10 +54,10 @@ const FavoritesPage = () => {
       if (isFavorite) {
         // Remove from favorites
         await axios.delete(
-          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook/${book.id}`,
+          `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook/${book.id}`
         );
         const updatedFavorites = favorites.filter(
-          (favBook) => favBook.id !== book.id,
+          (favBook) => favBook.id !== book.id
         );
         setFavorites(updatedFavorites);
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Update local storage
@@ -61,14 +67,14 @@ const FavoritesPage = () => {
           `${process.env.BASE_SERVER_URL}/api/users/${userId}/favoriteBook`,
           {
             bookId: book.id,
-          },
+          }
         );
         const updatedFavorites = [...favorites, book];
         setFavorites(updatedFavorites);
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Update local storage
       }
     } catch (err) {
-      console.error(err);
+      logError(err);
       alert("Failed to update favorite books.");
     }
   };
@@ -101,7 +107,9 @@ const FavoritesPage = () => {
               {book.volumeInfo.title}
             </Link>
             <FaHeart
-              className={`favorite-heart-custom ${favorites.some((favBook) => favBook.id === book.id) ? "red" : ""}`}
+              className={`favorite-heart-custom ${
+                favorites.some((favBook) => favBook.id === book.id) ? "red" : ""
+              }`}
               onClick={() => toggleFavorite(book)}
             />
           </div>
