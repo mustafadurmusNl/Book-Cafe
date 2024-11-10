@@ -11,18 +11,17 @@ import { logInfo } from "../util/logger";
 // Unique book filtering function
 const filterUniqueBooks = (books) => {
   if (!Array.isArray(books)) {
-      console.error("Expected an array but received:", books);
-      return [];
+    console.error("Expected an array but received:", books);
+    return [];
   }
   const uniqueBooks = new Map();
   books.forEach((book) => {
-      if (!uniqueBooks.has(book.id)) {
-          uniqueBooks.set(book.id, book);
-      }
+    if (!uniqueBooks.has(book.id)) {
+      uniqueBooks.set(book.id, book);
+    }
   });
   return Array.from(uniqueBooks.values());
 };
-
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -147,7 +146,7 @@ const BookRecommendationPage = () => {
       console.log("Favorite authors fetched", response.data);
       const books = Array.isArray(response.data) ? response.data : [];
       console.log("Books by favorite authors:", books);
-        setBooksByFavoriteAuthors(filterUniqueBooks(books));
+      setBooksByFavoriteAuthors(filterUniqueBooks(books));
     } catch (err) {
       console.error("Error fetching favorite authors:", err);
       setError("Failed to fetch books by favorite authors.");
