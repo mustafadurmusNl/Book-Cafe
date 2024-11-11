@@ -7,8 +7,7 @@ import { logError } from "../util/logger";
 import { useAuth } from "../context/AuthContext";
 
 const ProfileImageHandler = ({ name }) => {
-  const defaultImage = "/image/pro1.png";
-  const [profileImage, setProfileImage] = useState(defaultImage);
+  const [profileImage, setProfileImage] = useState("/image/pro1.png");
   const { logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
@@ -26,10 +25,11 @@ const ProfileImageHandler = ({ name }) => {
             },
           },
         );
-        setProfileImage(response.data.profileImage || defaultImage); // Use default if no profile image
+        if (response.data.profileImage) {
+          setProfileImage(response.data.profileImage);
+        }
       } catch (error) {
         logError("Error fetching user profile:", error);
-        setProfileImage(defaultImage); // Fallback to default on error
       }
     };
 
@@ -59,7 +59,6 @@ const ProfileImageHandler = ({ name }) => {
       throw new Error("Image upload failed");
     }
   };
-
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -96,10 +95,9 @@ const ProfileImageHandler = ({ name }) => {
   return (
     <div className="profile-image-container" onClick={toggleDropdown}>
       <img
-        src={profileImage}
+        src={profileImage} // Show a loading image while uploading
         alt="User Profile"
         className="profile-image"
-        onError={() => setProfileImage(defaultImage)} // Fallback to default on error
       />
       <span className="profile-tooltip">Profile</span>
       {showDropdown && (
@@ -133,6 +131,8 @@ const ProfileImageHandler = ({ name }) => {
 // Prop types validation
 ProfileImageHandler.propTypes = {
   name: PropTypes.string,
+  setIsLoggedIn: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
 
 export default ProfileImageHandler;
