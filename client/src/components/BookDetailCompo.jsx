@@ -30,7 +30,32 @@ const BookDetailComponent = () => {
 
     fetchBook(); // Call the function to fetch book details
   }, [id]); // Dependency array to refetch on ID change
+  const handleFavoriteSubmit = async (book) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
 
+    if (!user || !token) {
+      setError("User not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `${process.env.BASE_SERVER_URL}/api/users/${user.id}/favoriteBook`,
+        { bookId: book.id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Book saved to favorites");
+    } catch (err) {
+      console.error("Failed to save favorite book:", err.message);
+      setError("Failed to save favorite book.");
+    }
+  };
   // Render error message if there is an error
   if (error) return <div>Error loading the book details.</div>;
   // Render loading message while fetching book data
@@ -116,7 +141,10 @@ const BookDetailComponent = () => {
           </div>
           <button
             className="heart-icon-bdc"
-            onClick={() => toggleFavorite({ id, ...book.volumeInfo })}
+            onClick={() => {
+              toggleFavorite({ id, ...book.volumeInfo });
+              handleFavoriteSubmit(book);
+            }}
             style={{ color: isFavorite ? "red" : "white" }}
             aria-label={
               isFavorite ? "Remove from favorites" : "Add to favorites"

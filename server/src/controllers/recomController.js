@@ -10,16 +10,14 @@ export const getBooksByPreference = async (req, res) => {
     return res.status(400).json({ error: "Preference is required" });
   }
   try {
-    const googleBooksApiKey = process.env.API_KEY;
-
     const response = await axios.get(
       "https://www.googleapis.com/books/v1/volumes",
       {
         params: {
           q: preference,
-          maxResults: 16,
+          maxResults: 18,
           startIndex: startIndex,
-          key: googleBooksApiKey, // Add API key here if required by Google API
+          // Add API key here if required by Google API
         },
       },
     );

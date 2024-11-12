@@ -158,6 +158,9 @@ a .gr {
     width: 100px;
     height: 100px;
   }
+  .Explor {
+    width: fit-content;
+  }
 }
 @media (min-width: 481px) and (max-width: 768px) {
   .land {
