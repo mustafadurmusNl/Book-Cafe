@@ -194,8 +194,9 @@
   background: rgba(0, 0, 0, 0.8);
 }
 @media (max-width: 480px) {
-  .scroll-to-top {
-    width: fit-content;
+  .book-page {
+  }
+  .book-category {
   }
   .book-grid {
     display: grid;
