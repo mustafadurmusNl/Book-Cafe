@@ -14,6 +14,7 @@ const FavoritesPage = () => {
 
   // Get user ID from local storage (only once using useMemo)
   const user = useMemo(() => JSON.parse(localStorage.getItem("user")), []);
+
   useEffect(() => {
     const fetchFavoriteBooks = async () => {
       if (!user) {
@@ -79,11 +80,6 @@ const FavoritesPage = () => {
   };
 
   if (loading) return <p>Loading favorite books...</p>;
-  if (error) return <p>{error}</p>;
-
-  if (favorites.length === 0) {
-    return <p>No favorite books yet!</p>;
-  }
 
   return (
     <div className="favorites-page-custom">
@@ -92,28 +88,36 @@ const FavoritesPage = () => {
         <FaArrowLeft />
       </button>
       <h1>Your Favorite Books</h1>
-      <div className="favorites-grid-custom">
-        {favorites.map((book) => (
-          <div key={book.id} className="favorite-item-custom">
-            <img
-              src={
-                book.volumeInfo.imageLinks?.thumbnail || "/default-image.jpg"
-              }
-              alt={book.volumeInfo.title || "No Title"}
-              className="favorite-thumbnail-custom"
-            />
-            <Link to={`/book/${book.id}`} className="favorite-title-custom">
-              {book.volumeInfo.title}
-            </Link>
-            <FaHeart
-              className={`favorite-heart-custom ${
-                favorites.some((favBook) => favBook.id === book.id) ? "red" : ""
-              }`}
-              onClick={() => toggleFavorite(book)}
-            />
-          </div>
-        ))}
-      </div>
+      {error ? (
+        <p>{error}</p>
+      ) : favorites.length === 0 ? (
+        <p className="frmes">No favorite books yet 🤷‍♀️ !</p>
+      ) : (
+        <div className="favorites-grid-custom">
+          {favorites.map((book) => (
+            <div key={book.id} className="favorite-item-custom">
+              <img
+                src={
+                  book.volumeInfo.imageLinks?.thumbnail || "/default-image.jpg"
+                }
+                alt={book.volumeInfo.title || "No Title"}
+                className="favorite-thumbnail-custom"
+              />
+              <Link to={`/book/${book.id}`} className="favorite-title-custom">
+                {book.volumeInfo.title}
+              </Link>
+              <FaHeart
+                className={`favorite-heart-custom ${
+                  favorites.some((favBook) => favBook.id === book.id)
+                    ? "red"
+                    : ""
+                }`}
+                onClick={() => toggleFavorite(book)}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

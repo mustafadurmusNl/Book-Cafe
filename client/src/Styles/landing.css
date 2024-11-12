@@ -134,6 +134,9 @@ a .gr {
     width: 200px;
     height: 200px;
   }
+  .Explor {
+    width: fit-content;
+  }
   .land2 {
     width: 350px;
 

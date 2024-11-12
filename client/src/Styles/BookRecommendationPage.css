@@ -198,6 +198,9 @@
   }
   .book-category {
   }
+  .scroll-to-top {
+    width: fit-content;
+  }
   .book-grid {
     display: grid;
     grid-template-columns: repeat(3, 100px);
