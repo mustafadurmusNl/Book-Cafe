@@ -194,10 +194,6 @@
   background: rgba(0, 0, 0, 0.8);
 }
 @media (max-width: 480px) {
-  .book-page {
-  }
-  .book-category {
-  }
   .scroll-to-top {
     width: fit-content;
   }
