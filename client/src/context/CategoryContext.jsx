@@ -7,7 +7,7 @@ const CategoryContext = createContext();
 
 export const CategoryProvider = ({ children }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const { user } = useAuth(); // Use user from AuthContext
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchSelectedCategories = async () => {
@@ -29,7 +29,7 @@ export const CategoryProvider = ({ children }) => {
     };
 
     fetchSelectedCategories();
-  }, [user]); // Fetch categories when user changes
+  }, [user]);
 
   const updateCategories = (categories) => {
     setSelectedCategories(categories);

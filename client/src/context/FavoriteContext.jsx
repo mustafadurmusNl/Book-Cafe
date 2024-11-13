@@ -12,13 +12,6 @@ export const FavoriteProvider = ({ children }) => {
       setFavorites(JSON.parse(storedFavorites));
     }
   }, []);
-
-  // Save favorites to localStorage whenever favorites change
-  // useEffect(() => {
-  //   if (favorites.length > 0) {
-  //     localStorage.setItem("favorites", JSON.stringify(favorites));
-  //   }
-  // }, [favorites]);  useEffect(() => {
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
@@ -37,7 +30,7 @@ export const FavoriteProvider = ({ children }) => {
   };
   const clearFavoritesOnLogout = () => {
     setFavorites([]);
-    localStorage.removeItem("favorites"); // Clear localStorage on logout
+    localStorage.removeItem("favorites");
   };
 
   return (

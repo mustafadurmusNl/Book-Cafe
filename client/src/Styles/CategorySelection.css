@@ -3,7 +3,6 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   background-size: cover;
   background-position: center;
@@ -11,7 +10,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 .category-selection-container {
   background: rgba(255, 255, 255, 0.8);
   padding: 30px;
@@ -20,7 +18,6 @@ body {
   margin: 100px auto;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
 p {
   border-radius: 10px;
   background-color: #fff;
@@ -29,7 +26,6 @@ p {
   margin-bottom: 30px;
   color: #2e1138;
 }
-
 .category-list {
   display: grid;
   flex-wrap: wrap;
@@ -37,7 +33,6 @@ p {
   grid-template-columns: repeat(4, 200px);
   gap: 10px;
 }
-
 .category-item {
   background-color: #f1f1f1;
   color: #38040e;
@@ -53,19 +48,16 @@ p {
   font-family: "Playwrite GB S";
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
-
 .category-item:hover {
   background-color: #2980b9;
   color: white;
   transform: translateY(-4px);
 }
-
 .category-item.selected {
   background-color: #3498db;
   color: #fff;
   border-color: #2980b9;
 }
-
 button {
   display: block;
   background-color: #2ecc71;
@@ -81,17 +73,14 @@ button {
   margin: 20px auto 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
 button:disabled {
   background-color: #bdc3c7;
   cursor: not-allowed;
 }
-
 button:hover:enabled {
   background-color: #653a2a;
   transform: translateY(-4px);
 }
-
 .error-message {
   color: #e74c3c;
   font-weight: bold;
@@ -125,7 +114,6 @@ button:hover:enabled {
   border-radius: 30px;
   transform: translateX(-330px);
 }
-
 .category-container .background2 {
   width: 200px;
   position: absolute;
@@ -140,8 +128,6 @@ button:hover:enabled {
     grid-template-columns: repeat(4, 200px);
   }
 }
-
-/* Medium screens */
 @media (max-width: 1200px) {
   .category-list {
     grid-template-columns: repeat(4, 1fr);
@@ -163,8 +149,6 @@ button:hover:enabled {
     transform: translateX(230px);
   }
 }
-
-/* Small screens */
 @media (max-width: 992px) {
   .category-list {
     grid-template-columns: repeat(4, 1fr);
@@ -212,7 +196,6 @@ button:hover:enabled {
     margin: 0 auto;
     border-radius: 8px;
   }
-
   button {
     font-size: 0.7rem;
     padding: 8px 10px;

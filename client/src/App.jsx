@@ -12,7 +12,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AuthForm from "./components/AuthForm";
 import { FavoriteProvider } from "./context/FavoriteContext";
 import { AuthProvider } from "./context/AuthContext";
-import { CategoryProvider } from "./context/CategoryContext"; // Import CategoryProvider
+import { CategoryProvider } from "./context/CategoryContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -23,7 +23,6 @@ const App = () => {
       <FavoriteProvider>
         <CategoryProvider>
           {" "}
-          {/* Wrap with CategoryProvider */}
           <div className="app-container">
             {location.pathname === "/" && <Navbar />}
             <Toaster
@@ -33,8 +32,6 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<AuthForm />} />
-
-              {/* Protected Routes */}
               <Route
                 path="/categories"
                 element={
@@ -67,7 +64,6 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-
               <Route path="/book/:id" element={<BookDetailComponent />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

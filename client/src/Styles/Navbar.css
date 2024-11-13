@@ -7,21 +7,18 @@
   background-color: rgb(252, 240, 226);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .bc-navbar-logo {
   display: flex;
   align-items: center;
   margin-right: 20px;
   text-decoration: none !important;
 }
-
 .bc-navbar-logo img {
   height: 70px;
   width: auto;
   margin-right: 10px;
   text-decoration: none !important;
 }
-
 .bc-navbar-logo h1 {
   display: flex !important;
   align-items: center !important;
@@ -31,12 +28,10 @@
   padding-top: 5px !important;
   text-decoration: none !important;
 }
-
 .bc-navbar-right {
   display: flex !important;
   align-items: center !important;
 }
-
 .bc-navbar-left {
   display: flex !important;
   align-items: center !important;
@@ -59,7 +54,6 @@
   font-size: 20px;
   color: rgb(169, 123, 73);
 }
-
 .bc-navbar-links a {
   text-decoration: none;
   color: rgb(169, 123, 73);
@@ -70,7 +64,6 @@
   justify-content: center;
   flex-direction: column;
 }
-
 .bc-navbar-links a span {
   position: absolute;
   top: 27px;
@@ -81,15 +74,12 @@
   white-space: nowrap;
   z-index: 10;
 }
-
 .bc-navbar-links a:hover span {
   opacity: 1;
 }
-
 .bc-navbar-search {
   position: relative;
 }
-
 .bc-navbar-search input {
   padding: 10px 60px 10px 20px;
   border-radius: 20px;
@@ -100,17 +90,14 @@
   margin-top: 3%;
   position: relative;
 }
-
 .navbar-search input:focus {
   outline: none;
   border-color: rgb(169, 123, 73);
 }
-
 .navbar-search input::placeholder {
   color: rgb(169, 123, 73);
   opacity: 1;
 }
-
 .bc-navbar-search .search-icon {
   position: absolute;
   right: 20px;
@@ -119,7 +106,6 @@
   color: rgb(98, 58, 17);
   pointer-events: none;
 }
-
 .fancy-button {
   background-color: rgb(223, 140, 45);
   color: white;
@@ -130,16 +116,13 @@
   transition: background-color 0.3s ease;
   margin-right: 10px;
 }
-
 .fancy-button:hover {
   background-color: rgb(169, 123, 73);
 }
-
 .profile-container {
   display: flex;
   align-items: center;
 }
-
 .profile-image-container {
   width: 40px;
   height: 40px;
@@ -149,12 +132,10 @@
   cursor: pointer;
   margin-right: 40px;
 }
-
 .profile-image-container:hover .profile-tooltip {
   opacity: 1;
   visibility: visible;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 80px;
@@ -167,7 +148,6 @@
   padding: 5px 0;
   margin-top: 30px;
 }
-
 .profile-image {
   width: 100%;
   height: 100%;
@@ -175,7 +155,6 @@
   border-radius: 50%;
   border: 2px solid rgb(169, 123, 73);
 }
-
 .profile-tooltip {
   position: absolute;
   top: 10%;
@@ -193,12 +172,10 @@
     visibility 0.3s ease;
   z-index: 1;
 }
-
 .profile-image-container:hover .profile-tooltip {
   opacity: 1;
   visibility: visible;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 80px;
@@ -211,20 +188,17 @@
   padding: 5px 0;
   margin-top: 30px;
 }
-
 .dropdown-menu ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 .dropdown-menu li {
   padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-
 .dropdown-menu li:hover {
   background-color: rgb(216, 136, 45);
   border-radius: 20px;
@@ -233,7 +207,6 @@
   font-family: "Playwrite GB S";
   color: currentColor;
 }
-/* Large screens */
 @media (min-width: 2133px) {
   .bc-navbar-search input {
     padding: 10px 60px 10px 20px;
@@ -256,8 +229,6 @@
     left: 95.9%;
   }
 }
-
-/* Medium screens */
 @media (max-width: 1422px) {
   .bc-navbar-search input {
     width: 600px;
@@ -274,8 +245,6 @@
     left: 94.6%;
   }
 }
-
-/* Smaller screens */
 @media (max-width: 993px) {
   .bc-navbar {
     flex-direction: column;
@@ -292,8 +261,6 @@
     font-size: 14px;
   }
 }
-
-/* Tablet screens */
 @media (max-width: 744px) {
   .bc-navbar {
     flex-direction: column;
@@ -310,8 +277,6 @@
     width: 70%;
   }
 }
-
-/* Mobile screens */
 @media (max-width: 480px) {
   .bc-navbar {
     flex-direction: column;
@@ -337,30 +302,25 @@
     gap: 10px;
   }
 }
-
 .bc-navbar-links li {
   display: flex;
   align-items: center;
   padding: 10px;
   cursor: pointer;
 }
-
 .bc-navbar-links li span {
   margin-left: 8px;
   font-size: 14px;
 }
-/* Update the profile icon size */
 .profile-icon {
   font-size: 3rem;
-  color: #975c31; /* Adjust this size as needed */
+  color: #975c31;
 }
-/* Add space between the 'Welcome Book Cafe' text and the profile image */
 .bc-navbar-right {
   display: flex;
   align-items: center;
-  gap: 15px; /* Adjust the gap as needed */
+  gap: 15px;
 }
-
 .welcome {
-  margin-right: 15px; /* Add space between welcome text and profile icon */
+  margin-right: 15px;
 }
