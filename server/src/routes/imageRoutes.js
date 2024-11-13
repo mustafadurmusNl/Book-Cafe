@@ -1,35 +1,32 @@
-// routes/imageRoutes.js
-import express from "express"; // Import express
-import multer from "multer"; // Import multer for handling file uploads
+import express from "express";
+import multer from "multer";
 import {
   uploadProfileImage,
   getUserProfile,
-} from "../controllers/imageController.js"; // Import controller functions
-import { ensureAuthenticated } from "../middleware/authMiddleware.js"; // Import authentication middleware
-import path from "path"; // Import path module for file paths
-const imageRoutes = express.Router(); // Create a new router instance
+} from "../controllers/imageController.js";
+import { ensureAuthenticated } from "../middleware/authMiddleware.js";
+import path from "path";
+const imageRoutes = express.Router();
 
-// Configure multer for file uploads
 const upload = multer({
-  dest: "uploads/", // Temporary directory for storing uploaded files
-  limits: { fileSize: 5 * 1024 * 1024 }, // Limit files to 5MB
+  dest: "uploads/",
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif/; // Allowed file types
+    const filetypes = /jpeg|jpg|png|gif/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(
       path.extname(file.originalname).toLowerCase(),
     );
 
     if (mimetype && extname) {
-      return cb(null, true); // Accept the file
+      return cb(null, true);
     }
     cb(
       "Error: File upload only supports the following filetypes - " + filetypes,
-    ); // Reject the file
+    );
   },
 });
 
-// Route to handle image uploads
 imageRoutes.post(
   "/upload",
   ensureAuthenticated,
@@ -38,4 +35,4 @@ imageRoutes.post(
 );
 imageRoutes.get("/", ensureAuthenticated, getUserProfile);
 
-export default imageRoutes; // Export the router
+export default imageRoutes;

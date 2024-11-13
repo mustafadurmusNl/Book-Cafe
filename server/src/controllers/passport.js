@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
 import User from "../models/User.js";
-
+import { logError } from "../util/logging.js";
 dotenv.config();
 
 const callbackURL =
@@ -33,8 +33,7 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
+        logError(error);
         return done(error, false);
       }
     },

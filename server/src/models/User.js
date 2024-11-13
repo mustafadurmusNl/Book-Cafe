@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema({
   profileImage: { type: String, default: " " },
 });
 
-// Method to generate JWT for a user instance
 userSchema.methods.generateJWT = function () {
   return jwt.sign(
     {
@@ -23,7 +22,7 @@ userSchema.methods.generateJWT = function () {
       name: this.name,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }, // Adjust expiration as needed
+    { expiresIn: "1h" },
   );
 };
 

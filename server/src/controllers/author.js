@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
 import User from "../models/User.js";
+import { logInfo } from "../util/logging.js";
 export const saveUserFavoriteAuthor = async (req, res) => {
   try {
-    console.log("User from request:", req.user);
-    console.log("Request body:", req.body);
+    logInfo("User from request:", req.user);
+    logInfo("Request body:", req.body);
 
     const userId = req.params.id;
     const { author } = req.body;

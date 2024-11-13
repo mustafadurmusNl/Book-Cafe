@@ -1,11 +1,9 @@
-// src/routes/categories.js
 import express from "express";
-import { saveUserCategories } from "../controllers/categoryController.js"; // Import the controller
+import { saveUserCategories } from "../controllers/categoryController.js";
 import { authenticateJWT } from "../middleware/authMiddleware.js";
 
 const categoryRouter = express.Router();
 
-// POST /api/categories
-categoryRouter.post("/", authenticateJWT, saveUserCategories); // Handle categories selection
+categoryRouter.post("/", authenticateJWT, saveUserCategories);
 
 export default categoryRouter;

@@ -1,11 +1,11 @@
-/* eslint-disable no-console */
 import User from "../models/User.js";
-import { logError } from "../util/logging.js";
+import { logError, logInfo, logWarning } from "../util/logging.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import jwt from "jsonwebtoken";
 import axios from "axios";
+
 export const registerUser = async (req, res) => {
-  console.log("RegisterUser function called with data:", req.body);
+  logInfo("RegisterUser function called with data:", req.body);
   try {
     const { name, email, password, preferences, confirmPassword } = req.body;
     if (!name) {
@@ -32,15 +32,14 @@ export const registerUser = async (req, res) => {
     });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h", // Token expiration time (adjust as needed)
+      expiresIn: "1h",
     });
 
-    // Return user information and token
     return res.status(201).json({
       message: "Registration successful. Welcome!",
       name: user.name,
-      id: user._id, // Return the user ID
-      token, // Return the JWT token
+      id: user._id,
+      token,
     });
   } catch (error) {
     logError("Error in registerUser:", error);
@@ -61,26 +60,24 @@ export const loginUser = async (req, res) => {
 
     const match = await comparePassword(password, user.password);
     if (match) {
-      // Create the token
       const token = jwt.sign(
         { email: user.email, id: user._id, name: user.name },
         process.env.JWT_SECRET,
         { expiresIn: "1h" },
       );
 
-      // Instead of setting it as a cookie, return it in the response
       res.json({
         message: "Login successful",
         name: user.name,
         token: token,
-        id: user._id, // Send the user ID back to the client
-        profileImage: user.profileImage, // Include the profile image URL
+        id: user._id,
+        profileImage: user.profileImage,
       });
     } else {
       return res.status(401).json({ error: "Incorrect password" });
     }
   } catch (error) {
-    logError("Error in loginUser:", error); // Log the error for debugging
+    logError("Error in loginUser:", error);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
@@ -96,10 +93,9 @@ export const getall = async (req, res) => {
 };
 export const updateUserPreferences = async (req, res) => {
   try {
-    const userId = req.params.id; // Change to req.params.id
-    const { preferences } = req.body; // New preferences from the request body
+    const userId = req.params.id;
+    const { preferences } = req.body;
 
-    // Validate input
     if (!preferences) {
       return res.status(400).json({ error: "Preferences are required" });
     }
@@ -122,25 +118,21 @@ export const UserPreferences = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Find the user by ID
     const user = await User.findById(userId);
 
-    // Check if the user exists
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Return user preferences
     res.json({ preferences: user.preferences });
   } catch (err) {
-    // Handle server error
     res.status(500).json({ error: "Server error" });
   }
 };
 export const updateUserBooks = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { bookId } = req.body; // Single book ID from the request body
+    const { bookId } = req.body;
 
     if (!bookId) {
       return res.status(400).json({ error: "Book ID is required" });
@@ -151,7 +143,6 @@ export const updateUserBooks = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Add the new book ID to the favoriteBook array if it's not already there
     if (!user.favoriteBook.includes(bookId)) {
       user.favoriteBook.push(bookId);
     }
@@ -169,21 +160,20 @@ export const updateUserBooks = async (req, res) => {
 
 export const getUserFavoriteBooks = async (req, res) => {
   const { userId } = req.params;
-  console.log("Received request for userId:", userId);
+  logInfo("Received request for userId:", userId);
 
   try {
     const user = await User.findById(userId).select("favoriteBook");
-    console.log("User fetched:", user);
+    logInfo("User fetched:", user);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
     const favoriteBookIds = user.favoriteBook || [];
-    console.log("Favorite book IDs:", favoriteBookIds);
+    logInfo("Favorite book IDs:", favoriteBookIds);
 
     if (favoriteBookIds.length === 0) {
-      // **Here is the key change**: returning a 200 with an empty array when no favorite books are found.
       return res.status(200).json([]);
     }
 
@@ -196,10 +186,9 @@ export const getUserFavoriteBooks = async (req, res) => {
       (response) => response !== null,
     );
 
-    // **Even if all requests fail**, still send a 200 with an empty array
     res.status(200).json(bookDetails);
   } catch (error) {
-    console.error("Error fetching user favorite books:", error);
+    logError("Error fetching user favorite books:", error);
     res.status(500).json({ error: "Failed to fetch user favorite books" });
   }
 };
@@ -213,14 +202,13 @@ export const removeFavoriteBook = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Remove the book ID from the user's favorites
     user.favoriteBook = user.favoriteBook.filter((id) => id !== bookId);
 
     await user.save();
 
     res.status(200).json({ message: "Favorite book removed successfully." });
   } catch (error) {
-    console.error("Error removing favorite book:", error);
+    logError("Error removing favorite book:", error);
     res.status(500).json({ message: "Server error." });
   }
 };
@@ -230,19 +218,19 @@ const fetchBookDetailsWithRetry = async (bookId, retries = 3, delay = 1000) => {
     const response = await axios.get(
       `https://www.googleapis.com/books/v1/volumes/${bookId}`,
     );
-    return response.data; // Return the book details
+    return response.data;
   } catch (error) {
     if (error.response && error.response.status === 429 && retries > 0) {
-      console.warn(
+      logWarning(
         `Rate limit hit for book ID ${bookId}. Retrying in ${delay}ms...`,
       );
       await new Promise((resolve) => setTimeout(resolve, delay));
-      return fetchBookDetailsWithRetry(bookId, retries - 1, delay * 2); // Exponential backoff
+      return fetchBookDetailsWithRetry(bookId, retries - 1, delay * 2);
     }
-    console.error(
+    logError(
       `Failed to fetch book with ID ${bookId}:`,
       error.response ? error.response.data : error.message,
     );
-    return null; // Return null for failed requests
+    return null;
   }
 };
