@@ -9,6 +9,15 @@
   min-height: 100vh;
   box-sizing: border-box;
 }
+
+.frmes {
+  background: none;
+  font-family: "Playwrite GB S";
+  border: 2px solid;
+  color: currentcolor;
+  padding: 20px;
+}
+
 .favorites-page-custom h1 {
   color: rgb(98, 57, 16);
   font-size: 3vw;

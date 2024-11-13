@@ -1,5 +1,4 @@
-// SearchBooks.js
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +12,7 @@ const SearchBooks = () => {
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+  const searchContainerRef = useRef(null);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -55,8 +55,25 @@ const SearchBooks = () => {
     navigate(`/book/${bookId}`);
   };
 
+  // Detect click outside the search container
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        setSearchResults([]); // Hide search results
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="search-books-container">
+    <div className="search-books-container" ref={searchContainerRef}>
       <div className="search-bar">
         <input
           type="text"

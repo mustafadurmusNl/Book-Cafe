@@ -189,6 +189,9 @@
   background: rgba(0, 0, 0, 0.8);
 }
 @media (max-width: 480px) {
+  .scroll-to-top {
+    width: fit-content;
+  }
   .book-grid {
     display: grid;
     grid-template-columns: repeat(3, 100px);
