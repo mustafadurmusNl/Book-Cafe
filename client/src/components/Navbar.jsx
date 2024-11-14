@@ -8,19 +8,17 @@ import {
   faStar,
   faThumbsUp,
   faUserCircle,
-} from "@fortawesome/free-solid-svg-icons"; // Import user-circle icon
+} from "@fortawesome/free-solid-svg-icons";
 import SearchBooks from "./SearchBooks";
 import ProfileImageHandler from "./ProfileImageHandler";
 import { useAuth } from "../context/AuthContext";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 import icccon from "../../public/image/image.png";
 
 const Navbar = () => {
-  const { isLoggedIn, user, setIsLoggedIn } = useAuth(); // Access global login state and function
+  const { isLoggedIn, user, setIsLoggedIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Hide Navbar on login/register pages
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
@@ -68,22 +66,21 @@ const Navbar = () => {
         {isLoggedIn ? (
           <>
             <span className="welcome">📚 Welcome, {user.name}! ☕️📚</span>
-            {/* Profile image handler is only visible when logged in */}
             <ProfileImageHandler
               name={user.name}
-              setIsLoggedIn={setIsLoggedIn} // Pass setIsLoggedIn prop
-              navigate={navigate} // Pass navigate prop
+              setIsLoggedIn={setIsLoggedIn}
+              navigate={navigate}
             />
           </>
         ) : (
           <>
             <span className="welcome">Welcome to Book Cafe</span>
-            {/* Profile icon is always visible for all users */}
+
             <Link to="/profile">
               <FontAwesomeIcon
                 icon={faUserCircle}
                 size="lg"
-                className="profile-icon" // This ensures the correct styling is applied
+                className="profile-icon"
               />
             </Link>
           </>
@@ -93,8 +90,8 @@ const Navbar = () => {
   );
 };
 ProfileImageHandler.propTypes = {
-  name: PropTypes.string.isRequired, // Name is required and must be a string
-  setIsLoggedIn: PropTypes.func.isRequired, // setIsLoggedIn is required and must be a function
-  navigate: PropTypes.func.isRequired, // navigate is required and must be a function
+  name: PropTypes.string.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
 export default Navbar;

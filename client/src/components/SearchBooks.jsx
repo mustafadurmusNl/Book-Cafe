@@ -55,14 +55,13 @@ const SearchBooks = () => {
     navigate(`/book/${bookId}`);
   };
 
-  // Detect click outside the search container
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target)
       ) {
-        setSearchResults([]); // Hide search results
+        setSearchResults([]);
       }
     };
 

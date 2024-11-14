@@ -75,7 +75,7 @@ const AuthForm = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
     const userId = urlParams.get("userId");
-    const isNewUser = urlParams.get("isNewUser") === "true"; // Check if user is new
+    const isNewUser = urlParams.get("isNewUser") === "true";
 
     if (token && userId) {
       localStorage.setItem("token", token);

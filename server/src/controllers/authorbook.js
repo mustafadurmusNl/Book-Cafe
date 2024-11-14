@@ -35,6 +35,7 @@ export const getBooksByFavoriteAuthors = async (req, res) => {
             params: {
               q: `inauthor:${author}`,
               maxResults: 6,
+              key: process.env.API_KEY,
             },
           },
         );

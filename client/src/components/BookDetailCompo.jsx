@@ -2,34 +2,33 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import "../Styles/bookDetailCompo.css"; // Ensure your CSS file is correctly linked
-import { FavoriteContext } from "../context/FavoriteContext"; // Import the context for favorites
-import Navbar from "../components/Navbar"; // Import the Navbar component
-import axios from "axios"; // Import axios for API calls
+import "../Styles/bookDetailCompo.css";
+import { FavoriteContext } from "../context/FavoriteContext";
+import Navbar from "../components/Navbar";
+import axios from "axios";
 
 const BookDetailComponent = () => {
-  const { id } = useParams(); // Get the book ID from the URL parameters
-  const [book, setBook] = useState(null); // State to hold book data
-  const [error, setError] = useState(false); // State to manage errors
-  const { favorites, toggleFavorite } = useContext(FavoriteContext); // Access favorites context
-  const navigate = useNavigate(); // Hook for navigation
+  const { id } = useParams();
+  const [book, setBook] = useState(null);
+  const [error, setError] = useState(false);
+  const { favorites, toggleFavorite } = useContext(FavoriteContext);
+  const navigate = useNavigate();
 
-  // Fetch the book details when the component mounts or when the ID changes
   useEffect(() => {
     const fetchBook = async () => {
       try {
         const response = await axios.get(
           `${process.env.BASE_SERVER_URL}/api/book/detail/${id}`,
-        ); // Make API call to fetch book details
-        setBook(response.data); // Set book data
+        );
+        setBook(response.data);
       } catch (error) {
-        setError(true); // Handle error by updating state
+        setError(true);
         console.error("Fetch error:", error);
       }
     };
 
-    fetchBook(); // Call the function to fetch book details
-  }, [id]); // Dependency array to refetch on ID change
+    fetchBook();
+  }, [id]);
   const handleFavoriteSubmit = async (book) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
@@ -56,19 +55,15 @@ const BookDetailComponent = () => {
       setError("Failed to save favorite book.");
     }
   };
-  // Render error message if there is an error
+
   if (error) return <div>Error loading the book details.</div>;
-  // Render loading message while fetching book data
   if (!book) return <div>Loading...</div>;
 
-  // Determine if the book is in favorites
   const isFavorite = favorites.some((favBook) => favBook.id === id);
-  const pdfAvailable = book.accessInfo?.pdf?.isAvailable; // Check if PDF is available
-  const pdfLink = book.accessInfo?.pdf?.acsTokenLink; // Link to PDF
-  const buyLink = book.saleInfo?.buyLink; // Link to buy the book
-  const readLink = book.accessInfo?.webReaderLink; // Link to read the book online
-
-  // Debugging: Log the links to console
+  const pdfAvailable = book.accessInfo?.pdf?.isAvailable;
+  const pdfLink = book.accessInfo?.pdf?.acsTokenLink;
+  const buyLink = book.saleInfo?.buyLink;
+  const readLink = book.accessInfo?.webReaderLink;
   console.log("PDF Link:", pdfLink);
   console.log("Buy Link:", buyLink);
   console.log("Read Link:", readLink);
@@ -76,13 +71,13 @@ const BookDetailComponent = () => {
   return (
     <div>
       <div className="navbar-container">
-        <Navbar /> {/* Render Navbar */}
+        <Navbar />
         <button
           className="backButton-custom"
-          onClick={() => navigate(-1)} // Navigate back to the previous page
+          onClick={() => navigate(-1)}
           aria-label="Go back"
         >
-          <FaArrowLeft /> {/* Back button icon */}
+          <FaArrowLeft />
         </button>
       </div>
       <div className="bookDetailContainer-custom">
@@ -158,4 +153,4 @@ const BookDetailComponent = () => {
   );
 };
 
-export default BookDetailComponent; // Export the component
+export default BookDetailComponent;

@@ -19,21 +19,18 @@ import l from "../../public/images/31.jpg";
 const images = [a, b, c, d, e, f, g, h, i, j, k, l];
 
 export default function Landing() {
-  const formRef = useRef(null); // Initialize the reference for the form section
+  const formRef = useRef(null);
 
   const handleExploreClick = () => {
-    // Ensure formRef is defined and scrollIntoView is a function
     if (
       formRef.current &&
       typeof formRef.current.scrollIntoView === "function"
     ) {
-      // Scroll smoothly to the form section
       formRef.current.scrollIntoView({ behavior: "smooth" });
 
-      // After reaching the target element, scroll down by an additional 200 pixels
       setTimeout(() => {
         window.scrollBy({ top: 750, behavior: "smooth" });
-      }, 500); // Adjust the delay as needed to match the scroll speed of `scrollIntoView`
+      }, 500);
     }
   };
 
@@ -62,8 +59,6 @@ export default function Landing() {
           <img src={two} alt="" />
         </div>
       </div>
-
-      {/* Attach the formRef here to scroll to this section */}
       <div className="land2" ref={formRef}>
         <div className="info">
           <h3>Find Your Next Favorite Read</h3>
