@@ -92,7 +92,7 @@ const ProfileImageHandler = ({ name }) => {
   return (
     <div className="profile-image-container" onClick={toggleDropdown}>
       <img src={profileImage} alt="User Profile" className="profile-image" />
-      <span className="profile-tooltip">Profile</span>
+      <span className="profile-tooltip"></span>
       {showDropdown && (
         <div className="dropdown-menu" ref={dropdownRef}>
           <ul>
