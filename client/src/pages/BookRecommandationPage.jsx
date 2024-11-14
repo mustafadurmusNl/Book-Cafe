@@ -7,8 +7,6 @@ import "../Styles/BookRecommendationPage.css";
 import Navbar from "../components/Navbar";
 import { FavoriteContext } from "../context/FavoriteContext";
 import { logInfo } from "../util/logger";
-
-// Unique book filtering function
 const filterUniqueBooks = (books) => {
   if (!Array.isArray(books)) {
     console.error("Expected an array but received:", books);
@@ -267,7 +265,6 @@ const BookRecommendationPage = () => {
                       ? book.volumeInfo.authors.join(", ")
                       : "Unknown Author"}
                   </div>
-
                   <Link to={`/book/${book.id}`}>
                     {book.volumeInfo.imageLinks?.thumbnail ? (
                       <img

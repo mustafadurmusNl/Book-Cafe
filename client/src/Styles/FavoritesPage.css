@@ -9,6 +9,7 @@
   min-height: 100vh;
   box-sizing: border-box;
 }
+
 .frmes {
   background: none;
   font-family: "Playwrite GB S";
@@ -16,6 +17,7 @@
   color: currentcolor;
   padding: 20px;
 }
+
 .favorites-page-custom h1 {
   color: rgb(98, 57, 16);
   font-size: 3vw;
@@ -23,7 +25,6 @@
   margin: 30px;
   padding-bottom: 20px;
 }
-
 .favorites-grid-custom {
   display: grid;
   gap: 20px;
@@ -33,7 +34,6 @@
   box-sizing: border-box;
   grid-template-columns: repeat(8, 1fr);
 }
-
 .favorite-item-custom {
   position: relative;
   display: flex;
@@ -47,7 +47,6 @@
     transform 0.5s ease,
     box-shadow 0.5s ease;
 }
-
 .favorite-item-custom:hover {
   transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(228, 7, 7, 0.2);
@@ -55,7 +54,6 @@
     transform 1s ease,
     box-shadow 1s ease;
 }
-
 .favorite-thumbnail-custom {
   max-width: 100%;
   height: 200px;
@@ -63,7 +61,6 @@
   border-radius: 5px;
   margin-bottom: 10px;
 }
-
 .favorite-title-custom {
   color: rgb(168, 123, 73);
   font-weight: bold;
@@ -77,11 +74,9 @@
   align-items: center;
   min-height: 40px;
 }
-
 .favorite-title-custom:hover {
   color: rgb(150, 110, 65);
 }
-
 .favorite-heart-custom {
   position: absolute;
   top: 10px;
@@ -91,7 +86,6 @@
   cursor: pointer;
   transition: color 0.3s ease;
 }
-
 .favorite-heart-custom.red {
   color: red;
 }
@@ -112,38 +106,33 @@
   background-color: rgb(250, 233, 213) !important;
   color: rgb(169, 123, 73);
 }
-
 @media (min-width: 1422px) {
   .favorites-grid-custom {
-    grid-template-columns: repeat(6, 1fr); /* برای سایز لپ‌تاپ و بزرگتر */
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 @media (max-width: 1280px) {
   .favorites-grid-custom {
-    grid-template-columns: repeat(4, 1fr); /* برای سایزهای متوسط مثل تبلت */
+    grid-template-columns: repeat(4, 1fr);
   }
 }
-
 @media (max-width: 993px) {
   .favorites-grid-custom {
     grid-template-columns: repeat(3, 1fr);
-    font-size: 5vw; /* برای دستگاه‌های کوچکتر */
+    font-size: 5vw;
   }
 }
-
 @media (max-width: 744px) {
   .favorites-grid-custom {
     grid-template-columns: repeat(2, 1fr);
-    font-size: 6vw; /* برای دستگاه‌های خیلی کوچک */
+    font-size: 6vw;
   }
 }
-
 @media (max-width: 664px) {
   .favorites-grid-custom {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 526px) {
   .favorites-grid-custom {
     grid-template-columns: repeat(2, 1fr);
@@ -151,11 +140,10 @@
 }
 @media (max-width: 480px) {
   .favorites-grid-custom {
-    grid-template-columns: repeat(1, 1fr); /* برای موبایل‌ها */
+    grid-template-columns: repeat(1, 1fr);
     font-size: 7vw;
   }
 }
-
 @media (max-width: 325px) {
   .favorites-grid-custom {
     grid-template-columns: repeat(1, 1fr);

@@ -135,7 +135,6 @@
   align-items: center;
   min-height: 40px;
 }
-
 .book-title:hover {
   color: rgb(150, 110, 65);
 }
@@ -144,12 +143,11 @@
   margin: 20px auto;
   font-size: 40px;
   font-family: "Pacifico", cursive;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* shadow for the text */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   text-align: center;
-
   color: #653a2a;
-  border-radius: 10px; /* Optional: Smooth edges */
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4); /* shadow for the h2 box */
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
 }
 .placeholder-cover .book-title {
   font-size: initial;
@@ -164,7 +162,6 @@
 .welcome {
   font-family: "Playwrite GB S";
 }
-
 .heart-icon {
   position: absolute;
   top: -4.5%;
@@ -184,11 +181,9 @@
     color 0.3s ease,
     background 0.3s ease;
 }
-
 .heart-icon.red {
   color: red;
 }
-
 .heart-icon:hover {
   color: rgba(255, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.8);

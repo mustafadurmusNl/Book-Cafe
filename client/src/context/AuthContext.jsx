@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Initialize user state based on localStorage data
     const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
     const isLoggedInStatus = localStorage.getItem("isLoggedIn") === "true";
@@ -19,7 +18,7 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
       setIsLoggedIn(true);
     } else {
-      setIsLoggedIn(false); // Ensure accurate status when not logged in
+      setIsLoggedIn(false);
     }
   }, []);
 
