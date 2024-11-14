@@ -22,7 +22,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .bookImage-custom img {
   width: 100%;
   height: auto;
@@ -30,19 +29,16 @@ body {
   border-radius: 10px;
   padding-right: 15px;
 }
-
 .bookInfo-custom {
   width: 55%;
   display: flex;
   flex-direction: column;
 }
-
 .bookH-custom {
   font-size: 24px;
   margin-bottom: 30px;
   color: rgb(169, 123, 73);
 }
-
 .bookMeta-custom {
   display: flex;
   flex-direction: column;
@@ -52,7 +48,6 @@ body {
 .bookMeta-custom span {
   padding: 5px;
 }
-
 .bookDescription-custom {
   max-height: 150px;
   overflow-y: auto;
@@ -65,16 +60,13 @@ body {
   text-align: justify;
   margin-top: 50px;
 }
-
 .bookDescription-custom::-webkit-scrollbar {
   width: 8px;
 }
-
 .bookDescription-custom::-webkit-scrollbar-thumb {
   background-color: rgb(169, 123, 73);
   border-radius: 10px;
 }
-
 .bookButtons-custom {
   display: flex !important;
   flex-wrap: wrap;
@@ -90,7 +82,6 @@ body {
   gap: 10px !important;
   margin: 0 auto !important;
 }
-
 .pdfButton-custom,
 .buyButton-custom,
 .readButton-custom {
@@ -111,7 +102,6 @@ body {
   padding: 0 !important;
   margin: 0 !important;
 }
-
 .heart-icon-bdc {
   position: absolute;
   top: -1% !important;
@@ -130,18 +120,15 @@ body {
   align-items: center;
   transition: color 0.3s ease;
 }
-
 .heart-icon.red {
   color: red;
 }
-
 .navbar-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding-bottom: 10px;
 }
-
 .backButton-custom {
   position: absolute !important;
   display: inline-flex;
@@ -160,13 +147,11 @@ body {
   margin-top: -10px;
   margin-bottom: 20px;
 }
-
 .backButton-custom:hover {
   background-color: rgba(169, 123, 73, 0.15);
   box-shadow: 0px 2px 8px rgba(169, 123, 73, 0.5);
   transform: translateY(-1px);
 }
-
 .readButton-custom {
   background-color: rgb(234, 133, 27);
   color: white;
@@ -186,7 +171,6 @@ body {
     left: 95.5% !important;
   }
 }
-
 @media (max-width: 1422px) {
   .heart-icon-bdc {
     width: 40px;
@@ -195,12 +179,10 @@ body {
     top: 2%;
     left: 95% !important;
   }
-
   .bookH-custom {
     font-size: 20px;
   }
 }
-
 @media (max-width: 1280px) {
   .heart-icon-bdc {
     width: 40px;
@@ -221,7 +203,6 @@ body {
     width: 60%;
   }
 }
-
 @media (max-width: 993px) {
   .backButton-custom {
     position: relative;
@@ -266,7 +247,6 @@ body {
     z-index: 10;
   }
 }
-
 @media (max-width: 768px) {
   .backButton-custom {
     position: relative;
@@ -311,7 +291,6 @@ body {
     z-index: 10;
   }
 }
-
 @media (max-width: 664px) {
   .backButton-custom {
     position: relative;
@@ -356,7 +335,6 @@ body {
     z-index: 10;
   }
 }
-
 @media (max-width: 526px) {
   .backButton-custom {
     position: relative;
@@ -401,7 +379,6 @@ body {
     z-index: 10;
   }
 }
-
 @media (max-width: 480px) {
   .backButton-custom {
     position: relative;

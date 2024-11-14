@@ -5,7 +5,6 @@ import fs from "fs";
 
 const bookRouter = express.Router();
 
-// Import dotenv to read environment variables
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -31,7 +30,6 @@ bookRouter.get("/search", async (req, res) => {
       .json({ success: false, error: "Query parameter is required." });
   }
 
-  // Format search query for Google Books API
   let searchQuery = query
     .toLowerCase()
     .split(" ")

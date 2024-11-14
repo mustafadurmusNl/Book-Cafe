@@ -1,20 +1,17 @@
 import dotenv from "dotenv";
-import app from "./app.js"; // Import the app created in app.js
+import app from "./app.js";
 import { logInfo, logError } from "./util/logging.js";
 import testRouter from "./testRouter.js";
 import express from "express";
 
-// Load environment variables
 dotenv.config();
 
-// The environment should set the port
 const port = process.env.PORT || 5000;
 
 if (port == null) {
   logError(new Error("Cannot find a PORT number, did you create a .env file?"));
 }
 
-// Start the server
 app.listen(port, () => {
   logInfo(`Server started on port ${port}`);
 });
