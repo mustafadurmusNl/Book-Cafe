@@ -1,8 +1,6 @@
-// src/controllers/bookController.js
 import Book from "../models/Book.js";
 import { logError } from "../util/logging.js";
 
-// Create a new book
 export const createBook = async (req, res) => {
   try {
     const newBook = new Book(req.body);
@@ -20,7 +18,6 @@ export const createBook = async (req, res) => {
   }
 };
 
-// Get all books
 export const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find();

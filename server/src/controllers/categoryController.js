@@ -1,4 +1,3 @@
-// Ensure correct indentation, spaces between braces, and consistent formatting
 import User from "../models/User.js";
 import { logInfo } from "../util/logging.js";
 
