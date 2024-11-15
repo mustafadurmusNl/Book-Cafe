@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import User from "../models/User.js";
 import { logInfo } from "../util/logging.js";
 export const saveUserFavoriteAuthor = async (req, res) => {
