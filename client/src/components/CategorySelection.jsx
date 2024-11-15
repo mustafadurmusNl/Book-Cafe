@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -31,7 +32,7 @@ const CategoryAndPreferences = () => {
     "True Crime",
   ];
 
-  const { selectedCategories, updateCategories } = useCategory(); // Get selected categories from context
+  const { selectedCategories, updateCategories } = useCategory();
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const CategoryAndPreferences = () => {
       ? selectedCategories.filter((cat) => cat !== category)
       : [...selectedCategories, category];
 
-    updateCategories(newSelectedCategories); // Update context with selected categories
+    updateCategories(newSelectedCategories);
   };
 
   const handleSubmit = async (e) => {
@@ -55,7 +56,6 @@ const CategoryAndPreferences = () => {
     }
 
     try {
-      // eslint-disable-next-line no-unused-vars
       const preferencesResponse = await axios.put(
         `${process.env.BASE_SERVER_URL}/api/users/${user.id}`,
         {

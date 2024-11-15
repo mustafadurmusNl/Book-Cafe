@@ -216,7 +216,7 @@ export const removeFavoriteBook = async (req, res) => {
 const fetchBookDetailsWithRetry = async (bookId, retries = 3, delay = 1000) => {
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes/${bookId}`,
+      `https://www.googleapis.com/books/v1/volumes/${bookId}?key=${process.env.API_KEY}`,
     );
     return response.data;
   } catch (error) {

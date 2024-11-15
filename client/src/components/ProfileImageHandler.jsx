@@ -12,8 +12,6 @@ const ProfileImageHandler = ({ name }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef(null);
   const dropdownRef = useRef(null);
-
-  // Fetch profile image if the user is logged in
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -38,7 +36,6 @@ const ProfileImageHandler = ({ name }) => {
     }
   }, []);
 
-  // Upload the image and return the URL
   const uploadImageToAPI = async (file) => {
     const formData = new FormData();
     formData.append("profileImage", file);
@@ -53,7 +50,7 @@ const ProfileImageHandler = ({ name }) => {
           },
         },
       );
-      return response.data.profileImageUrl; // URL of the uploaded image
+      return response.data.profileImageUrl;
     } catch (error) {
       logError("Image upload failed:", error);
       throw new Error("Image upload failed");
@@ -67,7 +64,7 @@ const ProfileImageHandler = ({ name }) => {
       uploadImageToAPI(file)
         .then((uploadedImageUrl) => {
           setProfileImage(uploadedImageUrl);
-          setProfileImage(imageUrl); // Update the profile image immediately
+          setProfileImage(imageUrl);
         })
         .catch((error) => {
           logError("Error uploading image:", error);
@@ -94,12 +91,8 @@ const ProfileImageHandler = ({ name }) => {
 
   return (
     <div className="profile-image-container" onClick={toggleDropdown}>
-      <img
-        src={profileImage} // Show a loading image while uploading
-        alt="User Profile"
-        className="profile-image"
-      />
-      <span className="profile-tooltip">Profile</span>
+      <img src={profileImage} alt="User Profile" className="profile-image" />
+      <span className="profile-tooltip"></span>
       {showDropdown && (
         <div className="dropdown-menu" ref={dropdownRef}>
           <ul>
@@ -128,7 +121,6 @@ const ProfileImageHandler = ({ name }) => {
   );
 };
 
-// Prop types validation
 ProfileImageHandler.propTypes = {
   name: PropTypes.string,
   setIsLoggedIn: PropTypes.func.isRequired,
